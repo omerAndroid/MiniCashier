@@ -21,12 +21,17 @@ public class Databases extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE goods(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_g TEXT,quantity INTEGER,expiration_date TEXT , date_purchase TEXT)");
+
         db.execSQL("CREATE TABLE quantity(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_q TEXT,price INTEGER,id_g INTEGER ,purchase INTEGER," +
                 "FOREIGN KEY(id_g) REFERENCES goods(id))");
+
         db.execSQL("CREATE TABLE agent(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_agent TEXT,address TEXT,email TEXT , password INTEGER)");
+
         db.execSQL("CREATE TABLE phone_agent(id INTEGER PRIMARY KEY AUTOINCREMENT ,phone INTEGER,id_agent INTEGER,FOREIGN KEY(id_agent) REFERENCES agent(id))");
+
         db.execSQL("CREATE TABLE bills(id INTEGER PRIMARY KEY AUTOINCREMENT ,date_bills TEXT,type_bills TEXT,total INTEGER,discount INTEGER,paid INTEGER," +
                 "remaining INTEGER,id_agent INTEGER,recipient TEXT,FOREIGN KEY(id_agent) REFERENCES agent(id))");
+
         db.execSQL("CREATE TABLE products_bills(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_prod TEXT,selling_price INTEGER,purchase_price INTEGER,quantity INTEGER,id_bills INTEGER," +
                 "FOREIGN KEY(id_bills) REFERENCES bills(id))");
 
