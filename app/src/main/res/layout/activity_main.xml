@@ -7,7 +7,7 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/button8"
+        android:id="@+id/add_update_menu"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"

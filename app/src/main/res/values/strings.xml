@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Mini Cashier</string>
+    <string name="add_goods_title">إضافة منتج</string>
+    <string name="update_goods_title">تعديل المنتج</string>
 </resources>
