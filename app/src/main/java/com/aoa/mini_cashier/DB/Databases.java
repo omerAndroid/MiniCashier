@@ -13,7 +13,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
-public class Databases extends SQLiteOpenHelper {
+public class Databases extends SQLiteOpenHelper {/// hello AAB
 
     static final String DBNAME="DB 0,1.db";///NOT NULL
     private Context mContext;
