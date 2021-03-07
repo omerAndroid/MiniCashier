@@ -3,6 +3,14 @@ package com.aoa.mini_cashier;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class update_goods_db extends AppCompatActivity {
 
@@ -10,5 +18,69 @@ public class update_goods_db extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_goods_db);
+
+        ListView list = (ListView) findViewById(R.id.list_quantity);
+        ////////////////////////////////////////////////////////////////////////////////////
+        ArrayList<list_item_update> q_list = new ArrayList<list_item_update>();
+        ///////////////////////////////////////////////////////////////////////////////////
+        ListAdupter ad =new ListAdupter(q_list);
+        list.setAdapter(ad);
+        //////////////////////////////////////////////////////////////////////////////////
+
+
+    }
+
+    class ListAdupter extends BaseAdapter
+    {
+        ArrayList<list_item_update> list_item =new ArrayList<list_item_update>();
+        ListAdupter(ArrayList<list_item_update> list_item){
+            this.list_item = list_item ;
+        }
+
+        @Override
+        public int getCount() {
+            return list_item.size();
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return list_item.get(position).name;
+        }
+
+        @Override
+        public View getView(int i, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = getLayoutInflater();
+            View view =inflater.inflate(R.layout.add_tg_item,null);
+
+            TextView name = (TextView) view.findViewById(R.id.goods_view);
+
+            TextView quantity = (TextView) view.findViewById(R.id.quantity_veiw);
+
+            TextView quantity_type = (TextView) view.findViewById(R.id.quantity_type_view);
+
+            TextView date_ex = (TextView) view.findViewById(R.id.date_ex_veiw);
+
+            TextView buy_price = (TextView) view.findViewById(R.id.buy_veiw);
+
+            TextView sale_price = (TextView) view.findViewById(R.id.sale_veiw);
+
+
+
+            name.setText(list_item.get(i).name );
+            quantity.setText(String.valueOf(list_item.get(i).quantity ));
+            buy_price.setText(String.valueOf(list_item.get(i).buy_price));
+            sale_price.setText(String.valueOf(list_item.get(i).sale_price));
+            quantity_type.setText(String.valueOf(list_item.get(i).quantity_type));
+            date_ex.setText(String.valueOf(list_item.get(i).date_ex));
+
+
+
+            return view;
+        }
     }
 }

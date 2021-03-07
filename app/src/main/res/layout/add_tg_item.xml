@@ -4,28 +4,28 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/q_sale_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="سعر البيع" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/q_buy_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="سعر الشراء" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/q_quantity_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="الكمية" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/q_name_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
