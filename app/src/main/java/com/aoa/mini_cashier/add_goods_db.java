@@ -2,6 +2,7 @@ package com.aoa.mini_cashier;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -18,7 +20,10 @@ import android.widget.Toast;
 import com.aoa.mini_cashier.DB.Databases;
 import com.aoa.mini_cashier.RED_QR.ScanCodeActivity;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
@@ -28,16 +33,24 @@ public class add_goods_db extends AppCompatActivity {
     boolean check_impot;
     ZXingScannerView scannerView;
 
-    public static EditText Text_barcode,Text_name_goods,Text_quantity,Text_buy_price,Text_sale_price,Text_date_ex;
-    Button add_tg_btn;
+    int date_place = 0;
+    public static EditText Text_barcode,Text_name_goods,Text_quantity,Text_buy_price,Text_sale_price,Text_date_ex,Text_date_sale,Text_quantity_box;
+    Button add_tg_btn,date_sale_btn,date_ex_btn;
+
+    private Dialog Date_Dialog;
+    private SimpleDateFormat date_format;
+    private Calendar calendar;
+
     dialog_view_addtypes dva=new dialog_view_addtypes();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         scannerView=new ZXingScannerView(this);
         setContentView(R.layout.activity_add_goods_db);
-
+        //////////////////////////////////////////////////////////////////
         add_tg_btn =findViewById(R.id.add_tg_btn);
+        date_sale_btn =findViewById(R.id.date_show_sale);
+        date_ex_btn =findViewById(R.id.date_show_ex);
 
         Text_barcode =findViewById(R.id.add_barcode_txt);
         Text_name_goods =findViewById(R.id.add_name_goods);
@@ -45,11 +58,34 @@ public class add_goods_db extends AppCompatActivity {
         Text_buy_price =findViewById(R.id.add_buy_price);
         Text_sale_price =findViewById(R.id.add_sale_price);
         Text_date_ex =findViewById(R.id.add_date_ex);
+        Text_date_sale =findViewById(R.id.add_date_sale);
+        Text_quantity_box =findViewById(R.id.add_quantity_box);
+        //////////////////////////////////////////////////////////////////
 
+
+        /////////////////////////Date Picker///////////////////////////////////
+        calendar=Calendar.getInstance();
+        date_format= new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
+
+        date_ex_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                date_place=0;
+                date_picker ();
+            }
+        });
+
+        date_sale_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                date_place=1;
+                date_picker ();
+            }
+        });
+
+        //////////////////////////////Add List Item//////////////////////////////////////
         ListView list = (ListView) findViewById(R.id.list_quantity);
-        ////////////////////////////////////////////////////////////////////////////////////
         ArrayList<list_item_qnuatitytype> q_list = new ArrayList<list_item_qnuatitytype>();
-        ///////////////////////////////////////////////////////////////////////////////////
         ListAdupter ad =new ListAdupter(q_list);
         list.setAdapter(ad);
         //////////////////////////////////////////////////////////////////////////////////
@@ -57,6 +93,7 @@ public class add_goods_db extends AppCompatActivity {
         add_tg_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //shaw quantity adder
                 dva.show(getSupportFragmentManager(), "إضافة نوع");
             }
         });
@@ -140,10 +177,41 @@ public class add_goods_db extends AppCompatActivity {
             return view;
         }
     }
+
+    public void date_picker ()
+    {
+        //Dialog Date viewer
+        Date_Dialog = new Dialog(this);
+        Date_Dialog.setContentView(R.layout.dailog_date);
+        final DatePicker picker=(DatePicker) Date_Dialog.findViewById(R.id.calendar_View);
+        Button date_viewer = (Button) Date_Dialog.findViewById(R.id.date_veiwer);
+
+        picker.setMinDate(calendar.getTimeInMillis());
+
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.add(Calendar.YEAR,5);
+        picker.setMaxDate(calendar1.getTimeInMillis());
+
+        date_viewer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Get Date to Edit Text
+                final Calendar calendar2 = Calendar.getInstance();
+
+                calendar2.set(picker.getYear(),picker.getMonth(),picker.getDayOfMonth());
+                if(date_place == 0)
+                {
+                    Text_date_ex.setText(date_format.format(calendar2.getTime()));
+                }
+                else { Text_date_sale.setText(date_format.format(calendar2.getTime())); }
+                Date_Dialog.dismiss();
+            }
+        });
+        Date_Dialog.show();
+    }
 }
 
 /*
-
 String email = mEmail.getText().toString().trim();
                 String password = mPassword.getText().toString().trim();
 
