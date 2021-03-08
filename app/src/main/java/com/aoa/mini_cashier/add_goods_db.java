@@ -34,9 +34,9 @@ public class add_goods_db extends AppCompatActivity {
     ZXingScannerView scannerView;
 
     int date_place = 0;
-    public static EditText Text_barcode,Text_name_goods,Text_quantity,Text_buy_price,Text_sale_price,Text_date_ex,Text_date_sale,Text_quantity_box;
-    Button add_tg_btn,date_sale_btn,date_ex_btn;
-
+    public static EditText Text_barcode,Text_name_goods,Text_quantity,Text_buy_price,Text_sale_price,Text_date_ex,Text_date_sale,Text_quantity_box,
+            Text_q_type,Text_q_quantity,Text_q_buy_price,Text_q_sale_price;
+    Button add_tg_btn,date_sale_btn,date_ex_btn,exeit,save;
     private Dialog Date_Dialog;
     private SimpleDateFormat date_format;
     private Calendar calendar;
@@ -51,7 +51,15 @@ public class add_goods_db extends AppCompatActivity {
         add_tg_btn =findViewById(R.id.add_tg_btn);
         date_sale_btn =findViewById(R.id.date_show_sale);
         date_ex_btn =findViewById(R.id.date_show_ex);
+        /////////////////////////////////////////////////////////////////quantity -> dialog
+        exeit =findViewById(R.id.cancel_tg_dailog);
+        save =findViewById(R.id.save_tg_add);
 
+        Text_q_type =findViewById(R.id.q_type);
+        Text_q_quantity =findViewById(R.id.q_quantity);
+        Text_q_buy_price =findViewById(R.id.q_buy_price);
+        Text_q_sale_price =findViewById(R.id.q_sale_price);
+        /////////////////////////////////////////////////////////////////googs + quantity
         Text_barcode =findViewById(R.id.add_barcode_txt);
         Text_name_goods =findViewById(R.id.add_name_goods);
         Text_quantity =findViewById(R.id.add_quantity);
@@ -132,7 +140,7 @@ public class add_goods_db extends AppCompatActivity {
                             id, Double.parseDouble(Text_sale_price.getEditableText().toString()));
 
                     if (result2){
-                        Toast.makeText(this, "omer", Toast.LENGTH_SHORT).show();//
+                        Toast.makeText(this, "OK", Toast.LENGTH_SHORT).show();//
                     }
                     else
                         Toast.makeText(this, "No", Toast.LENGTH_SHORT).show();
@@ -160,6 +168,36 @@ public class add_goods_db extends AppCompatActivity {
             check_impot =true;
         }
         return check_impot;
+    }
+
+    private boolean check_impot_quantity(){
+        boolean check_impot;
+        if(TextUtils.isEmpty(Text_q_type.getText().toString().trim())||TextUtils.isEmpty(Text_q_quantity.getText().toString().trim())
+                ||TextUtils.isEmpty(Text_q_buy_price.getText().toString().trim())||TextUtils.isEmpty(Text_q_sale_price.getText().toString().trim())){
+
+            //mEmail.setError("Email is Required.");
+
+            Toast.makeText(this, "أكمل البيانات", Toast.LENGTH_SHORT).show();
+            // return;
+            check_impot =false;
+        }else {
+            check_impot =true;
+        }
+        return check_impot;
+    }
+
+    public void save_quantity(View view){
+
+        int id =databases.get_id_goods(Text_barcode.getEditableText().toString());// جلب رقم البضاعة
+
+//        boolean result2 = databases.insert_quantity(Text_q_type.getEditableText().toString(), Double.parseDouble(Text_buy_price.getEditableText().toString()),
+//                id, Double.parseDouble(Text_sale_price.getEditableText().toString()));
+//
+//        if (result2){
+//            Toast.makeText(this, "OK", Toast.LENGTH_SHORT).show();//
+//        }
+//        else
+//            Toast.makeText(this, "No", Toast.LENGTH_SHORT).show();
     }
 
     class ListAdupter extends BaseAdapter
