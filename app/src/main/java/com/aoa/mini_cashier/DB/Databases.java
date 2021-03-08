@@ -1,6 +1,8 @@
 package com.aoa.mini_cashier.DB;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
@@ -25,10 +27,11 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE goods(id INTEGER PRIMARY KEY AUTOINCREMENT ,barcod TEXT,name_g TEXT,quantity INTEGER,quantity_box INTEGER ,expiration_date TEXT , date_purchase TEXT)");
+    public void onCreate(SQLiteDatabase db) {////REAL  = DOUBLE + FLOAT
+        db.execSQL("CREATE TABLE goods(id INTEGER PRIMARY KEY AUTOINCREMENT ,barcod TEXT,name_g TEXT,quantity REAL,quantity_box REAL ,expiration_date TEXT ," +
+                " date_purchase TEXT)");
 
-        db.execSQL("CREATE TABLE quantity(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_q TEXT , price INTEGER ,quantity_q INTEGER , id_g INTEGER ,purchase INTEGER," +
+        db.execSQL("CREATE TABLE quantity(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_q TEXT , price REAL ,quantity_q TEXT , id_g INTEGER ,purchase REAL," +
                 "FOREIGN KEY(id_g) REFERENCES goods(id) ON UPDATE CASCADE ON DELETE CASCADE)");
 
         db.execSQL("CREATE TABLE agent(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_agent TEXT,address TEXT,email TEXT , password INTEGER)");
@@ -89,4 +92,31 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
             e.printStackTrace();
         }
     }
+
+
+    public int check_baracod(String baracod){ ///  E عملية التاكد من الباركود اذا كان موجود من قبل او لا
+        SQLiteDatabase db=this.getReadableDatabase();
+        int a=0;
+        Cursor res=db.rawQuery("select * from goods where barcod like '"+baracod+"' ",null);
+        res.moveToFirst();
+        while (res.isAfterLast()==false){
+            a++;
+            res.moveToNext();
+        }
+        return a;
+    }
+
+
+    public boolean insert_goods(String barcod, String name,Double quantity,Double quantity_box,String expiration_date,String date_purchase){//price عملية اللاضافةللبضاعة
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+        contentValues.put("name",name);
+
+        long result=db.insert("goods",null,contentValues);
+        if (result==-1)
+            return false;
+        else
+            return true;
+    }
 }
+

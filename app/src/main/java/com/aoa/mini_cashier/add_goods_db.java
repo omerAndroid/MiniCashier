@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.aoa.mini_cashier.DB.Databases;
 import com.aoa.mini_cashier.RED_QR.ScanCodeActivity;
 
 import java.util.ArrayList;
@@ -21,10 +24,11 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class add_goods_db extends AppCompatActivity {
 
-    public static TextView textView;
+    Databases databases=new Databases(this);
+    boolean check_impot;
     ZXingScannerView scannerView;
 
-    //EditText Text_,Text_,Text_,Text_,Text_,Text_;
+    public static EditText Text_barcode,Text_name_goods,Text_quantity,Text_buy_price,Text_sale_price,Text_date_ex;
     Button add_tg_btn;
     dialog_view_addtypes dva=new dialog_view_addtypes();
     @Override
@@ -35,12 +39,12 @@ public class add_goods_db extends AppCompatActivity {
 
         add_tg_btn =findViewById(R.id.add_tg_btn);
 
-        add_tg_btn =findViewById(R.id.add_tg_btn);
-        add_tg_btn =findViewById(R.id.add_tg_btn);
-        add_tg_btn =findViewById(R.id.add_tg_btn);
-        add_tg_btn =findViewById(R.id.add_tg_btn);
-        add_tg_btn =findViewById(R.id.add_tg_btn);
-        add_tg_btn =findViewById(R.id.add_tg_btn);
+        Text_barcode =findViewById(R.id.add_barcode_txt);
+        Text_name_goods =findViewById(R.id.add_name_goods);
+        Text_quantity =findViewById(R.id.add_quantity);
+        Text_buy_price =findViewById(R.id.add_buy_price);
+        Text_sale_price =findViewById(R.id.add_sale_price);
+        Text_date_ex =findViewById(R.id.add_date_ex);
 
         ListView list = (ListView) findViewById(R.id.list_quantity);
         ////////////////////////////////////////////////////////////////////////////////////
@@ -63,6 +67,31 @@ public class add_goods_db extends AppCompatActivity {
 
     public void red_qr(View view) {
         startActivity(new Intent(getApplicationContext(), ScanCodeActivity.class));
+    }
+
+    public void seve_goods(View view) {
+        if(check_impot_googs()){
+            int check_baracod=databases.check_baracod(Text_barcode.getText().toString().trim());
+
+            if (check_baracod==0) {
+                Toast.makeText(this, "Good Code", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+    }
+
+    private boolean check_impot_googs() {
+        if(TextUtils.isEmpty(Text_barcode.getText().toString().trim())||TextUtils.isEmpty(Text_name_goods.getText().toString().trim())
+                ||TextUtils.isEmpty(Text_quantity.getText().toString().trim())||TextUtils.isEmpty(Text_buy_price.getText().toString().trim())
+                ||TextUtils.isEmpty(Text_sale_price.getText().toString().trim())||TextUtils.isEmpty(Text_date_ex.getText().toString().trim())){
+            //mEmail.setError("Email is Required.");
+            Toast.makeText(this, "أكمل البيانات", Toast.LENGTH_SHORT).show();
+           // return;
+            check_impot =false;
+        }else {
+            check_impot =true;
+        }
+        return check_impot;
     }
 
     class ListAdupter extends BaseAdapter

@@ -14,6 +14,7 @@
 
         <Button
             android:id="@+id/add_barcode"
+            android:onClick="red_qr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_camera_alt_black_24dp" />
@@ -103,9 +104,11 @@
             <Button
                 android:id="@+id/save_add_goods"
                 android:layout_width="0dp"
+                android:onClick="seve_goods"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="حفظ" />
+                android:text="حفظ"
+                tools:ignore="OnClick" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.aoa.mini_cashier.add_goods_db;
 import com.google.zxing.Result;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
@@ -51,18 +52,18 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
 
 
         }
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setTitle("Back");
-        actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+//        ActionBar actionBar = getSupportActionBar();
+//        assert actionBar != null;
+//        actionBar.setTitle("Back");
+//        actionBar.setDisplayShowHomeEnabled(true);
+//        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     public void handleResult(Result result) {
 
 
-        //MainActivity.textView.setText(result.getText());
+        add_goods_db.Text_barcode.setText(result.getText());
         //vewes.button.setVisibility(View.VISIBLE);
         onBackPressed();
 
