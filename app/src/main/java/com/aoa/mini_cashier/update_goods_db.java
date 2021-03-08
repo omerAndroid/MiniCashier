@@ -19,7 +19,7 @@ public class update_goods_db extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_goods_db);
 
-        ListView list = (ListView) findViewById(R.id.list_quantity);
+        ListView list = (ListView) findViewById(R.id.list_goods_db);
         ////////////////////////////////////////////////////////////////////////////////////
         ArrayList<list_item_update> q_list = new ArrayList<list_item_update>();
         ///////////////////////////////////////////////////////////////////////////////////
