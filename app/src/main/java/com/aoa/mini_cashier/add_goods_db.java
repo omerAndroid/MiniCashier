@@ -132,7 +132,7 @@ public class add_goods_db extends AppCompatActivity {
                             id, Double.parseDouble(Text_sale_price.getEditableText().toString()));
 
                     if (result2){
-                        Toast.makeText(this, "omer", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "omer", Toast.LENGTH_SHORT).show();//
                     }
                     else
                         Toast.makeText(this, "No", Toast.LENGTH_SHORT).show();
