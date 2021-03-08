@@ -31,7 +31,7 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
         db.execSQL("CREATE TABLE goods(id INTEGER PRIMARY KEY AUTOINCREMENT ,barcod TEXT,name_g TEXT,quantity REAL,quantity_box REAL ,expiration_date TEXT ," +
                 " date_purchase TEXT)");
 
-        db.execSQL("CREATE TABLE quantity(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_q TEXT , price REAL ,quantity_q TEXT , id_g INTEGER ,purchase REAL," +
+        db.execSQL("CREATE TABLE quantity(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_q TEXT , price REAL ,id_g INTEGER ,purchase REAL," +/////quantity_q TEXT ,
                 "FOREIGN KEY(id_g) REFERENCES goods(id) ON UPDATE CASCADE ON DELETE CASCADE)");
 
         db.execSQL("CREATE TABLE agent(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_agent TEXT,address TEXT,email TEXT , password INTEGER)");
@@ -110,13 +110,50 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
     public boolean insert_goods(String barcod, String name,Double quantity,Double quantity_box,String expiration_date,String date_purchase){//price عملية اللاضافةللبضاعة
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
-        contentValues.put("name",name);
+        contentValues.put("barcod",barcod);
+        contentValues.put("name_g",name);
+        contentValues.put("quantity",quantity);
+        contentValues.put("quantity_box",quantity_box);
+        contentValues.put("expiration_date",expiration_date);
+        contentValues.put("date_purchase",date_purchase);
 
         long result=db.insert("goods",null,contentValues);
         if (result==-1)
             return false;
         else
             return true;
+    }
+
+    public boolean insert_quantity(String name_q, Double price,int id_g,Double purchase){//price عملية اللاضافةللبضاعة
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+        contentValues.put("name_q",name_q);
+        contentValues.put("price",price);
+        contentValues.put("id_g",id_g);
+        contentValues.put("purchase",purchase);
+
+
+        long result=db.insert("quantity",null,contentValues);
+        if (result==-1)
+            return false;
+        else
+            return true;
+    }
+
+
+    public int get_id_goods(String barcod){
+        int i=0;
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor res=db.rawQuery("select * from goods where barcod like '"+barcod+"'",null);
+        res.moveToFirst();
+
+        while (res.isAfterLast()==false){
+             i=res.getInt(res.getColumnIndex("id"));
+
+            res.moveToNext();
+        }
+        return i ;
+
     }
 }
 

@@ -55,11 +55,12 @@ public class add_goods_db extends AppCompatActivity {
         Text_barcode =findViewById(R.id.add_barcode_txt);
         Text_name_goods =findViewById(R.id.add_name_goods);
         Text_quantity =findViewById(R.id.add_quantity);
+        Text_quantity_box =findViewById(R.id.add_quantity_box);
         Text_buy_price =findViewById(R.id.add_buy_price);
         Text_sale_price =findViewById(R.id.add_sale_price);
-        Text_date_ex =findViewById(R.id.add_date_ex);
+        Text_date_ex =findViewById(R.id.add_date_ex);////الانتهاء
         Text_date_sale =findViewById(R.id.add_date_sale);
-        Text_quantity_box =findViewById(R.id.add_quantity_box);
+
         //////////////////////////////////////////////////////////////////
 
 
@@ -98,20 +99,47 @@ public class add_goods_db extends AppCompatActivity {
             }
         });
 
-
-
     }
+
+
 
     public void red_qr(View view) {
         startActivity(new Intent(getApplicationContext(), ScanCodeActivity.class));
     }
 
     public void seve_goods(View view) {
+
         if(check_impot_googs()){
+
             int check_baracod=databases.check_baracod(Text_barcode.getText().toString().trim());
 
+            //double g=Double.parseDouble(Text_quantity_box.getEditableText().toString());
+
             if (check_baracod==0) {
-                Toast.makeText(this, "Good Code", Toast.LENGTH_SHORT).show();
+
+                //Toast.makeText(this, "Good Code", Toast.LENGTH_SHORT).show();
+
+                boolean result = databases.insert_goods(Text_barcode.getEditableText().toString(), Text_name_goods.getEditableText().toString(),
+                        Double.parseDouble(Text_quantity.getEditableText().toString()),Double.parseDouble(Text_quantity_box.getEditableText().toString()),
+                        Text_date_ex.getEditableText().toString(),
+                        Text_date_sale.getEditableText().toString());
+
+                if (result){
+
+                    int id =databases.get_id_goods(Text_barcode.getEditableText().toString());// جلب رقم البضاعة
+
+                    boolean result2 = databases.insert_quantity("حبة", Double.parseDouble(Text_buy_price.getEditableText().toString()),
+                            id, Double.parseDouble(Text_sale_price.getEditableText().toString()));
+
+                    if (result2){
+                        Toast.makeText(this, "omer", Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                        Toast.makeText(this, "No", Toast.LENGTH_SHORT).show();
+                }
+                else
+                    Toast.makeText(this, "No", Toast.LENGTH_SHORT).show();
+
             }
 
         }
@@ -120,8 +148,11 @@ public class add_goods_db extends AppCompatActivity {
     private boolean check_impot_googs() {
         if(TextUtils.isEmpty(Text_barcode.getText().toString().trim())||TextUtils.isEmpty(Text_name_goods.getText().toString().trim())
                 ||TextUtils.isEmpty(Text_quantity.getText().toString().trim())||TextUtils.isEmpty(Text_buy_price.getText().toString().trim())
-                ||TextUtils.isEmpty(Text_sale_price.getText().toString().trim())||TextUtils.isEmpty(Text_date_ex.getText().toString().trim())){
+                ||TextUtils.isEmpty(Text_sale_price.getText().toString().trim())||TextUtils.isEmpty(Text_date_ex.getText().toString().trim())
+                ||TextUtils.isEmpty(Text_date_sale.getText().toString().trim())||TextUtils.isEmpty(Text_quantity_box.getText().toString().trim())){
+
             //mEmail.setError("Email is Required.");
+
             Toast.makeText(this, "أكمل البيانات", Toast.LENGTH_SHORT).show();
            // return;
             check_impot =false;

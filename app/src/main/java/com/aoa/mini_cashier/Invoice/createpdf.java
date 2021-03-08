@@ -6,9 +6,13 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.PersistableBundle;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -34,11 +38,14 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class createPDF {
+public class createpdf extends AppCompatActivity {
+
     private static final String PATH = Environment.getExternalStorageDirectory() + "/itexdemo.pdf";
 
     Font font = FontFactory.getFont("assets/Aljazeera.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
     Font f = FontFactory.getFont("assets/Aljazeera.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+
+
 
 
     public void onbdf(View view) {
@@ -348,7 +355,7 @@ public class createPDF {
 
             document.close();
 
-           // Toast.makeText(this, "ok", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, "ok", Toast.LENGTH_SHORT).show();
 
         } catch (DocumentException e) {
             e.printStackTrace();

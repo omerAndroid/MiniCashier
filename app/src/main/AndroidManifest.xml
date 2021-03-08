@@ -3,9 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.aoa.mini_cashier">
 
-
     <uses-permission android:name="android.permission.CAMERA" />
-
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
@@ -21,6 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:ignore="AllowBackup">
+        <activity android:name=".Invoice.createpdf"></activity>
         <activity android:name=".RED_QR.ScanCodeActivity" />
         <activity android:name=".update_goods_db" />
         <activity android:name=".add_goods_db" />
