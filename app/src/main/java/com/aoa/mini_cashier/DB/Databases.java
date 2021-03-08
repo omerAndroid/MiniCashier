@@ -26,7 +26,7 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE goods(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_g TEXT,quantity INTEGER,quantity_box INTEGER ,expiration_date TEXT , date_purchase TEXT)");
+        db.execSQL("CREATE TABLE goods(id INTEGER PRIMARY KEY AUTOINCREMENT ,barcod TEXT,name_g TEXT,quantity INTEGER,quantity_box INTEGER ,expiration_date TEXT , date_purchase TEXT)");
 
         db.execSQL("CREATE TABLE quantity(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_q TEXT , price INTEGER ,quantity_q INTEGER , id_g INTEGER ,purchase INTEGER," +
                 "FOREIGN KEY(id_g) REFERENCES goods(id) ON UPDATE CASCADE ON DELETE CASCADE)");

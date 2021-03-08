@@ -18,6 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:ignore="AllowBackup">
+        <activity android:name=".RED_QR.ScanCodeActivity"></activity>
         <activity android:name=".update_goods_db" />
         <activity android:name=".add_goods_db" />
         <activity android:name=".MainActivity">

@@ -2,25 +2,45 @@ package com.aoa.mini_cashier;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.aoa.mini_cashier.RED_QR.ScanCodeActivity;
+
 import java.util.ArrayList;
+
+import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class add_goods_db extends AppCompatActivity {
 
+    public static TextView textView;
+    ZXingScannerView scannerView;
+
+    //EditText Text_,Text_,Text_,Text_,Text_,Text_;
     Button add_tg_btn;
     dialog_view_addtypes dva=new dialog_view_addtypes();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        scannerView=new ZXingScannerView(this);
         setContentView(R.layout.activity_add_goods_db);
+
+        add_tg_btn =findViewById(R.id.add_tg_btn);
+
+        add_tg_btn =findViewById(R.id.add_tg_btn);
+        add_tg_btn =findViewById(R.id.add_tg_btn);
+        add_tg_btn =findViewById(R.id.add_tg_btn);
+        add_tg_btn =findViewById(R.id.add_tg_btn);
+        add_tg_btn =findViewById(R.id.add_tg_btn);
+        add_tg_btn =findViewById(R.id.add_tg_btn);
 
         ListView list = (ListView) findViewById(R.id.list_quantity);
         ////////////////////////////////////////////////////////////////////////////////////
@@ -29,7 +49,7 @@ public class add_goods_db extends AppCompatActivity {
         ListAdupter ad =new ListAdupter(q_list);
         list.setAdapter(ad);
         //////////////////////////////////////////////////////////////////////////////////
-        add_tg_btn =findViewById(R.id.add_tg_btn);
+
         add_tg_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -40,6 +60,11 @@ public class add_goods_db extends AppCompatActivity {
 
 
     }
+
+    public void red_qr(View view) {
+        startActivity(new Intent(getApplicationContext(), ScanCodeActivity.class));
+    }
+
     class ListAdupter extends BaseAdapter
     {
         ArrayList<list_item_qnuatitytype> list_item =new ArrayList<list_item_qnuatitytype>();
@@ -87,3 +112,16 @@ public class add_goods_db extends AppCompatActivity {
         }
     }
 }
+
+/*
+
+String email = mEmail.getText().toString().trim();
+                String password = mPassword.getText().toString().trim();
+
+                if(TextUtils.isEmpty(email)){
+                    mEmail.setError("Email is Required.");
+                    return;
+                }
+
+
+ */
