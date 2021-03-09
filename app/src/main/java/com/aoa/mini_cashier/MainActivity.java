@@ -17,7 +17,7 @@ import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button au_menu;
+    Button au_menu,buy_btn,restore_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,27 @@ public class MainActivity extends AppCompatActivity {
 //        localBackup.performBackup(databases, outFileName);
 
 
+
+
         au_menu = (Button) findViewById(R.id.add_update_menu);
+        buy_btn = (Button) findViewById(R.id.buy);
+        restore_btn = (Button) findViewById(R.id.restore);
+
+        buy_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this ,buy_restore_goods.class);
+                startActivity(intent);
+            }
+        });
+
+        restore_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this ,buy_restore_goods.class);
+                startActivity(intent);
+            }
+        });
 
         au_menu.setOnClickListener(new View.OnClickListener() {
             @Override

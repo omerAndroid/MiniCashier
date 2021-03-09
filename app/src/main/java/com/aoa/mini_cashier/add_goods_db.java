@@ -229,14 +229,14 @@ public class add_goods_db extends AppCompatActivity {
 
             TextView name = (TextView) view.findViewById(R.id.q_name_item);
 
-            TextView quaىntity = (TextView) view.findViewById(R.id.q_quantity_item);
+            TextView quantity = (TextView) view.findViewById(R.id.q_quantity_item);
 
             TextView buy_price = (TextView) view.findViewById(R.id.q_buy_item);
 
             TextView sale_price = (TextView) view.findViewById(R.id.q_sale_item);
 
             name.setText(list_item.get(i).name );
-            quaىntity.setText(String.valueOf(list_item.get(i).quantity) );
+            quantity.setText(String.valueOf(list_item.get(i).quantity) );
             buy_price.setText(String.valueOf(list_item.get(i).buy_price));
             sale_price.setText(String.valueOf(list_item.get(i).sale_price));
 

@@ -2,4 +2,7 @@
     <string name="app_name">Mini Cashier</string>
     <string name="add_goods_title">إضافة منتج</string>
     <string name="update_goods_title">تعديل المنتج</string>
+    <string name="print_bill_title">طباعة الفاتورة</string>
+    <string name="share_bill_title">مشاركة الفاتورة</string>
+    <string name="open_pdf_title">PDF</string>
 </resources>

@@ -7,8 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -56,18 +56,24 @@ public class update_goods_db extends AppCompatActivity {
             LayoutInflater inflater = getLayoutInflater();
             View view =inflater.inflate(R.layout.add_tg_item,null);
 
-            TextView name = (TextView) view.findViewById(R.id.goods_view);
+            EditText name = (EditText) view.findViewById(R.id.goods_view);
 
-            TextView quantity = (TextView) view.findViewById(R.id.quantity_veiw);
+            EditText quantity = (EditText) view.findViewById(R.id.quantity_veiw);
 
-            TextView quantity_type = (TextView) view.findViewById(R.id.quantity_type_view);
+            EditText quantity_type = (EditText) view.findViewById(R.id.quantity_type_view);
 
-            TextView date_ex = (TextView) view.findViewById(R.id.date_ex_veiw);
+            EditText date_ex = (EditText) view.findViewById(R.id.date_ex_veiw);
 
-            TextView buy_price = (TextView) view.findViewById(R.id.buy_veiw);
+            EditText buy_price = (EditText) view.findViewById(R.id.buy_veiw);
 
-            TextView sale_price = (TextView) view.findViewById(R.id.sale_veiw);
+            EditText sale_price = (EditText) view.findViewById(R.id.sale_veiw);
 
+            name.setEnabled(false);
+            quantity.setEnabled(false);
+            buy_price.setEnabled(false);
+            sale_price.setEnabled(false);
+            quantity_type.setEnabled(false);
+            date_ex.setEnabled(false);
 
 
             name.setText(list_item.get(i).name );
