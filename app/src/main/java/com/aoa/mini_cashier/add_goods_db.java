@@ -34,7 +34,7 @@ public class add_goods_db extends AppCompatActivity {
     ZXingScannerView scannerView;
 
     int date_place = 0;
-    public static EditText Text_barcode,Text_name_goods,Text_quantity,Text_buy_price,Text_sale_price,Text_date_ex,Text_date_sale,Text_quantity_box,
+    public static EditText Text_barcode,Text_name_goods,Text_quantity,Text_buy_price,Text_sale_price,Text_date_ex,Text_date_sale,
             Text_q_type,Text_q_quantity,Text_q_buy_price,Text_q_sale_price;
     Button add_tg_btn,date_sale_btn,date_ex_btn,exeit,save;
     private Dialog Date_Dialog;
@@ -63,7 +63,6 @@ public class add_goods_db extends AppCompatActivity {
         Text_barcode =findViewById(R.id.add_barcode_txt);
         Text_name_goods =findViewById(R.id.add_name_goods);
         Text_quantity =findViewById(R.id.add_quantity);
-        Text_quantity_box =findViewById(R.id.add_quantity_box);
         Text_buy_price =findViewById(R.id.add_buy_price);
         Text_sale_price =findViewById(R.id.add_sale_price);
         Text_date_ex =findViewById(R.id.add_date_ex);////الانتهاء
@@ -103,7 +102,9 @@ public class add_goods_db extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //shaw quantity adder
-                dva.show(getSupportFragmentManager(), "إضافة نوع");
+                if(get_seve_goods()) {
+                    dva.show(getSupportFragmentManager(), "إضافة نوع");
+                }
             }
         });
 
@@ -116,6 +117,12 @@ public class add_goods_db extends AppCompatActivity {
     }
 
     public void seve_goods(View view) {
+        get_seve_goods();
+    }
+
+    public boolean get_seve_goods(){
+
+        boolean check =true;
 
         if(check_impot_googs()){
 
@@ -128,7 +135,7 @@ public class add_goods_db extends AppCompatActivity {
                 //Toast.makeText(this, "Good Code", Toast.LENGTH_SHORT).show();
 
                 boolean result = databases.insert_goods(Text_barcode.getEditableText().toString(), Text_name_goods.getEditableText().toString(),
-                        Double.parseDouble(Text_quantity.getEditableText().toString()),Double.parseDouble(Text_quantity_box.getEditableText().toString()),
+                        Double.parseDouble(Text_quantity.getEditableText().toString()),
                         Text_date_ex.getEditableText().toString(),
                         Text_date_sale.getEditableText().toString());
 
@@ -137,27 +144,37 @@ public class add_goods_db extends AppCompatActivity {
                     int id =databases.get_id_goods(Text_barcode.getEditableText().toString());// جلب رقم البضاعة
 
                     boolean result2 = databases.insert_quantity("حبة", Double.parseDouble(Text_buy_price.getEditableText().toString()),
-                            id, Double.parseDouble(Text_sale_price.getEditableText().toString()));
+                            Double.parseDouble(Text_quantity.getEditableText().toString()),id, Double.parseDouble(Text_sale_price.getEditableText().toString()));
 
                     if (result2){
                         Toast.makeText(this, "OK", Toast.LENGTH_SHORT).show();//
                     }
-                    else
-                        Toast.makeText(this, "No", Toast.LENGTH_SHORT).show();
+                    else{
+                        check=false;
+                        Toast.makeText(this, "No1", Toast.LENGTH_SHORT).show();
+                    }
                 }
-                else
-                    Toast.makeText(this, "No", Toast.LENGTH_SHORT).show();
+                else{
+                    check=false;
+                    Toast.makeText(this, "No2", Toast.LENGTH_SHORT).show();
+                }
 
+            }else {
+                check=false;
             }
 
+        }else {
+            check=false;
         }
+
+        return check;
     }
 
     private boolean check_impot_googs() {
         if(TextUtils.isEmpty(Text_barcode.getText().toString().trim())||TextUtils.isEmpty(Text_name_goods.getText().toString().trim())
                 ||TextUtils.isEmpty(Text_quantity.getText().toString().trim())||TextUtils.isEmpty(Text_buy_price.getText().toString().trim())
                 ||TextUtils.isEmpty(Text_sale_price.getText().toString().trim())||TextUtils.isEmpty(Text_date_ex.getText().toString().trim())
-                ||TextUtils.isEmpty(Text_date_sale.getText().toString().trim())||TextUtils.isEmpty(Text_quantity_box.getText().toString().trim())){
+                ||TextUtils.isEmpty(Text_date_sale.getText().toString().trim())){
 
             //mEmail.setError("Email is Required.");
 
@@ -175,10 +192,8 @@ public class add_goods_db extends AppCompatActivity {
         if(TextUtils.isEmpty(Text_q_type.getText().toString().trim())||TextUtils.isEmpty(Text_q_quantity.getText().toString().trim())
                 ||TextUtils.isEmpty(Text_q_buy_price.getText().toString().trim())||TextUtils.isEmpty(Text_q_sale_price.getText().toString().trim())){
 
-            //mEmail.setError("Email is Required.");
 
             Toast.makeText(this, "أكمل البيانات", Toast.LENGTH_SHORT).show();
-            // return;
             check_impot =false;
         }else {
             check_impot =true;
@@ -189,15 +204,15 @@ public class add_goods_db extends AppCompatActivity {
     public void save_quantity(View view){
 
         int id =databases.get_id_goods(Text_barcode.getEditableText().toString());// جلب رقم البضاعة
+        if (check_impot_quantity()) {
+            boolean result2 = databases.insert_quantity(Text_q_type.getEditableText().toString(), Double.parseDouble(Text_q_buy_price.getEditableText().toString()),
+                    Double.parseDouble(Text_q_quantity.getEditableText().toString()), id, Double.parseDouble(Text_q_sale_price.getEditableText().toString()));
 
-//        boolean result2 = databases.insert_quantity(Text_q_type.getEditableText().toString(), Double.parseDouble(Text_buy_price.getEditableText().toString()),
-//                id, Double.parseDouble(Text_sale_price.getEditableText().toString()));
-//
-//        if (result2){
-//            Toast.makeText(this, "OK", Toast.LENGTH_SHORT).show();//
-//        }
-//        else
-//            Toast.makeText(this, "No", Toast.LENGTH_SHORT).show();
+            if (result2) {
+                Toast.makeText(this, "OK", Toast.LENGTH_SHORT).show();//
+            } else
+                Toast.makeText(this, "No", Toast.LENGTH_SHORT).show();
+        }
     }
 
     class ListAdupter extends BaseAdapter

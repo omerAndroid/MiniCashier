@@ -10,7 +10,7 @@
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
-        android:layout_height="31dp"
+        android:layout_height="45dp"
         android:orientation="horizontal">
 
         <EditText
@@ -24,6 +24,7 @@
 
         <Button
             android:id="@+id/searsh_goods_btn"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:drawable/ic_search_category_default" />
