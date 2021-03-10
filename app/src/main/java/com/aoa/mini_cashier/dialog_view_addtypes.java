@@ -1,6 +1,7 @@
 package com.aoa.mini_cashier;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,14 +38,11 @@ public class dialog_view_addtypes extends AppCompatDialogFragment {
         });
 
         builder.setView(view)
-                .setTitle("إضافة نوع");
+                .setTitle("إضافة نوع")
 
-                /*.setPositiveButton("حفظ", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                .setPositiveButton("حفظ", (dialogInterface, i) -> {
 
-                    }
-                });*/
+                });
 
 
         return builder.create();

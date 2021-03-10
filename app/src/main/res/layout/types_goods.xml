@@ -50,6 +50,7 @@
 
         <Button
             android:id="@+id/save_tg_add"
+            android:onClick="save_quantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
