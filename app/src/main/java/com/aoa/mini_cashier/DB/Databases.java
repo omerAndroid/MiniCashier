@@ -28,7 +28,7 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
 
     @Override
     public void onCreate(SQLiteDatabase db) {////REAL  = DOUBLE + FLOAT
-        db.execSQL("CREATE TABLE goods(id INTEGER PRIMARY KEY AUTOINCREMENT ,barcod TEXT,name_g TEXT,quantity REAL,expiration_date TEXT ," +/////quantity_box REAL ,
+        db.execSQL("CREATE TABLE goods(id INTEGER PRIMARY KEY AUTOINCREMENT ,barcod TEXT,quantity_box REAL ,name_g TEXT,quantity REAL,expiration_date TEXT ," +/////
                 " date_purchase TEXT)");
 
         db.execSQL("CREATE TABLE quantity(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_q TEXT , price REAL ,quantity_q REAL ,id_g INTEGER ,purchase REAL," +
