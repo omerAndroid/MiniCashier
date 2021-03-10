@@ -206,7 +206,7 @@ public class add_goods_db extends AppCompatActivity {
     public void save_quantity(View view){
 
         int id =databases.get_id_goods(Text_barcode.getEditableText().toString());// جلب رقم البضاعة
-        if (check_impot_quantity()) {
+        if ( String.valueOf(Text_q_type.getText()).isEmpty() ) {
             boolean result2 = databases.insert_quantity(Text_q_type.getEditableText().toString(), Double.parseDouble(Text_q_buy_price.getEditableText().toString()),
                     Double.parseDouble(Text_q_quantity.getEditableText().toString()), id, Double.parseDouble(Text_q_sale_price.getEditableText().toString()));
 
