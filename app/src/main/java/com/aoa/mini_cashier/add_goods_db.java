@@ -46,7 +46,7 @@ public class add_goods_db extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         scannerView=new ZXingScannerView(this);
-        setContentView(R.layout.activity_add_goods_db);
+        setContentView(R.layout.eg404);
         //////////////////////////////////////////////////////////////////
         add_tg_btn =findViewById(R.id.add_tg_btn);
         date_sale_btn =findViewById(R.id.date_show_sale);
@@ -102,11 +102,13 @@ public class add_goods_db extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //shaw quantity adder
-                if(get_seve_goods()) {
+                //if(get_seve_goods()) {
                     dva.show(getSupportFragmentManager(), "إضافة نوع");
-                }
+               // }
             }
         });
+
+
 
     }
 
@@ -189,8 +191,8 @@ public class add_goods_db extends AppCompatActivity {
 
     private boolean check_impot_quantity(){
         boolean check_impot;
-        if(TextUtils.isEmpty(Text_q_type.getText().toString().trim())||TextUtils.isEmpty(Text_q_quantity.getText().toString().trim())
-                ||TextUtils.isEmpty(Text_q_buy_price.getText().toString().trim())||TextUtils.isEmpty(Text_q_sale_price.getText().toString().trim())){
+        if(TextUtils.isEmpty(Text_q_type.getEditableText().toString())||TextUtils.isEmpty(Text_q_quantity.getEditableText().toString())
+                ||TextUtils.isEmpty(Text_q_buy_price.getEditableText().toString())||TextUtils.isEmpty(Text_q_sale_price.getEditableText().toString())){
 
 
             Toast.makeText(this, "أكمل البيانات", Toast.LENGTH_SHORT).show();
