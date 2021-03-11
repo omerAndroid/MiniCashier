@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
         au_menu = (Button) findViewById(R.id.add_update_menu);
         buy_btn = (Button) findViewById(R.id.buy);
         restore_btn = (Button) findViewById(R.id.restore);

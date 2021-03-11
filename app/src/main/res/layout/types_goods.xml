@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="الكمية"
+        android:hint="الكمية في هذا النوع"
         android:inputType="number" />
 
     <EditText
@@ -50,7 +50,6 @@
 
         <Button
             android:id="@+id/save_tg_add"
-            android:onClick="save_quantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
