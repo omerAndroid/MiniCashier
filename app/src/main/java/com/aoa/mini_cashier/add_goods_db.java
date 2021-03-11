@@ -9,6 +9,9 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -34,7 +37,8 @@ public class add_goods_db extends AppCompatActivity {
     ZXingScannerView scannerView;
 
     int date_place = 0;
-    public static EditText Text_barcode, Text_name_goods, Text_quantity,Text_quantity_box,Text_date_ex, Text_date_sale;
+    public static EditText  Text_name_goods, Text_quantity,Text_quantity_box,Text_date_ex, Text_date_sale;///Text_barcode,
+    public static AutoCompleteTextView Text_barcode;
     Button add_tg_btn, date_sale_btn, date_ex_btn,save_add_goods;
     private Dialog Date_Dialog;
     private SimpleDateFormat date_format;
@@ -53,13 +57,16 @@ public class add_goods_db extends AppCompatActivity {
         date_ex_btn = findViewById(R.id.date_show_ex);
         save_add_goods= findViewById(R.id.save_add_goods);
         /////////////////////////////////////////////////////////////////googs + quantity
-        Text_barcode = findViewById(R.id.add_barcode_txt);
+        Text_barcode = (AutoCompleteTextView)findViewById(R.id.add_barcode_txt);
+
+
         Text_name_goods = findViewById(R.id.add_name_goods);
         Text_quantity = findViewById(R.id.add_quantity);
         Text_quantity_box= findViewById(R.id.add_quantity_box);
         Text_date_ex = findViewById(R.id.add_date_ex);////الانتهاء
         Text_date_sale = findViewById(R.id.add_date_sale);
-
+        //////////////////////////b الادخال في مصفوفة الاختيارات للباركود/////////////////////////////////////////////
+        get_ALL_baracode();
         /////////////////////////Date Picker///////////////////////////////////
         calendar = Calendar.getInstance();
         date_format = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
@@ -96,8 +103,38 @@ public class add_goods_db extends AppCompatActivity {
                 // }
             }
         });
+    }
 
+    private void get_ALL_baracode() {
+        String[] Allbaracod=databases.get_ALLbaracod();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, Allbaracod);
+        AutoCompleteTextView Text_barcode = (AutoCompleteTextView)
+                findViewById(R.id.add_barcode_txt);
+        Text_barcode.setAdapter(adapter);
 
+        Text_barcode.setOnItemClickListener((parent, arg1, pos, id) -> {
+            String item = parent.getItemAtPosition(pos).toString();
+            Toast.makeText(getApplication(),"Selected Item is: \t " + item, Toast.LENGTH_LONG).show();
+
+            //////b تعبئة المدخلات بعد اختيار الباركود الموجود من قاعدة البيانات
+            Packing_for_goods(item);
+
+        });
+        
+    }
+
+    //////b تعبئة المدخلات بعد اختيار الباركود الموجود من قاعدة البيانات
+    private void Packing_for_goods(String item) {
+        Modification();
+
+        String[] All_goods=databases.get_All_goods_for_barcod(item);
+            Text_name_goods.setText(All_goods[1]);
+            Text_quantity.setText(All_goods[2]);
+            Text_quantity_box.setText(All_goods[0]);
+            Text_date_ex.setText(All_goods[3]);
+            Text_date_sale.setText(All_goods[4]);
+        Toast.makeText(this, All_goods[0], Toast.LENGTH_SHORT).show();
     }
 
 
@@ -107,10 +144,39 @@ public class add_goods_db extends AppCompatActivity {
 
     public void seve_goods(View view) {
 
-        if (save_add_goods.getText().toString().length()==5){
-            Toast.makeText(this, "تعديل", Toast.LENGTH_SHORT).show();
+        if (save_add_goods.getText().toString().equals("تعديل")){
+
+            ///////b فتح خاصية عدم التعديل
+            de_Modification();
+        }if (save_add_goods.getText().toString().equals("حفظ التعديل")){
+
+            //////////////b   حفظ التعديلات
+            seve_ubdate_googs();
         }else
         get_seve_goods();
+    }
+
+    private void seve_ubdate_googs() {
+        int check_baracod = databases.check_baracod(Text_barcode.getText().toString().trim());
+
+        if (check_baracod >0) {
+            boolean result = databases.get_seve_ubdate_googs(Text_barcode.getText().toString().trim(),Double.parseDouble(Text_quantity_box.getEditableText().toString()),
+                    Text_name_goods.getEditableText().toString(),
+                    Double.parseDouble(Text_quantity.getEditableText().toString()),
+                    Text_date_ex.getEditableText().toString(),
+                    Text_date_sale.getEditableText().toString());
+
+            if (result) {
+
+                Toast.makeText(this, "OK ubdate", Toast.LENGTH_SHORT).show();
+                Modification();/////v  تعديل بعد عملية الادخال
+                save_add_goods.setText("تعديل");
+
+            } else {
+
+                Toast.makeText(this, "No ubdate", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     public boolean get_seve_goods() {
@@ -123,7 +189,8 @@ public class add_goods_db extends AppCompatActivity {
 
             if (check_baracod == 0) {
 
-                boolean result = databases.insert_goods(Text_barcode.getEditableText().toString(), Text_name_goods.getEditableText().toString(),
+                boolean result = databases.insert_goods(Text_barcode.getText().toString().trim(),Double.parseDouble(Text_quantity_box.getEditableText().toString()),
+                        Text_name_goods.getEditableText().toString(),
                         Double.parseDouble(Text_quantity.getEditableText().toString()),
                         Text_date_ex.getEditableText().toString(),
                         Text_date_sale.getEditableText().toString());
@@ -132,7 +199,7 @@ public class add_goods_db extends AppCompatActivity {
 
                     Toast.makeText(this, "OK", Toast.LENGTH_SHORT).show();
                     Modification();/////v  تعديل بعد عملية الادخال
-                    save_add_goods.setText("تعديل");
+
 
                 } else {
                     check = false;
@@ -140,6 +207,7 @@ public class add_goods_db extends AppCompatActivity {
                 }
 
             } else {
+                //save_add_goods.setText("تعديل");
                 check = false;
             }
 
@@ -158,15 +226,22 @@ public class add_goods_db extends AppCompatActivity {
         date_sale_btn.setEnabled(false);
         date_ex_btn.setEnabled(false);
         Text_quantity_box.setEnabled(false);
-        if (save_add_goods.getText().toString().length()==5){
-            //Toast.makeText(this, "تعديل", Toast.LENGTH_SHORT).show();
-        }
+    }
+    ////// n فك التعديل
+    public void de_Modification(){
+        save_add_goods.setText("حفظ التعديل");
+        Text_barcode.setEnabled(true);
+        Text_name_goods.setEnabled(true);
+        Text_quantity.setEnabled(true);
+        date_sale_btn.setEnabled(true);
+        date_ex_btn.setEnabled(true);
+        Text_quantity_box.setEnabled(true);
     }
 
     private boolean check_impot_googs() {
         if (TextUtils.isEmpty(Text_barcode.getText().toString().trim()) || TextUtils.isEmpty(Text_name_goods.getText().toString().trim())
                 || TextUtils.isEmpty(Text_quantity.getText().toString().trim())|| TextUtils.isEmpty(Text_date_ex.getText().toString().trim())
-                || TextUtils.isEmpty(Text_date_sale.getText().toString().trim())) {
+                || TextUtils.isEmpty(Text_date_sale.getText().toString().trim())||TextUtils.isEmpty(Text_quantity_box.getText().toString().trim())) {
 
             //mEmail.setError("Email is Required.");
 
@@ -179,9 +254,7 @@ public class add_goods_db extends AppCompatActivity {
         return check_impot;
     }
 
-    public static void clos(){
 
-    }
 
         class ListAdupter extends BaseAdapter {
             ArrayList<list_item_qnuatitytype> list_item = new ArrayList<list_item_qnuatitytype>();

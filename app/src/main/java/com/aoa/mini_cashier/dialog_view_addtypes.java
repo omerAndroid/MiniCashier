@@ -51,7 +51,7 @@ public class dialog_view_addtypes extends AppCompatDialogFragment {
             else {
                 ////// m  يتم اضافة الى جدول الكمية
 
-                int id =databases.get_id_goods(Text_barcode.getEditableText().toString());//  public static void
+                int id =databases.get_id_goods(Text_barcode.getText().toString().trim());//  public static void
                 // جلب رقم البضاعة
                 boolean result2 = databases.insert_quantity(Text_q_type.getEditableText().toString(), Double.parseDouble(Text_q_buy_price.getEditableText().toString()),
                         Double.parseDouble(Text_q_quantity.getEditableText().toString()), id, Double.parseDouble(Text_q_sale_price.getEditableText().toString()));

@@ -1,5 +1,6 @@
 package com.aoa.mini_cashier.DB;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -42,7 +43,8 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
         db.execSQL("CREATE TABLE bills(id INTEGER PRIMARY KEY AUTOINCREMENT ,date_bills TEXT,type_bills TEXT,total INTEGER,discount INTEGER,paid INTEGER," +
                 "remaining INTEGER,id_agent INTEGER,recipient TEXT,FOREIGN KEY(id_agent) REFERENCES agent(id) ON UPDATE CASCADE ON DELETE CASCADE)");
 
-        db.execSQL("CREATE TABLE products_bills(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_prod TEXT,selling_price INTEGER,purchase_price INTEGER,quantity INTEGER,id_bills INTEGER," +
+        db.execSQL("CREATE TABLE products_bills(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_prod TEXT,selling_price INTEGER,purchase_price INTEGER," +
+                "quantity INTEGER,id_bills INTEGER," +
                 "FOREIGN KEY(id_bills) REFERENCES bills(id) ON UPDATE CASCADE ON DELETE CASCADE)");
 
 
@@ -59,7 +61,7 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
         onCreate(db);
     }
 
-
+    //////b انشاء نسخة احتاياطية
     public void backup(String outFileName) {
 
         //database path
@@ -107,10 +109,11 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
     }
 
 
-    public boolean insert_goods(String barcod, String name,Double quantity,String expiration_date,String date_purchase){//price عملية اللاضافةللبضاعة
+    public boolean insert_goods(String barcod, Double quantity_box,String name,Double quantity,String expiration_date,String date_purchase){//price عملية اللاضافةللبضاعة
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
         contentValues.put("barcod",barcod);
+        contentValues.put("quantity_box",quantity_box);
         contentValues.put("name_g",name);
         contentValues.put("quantity",quantity);
         contentValues.put("expiration_date",expiration_date);
@@ -123,6 +126,7 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
             return true;
     }
 
+    ////
     public boolean insert_quantity(String name_q, Double price,Double quantity_q,int id_g,Double purchase){//price عملية اللاضافةللكمية
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
@@ -141,6 +145,7 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
     }
 
 
+    //////n جلب رقم البضاعة
     public int get_id_goods(String barcod){
         int i=0;
         SQLiteDatabase db=this.getReadableDatabase();
@@ -155,5 +160,104 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
         return i ;
 
     }
+
+   public String[] get_ALLbaracod(){
+        int lenght=read_Tname();
+        SQLiteDatabase db=this.getReadableDatabase();
+        String[] sat=new String[read_Tname()];
+
+        if (lenght>0) {
+            int i = 0;
+            Cursor res = db.rawQuery("select * from goods", null);
+            res.moveToFirst();
+            while (res.isAfterLast() == false) {
+                String c = res.getString(res.getColumnIndex("barcod"));
+                sat[i] = c;
+                i++;
+                res.moveToNext();
+            }
+        }else{
+            sat=new String[1];
+            sat[0]=" ";}
+
+        return sat;
+    }
+
+    ///////b يقوم بارجاع عدد الصفوف في المصفوفه
+    private int read_Tname(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        int a=0;
+        @SuppressLint("Recycle") Cursor res=db.rawQuery("select barcod from goods",null);
+        res.moveToFirst();
+        while (!res.isAfterLast()){
+            a++;
+            res.moveToNext();
+        }
+        return a;
+    }
+
+
+    public String[] get_All_goods_for_barcod(String barcod){
+        int lenght=read_Tname();
+        SQLiteDatabase db=this.getReadableDatabase();
+        String[] sat=new String[5];
+        String[] name=new String[5];
+        name[0]="quantity_box";
+        name[1]="name_g";
+        name[2]="quantity";
+        name[3]="expiration_date";
+        name[4]="date_purchase";
+        if (lenght>0) {
+            int i = 0;
+            Cursor res = db.rawQuery("select * from goods where barcod like '"+barcod+"'", null);
+            res.moveToFirst();
+            while (res.isAfterLast() == false) {
+                String c;
+                      c = res.getString(res.getColumnIndex("quantity_box"));
+                     sat[i] = c;
+                     i++;
+                c = res.getString(res.getColumnIndex("name_g"));
+                sat[i] = c;
+                i++;
+                c = res.getString(res.getColumnIndex("quantity"));
+                sat[i] = c;
+                i++;
+                c = res.getString(res.getColumnIndex("expiration_date"));
+                sat[i] = c;
+                i++;
+                c = res.getString(res.getColumnIndex("date_purchase"));
+                sat[i] = c;
+                i++;
+                     res.moveToNext();
+
+
+                //res.moveToNext();
+            }
+        }else{
+            sat=new String[1];
+            sat[0]=" ";}
+
+        return sat;
+    }
+
+    public boolean get_seve_ubdate_googs(String barcod, Double quantity_box,String name,Double quantity,String expiration_date,String date_purchase){
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+        contentValues.put("barcod",barcod);
+        contentValues.put("quantity_box",quantity_box);
+        contentValues.put("name_g",name);
+        contentValues.put("quantity",quantity);
+        contentValues.put("expiration_date",expiration_date);
+        contentValues.put("date_purchase",date_purchase);
+
+        long result=db.update("goods",contentValues,"barcod= ?",new String[]{barcod});
+        if (result==-1)
+            return false;
+        else
+            return true;
+    }
+
+
+
 }
 
