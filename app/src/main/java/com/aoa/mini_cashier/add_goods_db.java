@@ -36,12 +36,11 @@ public class add_goods_db extends AppCompatActivity {
     boolean check_impot;
     ZXingScannerView scannerView;
 
-    public int check_OnClick=0;/////b للمعرفة من تم الضغط علية
 
     int date_place = 0;
     public static EditText  Text_name_goods, Text_quantity,Text_quantity_box,Text_date_ex, Text_date_sale;///Text_barcode,
     public static AutoCompleteTextView Text_barcode;
-    Button add_tg_btn, date_sale_btn, date_ex_btn,save_add_goods,ubdate_btn,seve_ubdat_goods_btn;
+    public static Button add_tg_btn, date_sale_btn, date_ex_btn,save_add_goods,ubdate_btn,seve_ubdat_goods_btn;
     private Dialog Date_Dialog;
     private SimpleDateFormat date_format;
     private Calendar calendar;
@@ -115,9 +114,16 @@ public class add_goods_db extends AppCompatActivity {
 
         ///////n الضغط على عملية حفظ التعديل
         seve_ubdat_goods_btn.setOnClickListener(v -> {
-            Modification();
-            seve_ubdate_googs();
+            if (check_impot_googs()){
+                Modification();
+                seve_ubdate_googs();
+            }
+
         });
+
+
+
+
     }
 
     private void get_ALL_baracode() {
@@ -155,6 +161,7 @@ public class add_goods_db extends AppCompatActivity {
 
     public void red_qr(View view) {
         startActivity(new Intent(getApplicationContext(), ScanCodeActivity.class));
+
     }
 
     public void seve_goods(View view) {
