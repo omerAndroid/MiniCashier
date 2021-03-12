@@ -36,10 +36,12 @@ public class add_goods_db extends AppCompatActivity {
     boolean check_impot;
     ZXingScannerView scannerView;
 
+    public int check_OnClick=0;/////b للمعرفة من تم الضغط علية
+
     int date_place = 0;
     public static EditText  Text_name_goods, Text_quantity,Text_quantity_box,Text_date_ex, Text_date_sale;///Text_barcode,
     public static AutoCompleteTextView Text_barcode;
-    Button add_tg_btn, date_sale_btn, date_ex_btn,save_add_goods;
+    Button add_tg_btn, date_sale_btn, date_ex_btn,save_add_goods,ubdate_btn,seve_ubdat_goods_btn;
     private Dialog Date_Dialog;
     private SimpleDateFormat date_format;
     private Calendar calendar;
@@ -56,6 +58,9 @@ public class add_goods_db extends AppCompatActivity {
         date_sale_btn = findViewById(R.id.date_show_sale);
         date_ex_btn = findViewById(R.id.date_show_ex);
         save_add_goods= findViewById(R.id.save_add_goods);
+
+        ubdate_btn= findViewById(R.id.ubdate_btn);
+        seve_ubdat_goods_btn= findViewById(R.id.seve_ubdat_goods_btn);
         /////////////////////////////////////////////////////////////////googs + quantity
         Text_barcode = (AutoCompleteTextView)findViewById(R.id.add_barcode_txt);
 
@@ -103,6 +108,16 @@ public class add_goods_db extends AppCompatActivity {
                 // }
             }
         });
+
+
+        ///////n الضغط على عملية التعديل
+        ubdate_btn.setOnClickListener(v -> de_Modification());
+
+        ///////n الضغط على عملية حفظ التعديل
+        seve_ubdat_goods_btn.setOnClickListener(v -> {
+            Modification();
+            seve_ubdate_googs();
+        });
     }
 
     private void get_ALL_baracode() {
@@ -134,7 +149,7 @@ public class add_goods_db extends AppCompatActivity {
             Text_quantity_box.setText(All_goods[0]);
             Text_date_ex.setText(All_goods[3]);
             Text_date_sale.setText(All_goods[4]);
-        Toast.makeText(this, All_goods[0], Toast.LENGTH_SHORT).show();
+        
     }
 
 
@@ -143,16 +158,6 @@ public class add_goods_db extends AppCompatActivity {
     }
 
     public void seve_goods(View view) {
-
-        if (save_add_goods.getText().toString().equals("تعديل")){
-
-            ///////b فتح خاصية عدم التعديل
-            de_Modification();
-        }if (save_add_goods.getText().toString().equals("حفظ التعديل")){
-
-            //////////////b   حفظ التعديلات
-            seve_ubdate_googs();
-        }else
         get_seve_goods();
     }
 
@@ -168,9 +173,9 @@ public class add_goods_db extends AppCompatActivity {
 
             if (result) {
 
-                Toast.makeText(this, "OK ubdate", Toast.LENGTH_SHORT).show();
-                Modification();/////v  تعديل بعد عملية الادخال
-                save_add_goods.setText("تعديل");
+                Toast.makeText(this, "OK ubdate  ok", Toast.LENGTH_SHORT).show();
+                Modification();/////v  تعديل بعد عملية التعديل
+
 
             } else {
 
@@ -218,8 +223,11 @@ public class add_goods_db extends AppCompatActivity {
         return check;
     }
 
-    private void Modification() {
-        save_add_goods.setText("تعديل");
+    public void Modification() {
+
+        save_add_goods.setVisibility(View.GONE);///visible      ظاهر
+        ubdate_btn.setVisibility(View.VISIBLE);///visible      ظاهر
+        seve_ubdat_goods_btn.setVisibility(View.GONE);///visible      ظاهر
         Text_barcode.setEnabled(false);
         Text_name_goods.setEnabled(false);
         Text_quantity.setEnabled(false);
@@ -229,7 +237,9 @@ public class add_goods_db extends AppCompatActivity {
     }
     ////// n فك التعديل
     public void de_Modification(){
-        save_add_goods.setText("حفظ التعديل");
+        save_add_goods.setVisibility(View.GONE);///visible      ظاهر
+        ubdate_btn.setVisibility(View.GONE);///visible      ظاهر
+        seve_ubdat_goods_btn.setVisibility(View.VISIBLE);///visible      ظاهر
         Text_barcode.setEnabled(true);
         Text_name_goods.setEnabled(true);
         Text_quantity.setEnabled(true);

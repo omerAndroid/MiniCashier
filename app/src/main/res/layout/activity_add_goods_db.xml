@@ -151,6 +151,22 @@
                 android:layout_weight="1"
                 android:text="حفظ"
                 tools:ignore="OnClick" />
+            <Button
+                android:id="@+id/ubdate_btn"
+                android:layout_width="0dp"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="تعديل"
+                />
+            <Button
+                android:id="@+id/seve_ubdat_goods_btn"
+                android:layout_width="0dp"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="حفظ التعديل"
+                />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
