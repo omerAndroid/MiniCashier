@@ -1,6 +1,5 @@
 package com.aoa.mini_cashier;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.text.TextUtils;
