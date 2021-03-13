@@ -240,7 +240,7 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
         return sat;
     }
 
-    public boolean get_seve_ubdate_googs(String barcod, Double quantity_box,String name,Double quantity,String expiration_date,String date_purchase){
+    public boolean get_seve_ubdate_googs(String barcod, Double quantity_box,String name,Double quantity,String expiration_date,String date_purchase,String old_baracod){
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
         contentValues.put("barcod",barcod);
@@ -250,7 +250,7 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
         contentValues.put("expiration_date",expiration_date);
         contentValues.put("date_purchase",date_purchase);
 
-        long result=db.update("goods",contentValues,"barcod= ?",new String[]{barcod});
+        long result=db.update("goods",contentValues,"barcod= ?",new String[]{old_baracod});
         if (result==-1)
             return false;
         else
@@ -258,6 +258,55 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
     }
 
 
+    public boolean get_seve_ubdate_quantity(String name_q, Double price,Double quantity_q,int id_g,Double purchase,String old_q_type){
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+        contentValues.put("name_q",name_q);
+        contentValues.put("price",price);
+        contentValues.put("quantity_q",quantity_q);
+        contentValues.put("id_g",id_g);
+        contentValues.put("purchase",purchase);
 
+        long result=db.update("quantity",contentValues,"name_q= ?",new String[]{old_q_type});
+        if (result==-1)
+            return false;
+        else
+            return true;
+    }
+
+    public String[] get_ALLq_type(int id){
+        int lenght=read_Tname_q_type(id);
+        SQLiteDatabase db=this.getReadableDatabase();
+        String[] sat=new String[read_Tname_q_type(id)];
+
+        if (lenght>0) {
+            int i = 0;
+            Cursor res = db.rawQuery("select name_q from quantity where id_g = id ", null);
+            res.moveToFirst();
+            while (res.isAfterLast() == false) {
+                String c = res.getString(res.getColumnIndex("name_q"));
+                sat[i] = c;
+                i++;
+                res.moveToNext();
+            }
+        }else{
+            sat=new String[1];
+            sat[0]=" ";}
+
+        return sat;
+    }
+
+    ///////b يقوم بارجاع عدد الصفوف في المصفوفه
+    private int read_Tname_q_type(int id){
+        SQLiteDatabase db=this.getReadableDatabase();
+        int a=0;
+        @SuppressLint("Recycle") Cursor res=db.rawQuery("select name_q from quantity where id_g = id ",null);
+        res.moveToFirst();
+        while (!res.isAfterLast()){
+            a++;
+            res.moveToNext();
+        }
+        return a;
+    }
 }
 

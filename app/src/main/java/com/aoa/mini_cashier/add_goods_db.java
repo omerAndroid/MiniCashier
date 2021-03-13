@@ -35,8 +35,7 @@ public class add_goods_db extends AppCompatActivity {
    public Databases databases = new Databases(this);
     boolean check_impot;
     ZXingScannerView scannerView;
-
-
+    public  String old_baracod;
     int date_place = 0;
     public static EditText  Text_name_goods, Text_quantity,Text_quantity_box,Text_date_ex, Text_date_sale;///Text_barcode,
     public static AutoCompleteTextView Text_barcode;
@@ -102,29 +101,32 @@ public class add_goods_db extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //shaw quantity adder
-                //if(get_seve_goods()) {
-                dva.show(getSupportFragmentManager(), "إضافة نوع");
-                // }
+                if(get_seve_goods()||ubdate_btn.getText().toString().equals("تعديل")||seve_ubdat_goods_btn.getText().toString().equals("حفظ التعديل")) {
+                    if (!Text_barcode.getText().toString().trim().isEmpty()){
+                        dva.show(getSupportFragmentManager(), "إضافة نوع");
+                    }else {
+                        Toast.makeText(add_goods_db.this, "أدخل الباركود", Toast.LENGTH_SHORT).show();
+                    }
+
+                 }
             }
         });
 
-
         ///////n الضغط على عملية التعديل
-        ubdate_btn.setOnClickListener(v -> de_Modification());
+        ubdate_btn.setOnClickListener(v -> {
+                old_baracod=Text_barcode.getText().toString().trim();
+                de_Modification();});
 
         ///////n الضغط على عملية حفظ التعديل
         seve_ubdat_goods_btn.setOnClickListener(v -> {
             if (check_impot_googs()){
                 Modification();
-                seve_ubdate_googs();
+                seve_ubdate_googs(old_baracod);
+                get_ALL_baracode();
             }
-
         });
-
-
-
-
     }
+
 
     private void get_ALL_baracode() {
         String[] Allbaracod=databases.get_ALLbaracod();
@@ -133,7 +135,7 @@ public class add_goods_db extends AppCompatActivity {
         AutoCompleteTextView Text_barcode = (AutoCompleteTextView)
                 findViewById(R.id.add_barcode_txt);
         Text_barcode.setAdapter(adapter);
-
+        Text_barcode.setThreshold(1);//will start working from first
         Text_barcode.setOnItemClickListener((parent, arg1, pos, id) -> {
             String item = parent.getItemAtPosition(pos).toString();
             Toast.makeText(getApplication(),"Selected Item is: \t " + item, Toast.LENGTH_LONG).show();
@@ -158,25 +160,23 @@ public class add_goods_db extends AppCompatActivity {
         
     }
 
-
     public void red_qr(View view) {
         startActivity(new Intent(getApplicationContext(), ScanCodeActivity.class));
 
     }
 
     public void seve_goods(View view) {
-        get_seve_goods();
-    }
+        get_seve_goods(); }
 
-    private void seve_ubdate_googs() {
-        int check_baracod = databases.check_baracod(Text_barcode.getText().toString().trim());
+    private void seve_ubdate_googs(String old_baracod) {
+        int check_baracod = databases.check_baracod(old_baracod);
 
         if (check_baracod >0) {
             boolean result = databases.get_seve_ubdate_googs(Text_barcode.getText().toString().trim(),Double.parseDouble(Text_quantity_box.getEditableText().toString()),
                     Text_name_goods.getEditableText().toString(),
                     Double.parseDouble(Text_quantity.getEditableText().toString()),
                     Text_date_ex.getEditableText().toString(),
-                    Text_date_sale.getEditableText().toString());
+                    Text_date_sale.getEditableText().toString(),old_baracod);
 
             if (result) {
 
@@ -211,7 +211,7 @@ public class add_goods_db extends AppCompatActivity {
 
                     Toast.makeText(this, "OK", Toast.LENGTH_SHORT).show();
                     Modification();/////v  تعديل بعد عملية الادخال
-
+                    get_ALL_baracode();
 
                 } else {
                     check = false;
@@ -270,8 +270,6 @@ public class add_goods_db extends AppCompatActivity {
         }
         return check_impot;
     }
-
-
 
         class ListAdupter extends BaseAdapter {
             ArrayList<list_item_qnuatitytype> list_item = new ArrayList<list_item_qnuatitytype>();
@@ -351,6 +349,7 @@ public class add_goods_db extends AppCompatActivity {
         }
 
 }
+
 /*
 String email = mEmail.getText().toString().trim();
                 String password = mPassword.getText().toString().trim();
