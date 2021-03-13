@@ -18,6 +18,30 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/name_sender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="اسم المستلم نيابة عن العميل"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/customer_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="اسم العميل"
+                android:inputType="textPersonName" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
@@ -78,14 +102,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <EditText
-            android:id="@+id/discount_bill_items"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:ems="10"
-            android:hint="خصم من الفاتورة"
-            android:inputType="numberDecimal" />
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/discount_bill_items"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="خصم من الفاتورة"
+                android:inputType="numberDecimal" />
+
+            <EditText
+                android:id="@+id/total_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:enabled="false"
+                android:hint="الإجمالي"
+                android:inputType="textPersonName" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

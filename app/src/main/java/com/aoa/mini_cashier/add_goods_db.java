@@ -34,6 +34,8 @@ public class add_goods_db extends AppCompatActivity {
 
    public Databases databases = new Databases(this);
     boolean check_impot;
+
+    String data_type;
     ZXingScannerView scannerView;
     public  String old_baracod;
     int date_place = 0;
@@ -77,6 +79,7 @@ public class add_goods_db extends AppCompatActivity {
         date_ex_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                data_type="تاريخ الإنتهاء";
                 date_place = 0;
                 date_picker();
             }
@@ -85,6 +88,7 @@ public class add_goods_db extends AppCompatActivity {
         date_sale_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                data_type="تاريخ الشراء";
                 date_place = 1;
                 date_picker();
             }

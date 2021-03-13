@@ -17,8 +17,7 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.aoa.mini_cashier.DB.Databases;
 
-import static android.content.Context.IPSEC_SERVICE;
-import static com.aoa.mini_cashier.R.drawable.ic_baseline_delete_24;
+import static com.aoa.mini_cashier.R.drawable.ic_delete_black_24dp;
 import static com.aoa.mini_cashier.add_goods_db.Text_barcode;
 
 public class dialog_view_addtypes extends AppCompatDialogFragment {
@@ -150,7 +149,7 @@ public class dialog_view_addtypes extends AppCompatDialogFragment {
 
     public void clear_inpot(){
         exeit.setText(null);
-        exeit.setBackgroundResource(ic_baseline_delete_24);
+        exeit.setBackgroundResource(ic_delete_black_24dp);
     }
 
     private boolean check_impot_quantity() {

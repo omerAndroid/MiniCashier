@@ -2,6 +2,7 @@ package com.aoa.mini_cashier;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,13 +22,19 @@ import java.util.ArrayList;
 
 public class buy_restore_goods extends AppCompatActivity {
 
-    Button list_options;
+    Dialog customer_data;
+    Button list_options,save_btn;
+    EditText c_name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buy_restore_goods);
 
         list_options = findViewById(R.id.list_options);
+        save_btn = findViewById(R.id.save_bills);
+        c_name = findViewById(R.id.customer_name);
+
+
 
 
         ListView list = (ListView) findViewById(R.id.list_buy_restore);
@@ -78,6 +85,12 @@ public class buy_restore_goods extends AppCompatActivity {
         });
         ///////////////////////////////////////////////////////////////////////////////////
 
+        save_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                add_customer_data();
+            }
+        });
     }
     class ListAdupter extends BaseAdapter
     {
@@ -137,6 +150,36 @@ public class buy_restore_goods extends AppCompatActivity {
 
             return view;
         }
+    }
+
+    public void add_customer_data ()
+    {
+        //Dialog Customer Data viewer
+        customer_data = new Dialog(this);
+        customer_data.setContentView(R.layout.add_customer_dialog);
+        customer_data.setTitle("بيانات العميل");
+        final EditText name=(EditText) customer_data.findViewById(R.id.name_customer);
+        final EditText c_address=(EditText) customer_data.findViewById(R.id.address_customer);
+        final EditText c_phone1=(EditText) customer_data.findViewById(R.id.Phone_customer_1);
+        final EditText c_phone2=(EditText) customer_data.findViewById(R.id.Phone_customer_2);
+        final EditText c_email=(EditText) customer_data.findViewById(R.id.E_mail_customer);
+        final EditText c_password=(EditText) customer_data.findViewById(R.id.password_customer);
+
+        final Button data_save = (Button) customer_data.findViewById(R.id.save_customer_data);
+
+        name.setText(c_name.getText());
+
+
+        data_save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //save Data of customer
+
+
+                customer_data.dismiss();
+            }
+        });
+        customer_data.show();
     }
 
 }
