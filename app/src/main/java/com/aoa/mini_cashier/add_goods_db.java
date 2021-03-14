@@ -44,7 +44,7 @@ public class add_goods_db extends AppCompatActivity {
     @SuppressLint("StaticFieldLeak")
     public static AutoCompleteTextView Text_barcode;
     @SuppressLint("StaticFieldLeak")
-    public static Button add_tg_btn, date_sale_btn, date_ex_btn,save_add_goods,ubdate_btn,seve_ubdat_goods_btn;
+    public static Button add_tg_btn, date_sale_btn, date_ex_btn,save_add_goods,ubdate_btn,seve_ubdat_goods_btn,clear_all;
     private Dialog Date_Dialog;
     private SimpleDateFormat date_format;
     private Calendar calendar;
@@ -61,12 +61,11 @@ public class add_goods_db extends AppCompatActivity {
         date_sale_btn = findViewById(R.id.date_show_sale);
         date_ex_btn = findViewById(R.id.date_show_ex);
         save_add_goods= findViewById(R.id.save_add_goods);
-
+        clear_all= findViewById(R.id.clear_all);
         ubdate_btn= findViewById(R.id.ubdate_btn);
         seve_ubdat_goods_btn= findViewById(R.id.seve_ubdat_goods_btn);
         /////////////////////////////////////////////////////////////////googs + quantity
         Text_barcode = (AutoCompleteTextView)findViewById(R.id.add_barcode_txt);
-
 
         Text_name_goods = findViewById(R.id.add_name_goods);
         Text_quantity = findViewById(R.id.add_quantity);
@@ -120,6 +119,29 @@ public class add_goods_db extends AppCompatActivity {
                 Modification();
                 seve_ubdate_googs(old_baracod);
                 get_ALL_baracode();
+            }
+        });
+
+        clear_all.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Text_barcode.setText("");
+                Text_name_goods.setText("");
+                Text_quantity.setText("");
+                Text_quantity_box.setText("");
+                Text_date_ex.setText("");
+                Text_date_sale.setText("");
+
+                clear_all.setVisibility(View.GONE);
+                save_add_goods.setVisibility(View.VISIBLE);///visible      ظاهر
+                ubdate_btn.setVisibility(View.GONE);///visible      ظاهر
+                seve_ubdat_goods_btn.setVisibility(View.GONE);///visible      ظاهر
+                Text_barcode.setEnabled(true);
+                Text_name_goods.setEnabled(true);
+                Text_quantity.setEnabled(true);
+                date_sale_btn.setEnabled(true);
+                date_ex_btn.setEnabled(true);
+                Text_quantity_box.setEnabled(true);
             }
         });
     }
@@ -243,9 +265,13 @@ public class add_goods_db extends AppCompatActivity {
         date_sale_btn.setEnabled(false);
         date_ex_btn.setEnabled(false);
         Text_quantity_box.setEnabled(false);
+        clear_all.setVisibility(View.VISIBLE);
+
     }
     ////// n فك التعديل
     public void de_Modification(){
+        clear_all.setVisibility(View.GONE);
+
         save_add_goods.setVisibility(View.GONE);///visible      ظاهر
         ubdate_btn.setVisibility(View.GONE);///visible      ظاهر
         seve_ubdat_goods_btn.setVisibility(View.VISIBLE);///visible      ظاهر

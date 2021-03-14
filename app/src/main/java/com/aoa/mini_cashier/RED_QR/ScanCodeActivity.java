@@ -114,6 +114,7 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
 
 
     public void de_Modification(){
+        add_goods_db.clear_all.setVisibility(View.GONE);
         add_goods_db.save_add_goods.setVisibility(View.VISIBLE);///visible      ظاهر
         add_goods_db.ubdate_btn.setVisibility(View.GONE);///visible      ظاهر
         add_goods_db.seve_ubdat_goods_btn.setVisibility(View.GONE);///visible      ظاه
@@ -123,11 +124,12 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
         add_goods_db.date_sale_btn.setEnabled(true);
         add_goods_db.date_ex_btn.setEnabled(true);
         add_goods_db.Text_quantity_box.setEnabled(true);
+
     }
 
 
     public void Modification() {
-
+        add_goods_db.clear_all.setVisibility(View.VISIBLE);
         add_goods_db.save_add_goods.setVisibility(View.GONE);///visible      ظاهر
         add_goods_db.ubdate_btn.setVisibility(View.VISIBLE);///visible      ظاهر
         add_goods_db.seve_ubdat_goods_btn.setVisibility(View.GONE);///visible      ظاهر
