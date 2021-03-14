@@ -70,12 +70,13 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
         add_goods_db.Text_barcode.setText(result.getText());
         if (databases.check_baracod(result.getText())==0){
             Toast.makeText(this, "1", Toast.LENGTH_SHORT).show();
-            de_Modification();
             add_goods_db.Text_name_goods.setText("");
             add_goods_db.Text_quantity.setText("");
             add_goods_db.Text_quantity_box.setText("");
             add_goods_db.Text_date_ex.setText("");
             add_goods_db.Text_date_sale.setText("");
+
+            de_Modification();
         }else {
             Toast.makeText(this, "2", Toast.LENGTH_SHORT).show();
             Packing_for_goods(result.getText());
@@ -113,9 +114,9 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
 
 
     public void de_Modification(){
-        add_goods_db.save_add_goods.setVisibility(View.GONE);///visible      ظاهر
+        add_goods_db.save_add_goods.setVisibility(View.VISIBLE);///visible      ظاهر
         add_goods_db.ubdate_btn.setVisibility(View.GONE);///visible      ظاهر
-        add_goods_db.seve_ubdat_goods_btn.setVisibility(View.VISIBLE);///visible      ظاهر
+        add_goods_db.seve_ubdat_goods_btn.setVisibility(View.GONE);///visible      ظاه
         add_goods_db. Text_barcode.setEnabled(true);
         add_goods_db.Text_name_goods.setEnabled(true);
         add_goods_db.Text_quantity.setEnabled(true);

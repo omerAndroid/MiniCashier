@@ -2,6 +2,7 @@ package com.aoa.mini_cashier;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +10,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.BaseAdapter;
@@ -33,14 +33,17 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 public class add_goods_db extends AppCompatActivity {
 
    public Databases databases = new Databases(this);
-    boolean check_impot;
+    boolean check_impot,check_add;
 
     String data_type;
     ZXingScannerView scannerView;
     public  String old_baracod;
     int date_place = 0;
+    @SuppressLint("StaticFieldLeak")
     public static EditText  Text_name_goods, Text_quantity,Text_quantity_box,Text_date_ex, Text_date_sale;///Text_barcode,
+    @SuppressLint("StaticFieldLeak")
     public static AutoCompleteTextView Text_barcode;
+    @SuppressLint("StaticFieldLeak")
     public static Button add_tg_btn, date_sale_btn, date_ex_btn,save_add_goods,ubdate_btn,seve_ubdat_goods_btn;
     private Dialog Date_Dialog;
     private SimpleDateFormat date_format;
@@ -76,44 +79,34 @@ public class add_goods_db extends AppCompatActivity {
         calendar = Calendar.getInstance();
         date_format = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
 
-        date_ex_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                data_type="تاريخ الإنتهاء";
-                date_place = 0;
-                date_picker();
-            }
+        date_ex_btn.setOnClickListener(v -> {
+            data_type="تاريخ الإنتهاء";
+            date_place = 0;
+            date_picker();
         });
 
-        date_sale_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                data_type="تاريخ الشراء";
-                date_place = 1;
-                date_picker();
-            }
+        date_sale_btn.setOnClickListener(v -> {
+            data_type="تاريخ الشراء";
+            date_place = 1;
+            date_picker();
         });
 
         //////////////////////////////Add List Item//////////////////////////////////////
         ListView list = (ListView) findViewById(R.id.list_quantity);
-        ArrayList<list_item_qnuatitytype> q_list = new ArrayList<list_item_qnuatitytype>();
+        ArrayList<list_item_qnuatitytype> q_list = new ArrayList<>();
         ListAdupter ad = new ListAdupter(q_list);
         list.setAdapter(ad);
         //////////////////////////////////////////////////////////////////////////////////
 
-        add_tg_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //shaw quantity adder
-                if(get_seve_goods()||ubdate_btn.getText().toString().equals("تعديل")||seve_ubdat_goods_btn.getText().toString().equals("حفظ التعديل")) {
-                    if (!Text_barcode.getText().toString().trim().isEmpty()){
-                        dva.show(getSupportFragmentManager(), "إضافة نوع");
-                    }else {
-                        Toast.makeText(add_goods_db.this, "أدخل الباركود", Toast.LENGTH_SHORT).show();
-                    }
-
-                 }
-            }
+        add_tg_btn.setOnClickListener(v -> {
+            //shaw quantity adder
+            if(get_seve_goods()||check_add) {//||ubdate_btn.getText().toString().equals("تعديل")||seve_ubdat_goods_btn.getText().toString().equals("حفظ التعديل")
+                if (!Text_barcode.getText().toString().trim().isEmpty()){
+                    dva.show(getSupportFragmentManager(), "إضافة نوع");
+                }else {
+                    Toast.makeText(add_goods_db.this, "أدخل الباركود", Toast.LENGTH_SHORT).show();
+                }
+             }
         });
 
         ///////n الضغط على عملية التعديل
@@ -134,7 +127,7 @@ public class add_goods_db extends AppCompatActivity {
 
     private void get_ALL_baracode() {
         String[] Allbaracod=databases.get_ALLbaracod();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, Allbaracod);
         AutoCompleteTextView Text_barcode = (AutoCompleteTextView)
                 findViewById(R.id.add_barcode_txt);
@@ -197,7 +190,8 @@ public class add_goods_db extends AppCompatActivity {
 
     public boolean get_seve_goods() {
 
-        boolean check = true;
+        check_add=false;
+        boolean check;
 
         if (check_impot_googs()) {
 
@@ -212,18 +206,20 @@ public class add_goods_db extends AppCompatActivity {
                         Text_date_sale.getEditableText().toString());
 
                 if (result) {
-
+                    check_add=true;
+                    check = true;
                     Toast.makeText(this, "OK", Toast.LENGTH_SHORT).show();
                     Modification();/////v  تعديل بعد عملية الادخال
                     get_ALL_baracode();
 
                 } else {
+
                     check = false;
                     Toast.makeText(this, "No", Toast.LENGTH_SHORT).show();
                 }
 
             } else {
-                //save_add_goods.setText("تعديل");
+                check_add=true;
                 check = false;
             }
 
@@ -233,6 +229,8 @@ public class add_goods_db extends AppCompatActivity {
 
         return check;
     }
+
+
 
     public void Modification() {
 
@@ -276,7 +274,7 @@ public class add_goods_db extends AppCompatActivity {
     }
 
         class ListAdupter extends BaseAdapter {
-            ArrayList<list_item_qnuatitytype> list_item = new ArrayList<list_item_qnuatitytype>();
+            ArrayList<list_item_qnuatitytype> list_item;
 
             ListAdupter(ArrayList<list_item_qnuatitytype> list_item) {
                 this.list_item = list_item;
@@ -300,7 +298,7 @@ public class add_goods_db extends AppCompatActivity {
             @Override
             public View getView(int i, View convertView, ViewGroup parent) {
                 LayoutInflater inflater = getLayoutInflater();
-                View view = inflater.inflate(R.layout.add_tg_item, null);
+                @SuppressLint({"ViewHolder", "InflateParams"}) View view = inflater.inflate(R.layout.add_tg_item, null);
 
                 TextView name = (TextView) view.findViewById(R.id.q_name_item);
 
@@ -334,20 +332,17 @@ public class add_goods_db extends AppCompatActivity {
             calendar1.add(Calendar.YEAR, 5);
             picker.setMaxDate(calendar1.getTimeInMillis());
 
-            date_viewer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Get Date to Edit Text
-                    final Calendar calendar2 = Calendar.getInstance();
+            date_viewer.setOnClickListener(v -> {
+                //Get Date to Edit Text
+                final Calendar calendar2 = Calendar.getInstance();
 
-                    calendar2.set(picker.getYear(), picker.getMonth(), picker.getDayOfMonth());
-                    if (date_place == 0) {
-                        Text_date_ex.setText(date_format.format(calendar2.getTime()));
-                    } else {
-                        Text_date_sale.setText(date_format.format(calendar2.getTime()));
-                    }
-                    Date_Dialog.dismiss();
+                calendar2.set(picker.getYear(), picker.getMonth(), picker.getDayOfMonth());
+                if (date_place == 0) {
+                    Text_date_ex.setText(date_format.format(calendar2.getTime()));
+                } else {
+                    Text_date_sale.setText(date_format.format(calendar2.getTime()));
                 }
+                Date_Dialog.dismiss();
             });
             Date_Dialog.show();
         }

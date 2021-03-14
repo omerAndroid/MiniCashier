@@ -34,9 +34,6 @@ public class buy_restore_goods extends AppCompatActivity {
         save_btn = findViewById(R.id.save_bills);
         c_name = findViewById(R.id.customer_name);
 
-
-
-
         ListView list = (ListView) findViewById(R.id.list_buy_restore);
         //////////////////////// Add goods in list //////////////////////////////////////////
         ArrayList<list_item_update> q_list = new ArrayList<list_item_update>();
@@ -78,7 +75,6 @@ public class buy_restore_goods extends AppCompatActivity {
                             Toast.makeText(buy_restore_goods.this, "فتح ملف PDF", Toast.LENGTH_SHORT).show();
                         }
                         return false;
-
                     }
                 });
             }
@@ -154,6 +150,7 @@ public class buy_restore_goods extends AppCompatActivity {
 
     public void add_customer_data ()
     {
+
         //Dialog Customer Data viewer
         customer_data = new Dialog(this);
         customer_data.setContentView(R.layout.add_customer_dialog);

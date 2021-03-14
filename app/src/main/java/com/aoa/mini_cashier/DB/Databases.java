@@ -127,7 +127,7 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
     }
 
     ////
-    public boolean insert_quantity(String name_q, Double price,Double quantity_q,int id_g,Double purchase){//price عملية اللاضافةللكمية
+    public boolean insert_quantity(String name_q, Double price,Double quantity_q,int id_g,Double purchase){//price عملية اضافةللكمية
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
         contentValues.put("name_q",name_q);
@@ -229,9 +229,6 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
                 sat[i] = c;
                 i++;
                      res.moveToNext();
-
-
-                //res.moveToNext();
             }
         }else{
             sat=new String[1];
