@@ -49,7 +49,7 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
         } else {
 
             /*
-             *  this for version < 5
+             *\  this for version < 5
              */
             setContentView(scannerView);
 
