@@ -122,27 +122,24 @@ public class add_goods_db extends AppCompatActivity {
             }
         });
 
-        clear_all.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Text_barcode.setText("");
-                Text_name_goods.setText("");
-                Text_quantity.setText("");
-                Text_quantity_box.setText("");
-                Text_date_ex.setText("");
-                Text_date_sale.setText("");
+        clear_all.setOnClickListener(v -> {
+            Text_barcode.setText("");
+            Text_name_goods.setText("");
+            Text_quantity.setText("");
+            Text_quantity_box.setText("");
+            Text_date_ex.setText("");
+            Text_date_sale.setText("");
 
-                clear_all.setVisibility(View.GONE);
-                save_add_goods.setVisibility(View.VISIBLE);///visible      ظاهر
-                ubdate_btn.setVisibility(View.GONE);///visible      ظاهر
-                seve_ubdat_goods_btn.setVisibility(View.GONE);///visible      ظاهر
-                Text_barcode.setEnabled(true);
-                Text_name_goods.setEnabled(true);
-                Text_quantity.setEnabled(true);
-                date_sale_btn.setEnabled(true);
-                date_ex_btn.setEnabled(true);
-                Text_quantity_box.setEnabled(true);
-            }
+            clear_all.setVisibility(View.GONE);
+            save_add_goods.setVisibility(View.VISIBLE);///visible      ظاهر
+            ubdate_btn.setVisibility(View.GONE);///visible      ظاهر
+            seve_ubdat_goods_btn.setVisibility(View.GONE);///visible      ظاهر
+            Text_barcode.setEnabled(true);
+            Text_name_goods.setEnabled(true);
+            Text_quantity.setEnabled(true);
+            date_sale_btn.setEnabled(true);
+            date_ex_btn.setEnabled(true);
+            Text_quantity_box.setEnabled(true);
         });
     }
 

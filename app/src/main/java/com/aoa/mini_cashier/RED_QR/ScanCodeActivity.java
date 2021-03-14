@@ -1,6 +1,5 @@
 package com.aoa.mini_cashier.RED_QR;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -27,7 +26,7 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
         super.onCreate(savedInstanceState);
         scannerView=new ZXingScannerView(this);
         //setContentView(scannerView);
-        /**
+        /*
          *  Ask User to Open a Camera
          */
 
@@ -40,7 +39,7 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1);
 
             } else {
-                /**
+                /*
                  *  this for version > 5
                  */
                 setContentView(scannerView);
@@ -49,7 +48,7 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
 
         } else {
 
-            /**
+            /*
              *  this for version < 5
              */
             setContentView(scannerView);
