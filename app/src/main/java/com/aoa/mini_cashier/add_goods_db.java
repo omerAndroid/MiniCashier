@@ -19,7 +19,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import static android.widget.Toast.makeText;
 import com.aoa.mini_cashier.DB.Databases;
 import com.aoa.mini_cashier.RED_QR.ScanCodeActivity;
 
@@ -34,7 +34,6 @@ public class add_goods_db extends AppCompatActivity {
 
    public Databases databases = new Databases(this);
     boolean check_impot,check_add;
-
     String data_type;
     ZXingScannerView scannerView;
     public  String old_baracod;
@@ -51,6 +50,9 @@ public class add_goods_db extends AppCompatActivity {
 
     dialog_view_addtypes dva = new dialog_view_addtypes();
 
+    ArrayList<list_item_qnuatitytype> q_list =new ArrayList<list_item_qnuatitytype>();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +66,7 @@ public class add_goods_db extends AppCompatActivity {
         clear_all= findViewById(R.id.clear_all);
         ubdate_btn= findViewById(R.id.ubdate_btn);
         seve_ubdat_goods_btn= findViewById(R.id.seve_ubdat_goods_btn);
+
         /////////////////////////////////////////////////////////////////googs + quantity
         Text_barcode = (AutoCompleteTextView)findViewById(R.id.add_barcode_txt);
 
@@ -90,11 +93,10 @@ public class add_goods_db extends AppCompatActivity {
             date_picker();
         });
 
+
         //////////////////////////////Add List Item//////////////////////////////////////
-        ListView list = (ListView) findViewById(R.id.list_quantity);
-        ArrayList<list_item_qnuatitytype> q_list = new ArrayList<>();
-        ListAdupter ad = new ListAdupter(q_list);
-        list.setAdapter(ad);
+        //m   إضافة الى ليستة الكميات
+        //listShow_qnuatitytype();
         //////////////////////////////////////////////////////////////////////////////////
 
         add_tg_btn.setOnClickListener(v -> {
@@ -119,6 +121,11 @@ public class add_goods_db extends AppCompatActivity {
                 Modification();
                 seve_ubdate_googs(old_baracod);
                 get_ALL_baracode();
+
+
+                //m   إضافة الى ليستة الكميات
+                listShow_qnuatitytype();
+
             }
         });
 
@@ -331,15 +338,45 @@ public class add_goods_db extends AppCompatActivity {
 
                 TextView sale_price = (TextView) view.findViewById(R.id.q_sale_item);
 
-                name.setText(list_item.get(i).name);
-                quantity.setText(String.valueOf(list_item.get(i).quantity));
-                buy_price.setText(String.valueOf(list_item.get(i).buy_price));
-                sale_price.setText(String.valueOf(list_item.get(i).sale_price));
+                name.setText(list_item.get(i).getName());
+                quantity.setText(list_item.get(i).getQuantity());
+                buy_price.setText(list_item.get(i).getBuy_price());
+                sale_price.setText(list_item.get(i).getSale_price());
 
 
                 return view;
             }
         }
+
+
+    private void listShow_qnuatitytype(){
+
+        int id = databases.get_id_goods(Text_barcode.getText().toString().trim());
+        int a=databases.read_Tname_q_type(id);
+        Toast.makeText(this, String.valueOf(a), Toast.LENGTH_SHORT).show();
+        String[] g=databases.get_ALLq_qnuatitytype(id);
+        makeText(this, String.valueOf(g.length), Toast.LENGTH_SHORT).show();
+
+        int i=0;
+        for (int j=0;j<a;j++){
+
+            makeText(this, g[0], Toast.LENGTH_SHORT).show();
+            makeText(this, g[1], Toast.LENGTH_SHORT).show();
+            makeText(this, g[2], Toast.LENGTH_SHORT).show();
+            makeText(this, g[3], Toast.LENGTH_SHORT).show();
+
+            q_list.add(new list_item_qnuatitytype(g[0],g[1],g[2],g[3]));
+
+            //q_list.add(new list_item_qnuatitytype("gdfg","gggee","gdfg","gdfgdf"));
+          i+=3;
+
+        }
+        //////////////////////////////Add List Item//////////////////////////////////////
+        ListView list = (ListView) findViewById(R.id.list_quantity);
+        q_list = new ArrayList<>();
+        ListAdupter ad = new ListAdupter(q_list);
+        list.setAdapter(ad);
+    }
 
         public void date_picker ()
         {

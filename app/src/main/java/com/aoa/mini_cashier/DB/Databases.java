@@ -6,7 +6,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Environment;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -20,7 +19,6 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
 
     static final String DBNAME="DB 0,1.db";///NOT NULL
     private Context mContext;
-    private SQLiteDatabase mDatabase;
 
     public Databases(@Nullable Context context) {
         super(context,DBNAME,null,1);
@@ -201,26 +199,22 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
         int lenght=read_Tname();
         SQLiteDatabase db=this.getReadableDatabase();
         String[] sat=new String[5];
-        String[] name=new String[5];
-        name[0]="quantity_box";
-        name[1]="name_g";
-        name[2]="quantity";
-        name[3]="expiration_date";
-        name[4]="date_purchase";
+
         if (lenght>0) {
             int i = 0;
             Cursor res = db.rawQuery("select * from goods where barcod like '"+barcod+"'", null);
             res.moveToFirst();
             while (res.isAfterLast() == false) {
                 String c;
+                Double v;
                       c = res.getString(res.getColumnIndex("quantity_box"));
-                     sat[i] = c;
+                     sat[i] = String.valueOf(Double.parseDouble(c));
                      i++;
                 c = res.getString(res.getColumnIndex("name_g"));
                 sat[i] = c;
                 i++;
                 c = res.getString(res.getColumnIndex("quantity"));
-                sat[i] = c;
+                sat[i] = String.valueOf(Double.parseDouble(c));
                 i++;
                 c = res.getString(res.getColumnIndex("expiration_date"));
                 sat[i] = c;
@@ -271,19 +265,35 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
             return true;
     }
 
-    public String[] get_ALLq_type(int id){
+    ///////n جلب من جدول الكميات كل الكميات لتعبئة الليستة *_*
+    public String[] get_ALLq_qnuatitytype(int id){
         int lenght=read_Tname_q_type(id);
         SQLiteDatabase db=this.getReadableDatabase();
-        String[] sat=new String[read_Tname_q_type(id)];
+        String[] sat=new String[4*read_Tname_q_type(id)];
 
         if (lenght>0) {
             int i = 0;
-            Cursor res = db.rawQuery("select name_q from quantity where id_g = id ", null);
+
+            @SuppressLint("Recycle") Cursor res = db.rawQuery("select * from quantity where id_g = "+id+" ", null);
             res.moveToFirst();
-            while (res.isAfterLast() == false) {
-                String c = res.getString(res.getColumnIndex("name_q"));
+            while (!res.isAfterLast()) {
+                String c;
+                 c = res.getString(res.getColumnIndex("name_q"));
                 sat[i] = c;
                 i++;
+
+                c = res.getString(res.getColumnIndex("quantity_q"));
+                sat[i] = c;
+                i++;
+
+                 c = res.getString(res.getColumnIndex("purchase"));///cشراء ---------- buy
+                sat[i] = c;
+                i++;
+
+                c = res.getString(res.getColumnIndex("price"));///f   البيع   -------- sale
+                sat[i] = c;
+                i++;
+
                 res.moveToNext();
             }
         }else{
@@ -294,10 +304,12 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
     }
 
     ///////b يقوم بارجاع عدد الصفوف في المصفوفه
-    private int read_Tname_q_type(int id){
+    public int read_Tname_q_type(int id){
         SQLiteDatabase db=this.getReadableDatabase();
         int a=0;
-        @SuppressLint("Recycle") Cursor res=db.rawQuery("select name_q from quantity where id_g = id ",null);
+        ///Cursor res=db.rawQuery("select name_q from quantity where id_g = id ",null);
+        //("goods",contentValues,"barcod= ?",new String[]{old_baracod});
+        @SuppressLint("Recycle") Cursor res=db.rawQuery("select name_q from quantity where id_g = "+id+" ",null);
         res.moveToFirst();
         while (!res.isAfterLast()){
             a++;
