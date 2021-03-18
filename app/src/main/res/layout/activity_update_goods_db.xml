@@ -13,21 +13,21 @@
         android:layout_height="45dp"
         android:orientation="horizontal">
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/searsh_goods_txt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:ems="10"
             android:hint="بحث"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            />
 
         <Button
             android:id="@+id/searsh_goods_btn"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:drawable/ic_search_category_default" />
+            android:background="@android:drawable/ic_menu_camera" />
     </LinearLayout>
 
     <ListView

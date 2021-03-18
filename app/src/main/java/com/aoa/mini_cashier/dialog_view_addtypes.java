@@ -56,13 +56,14 @@ public class dialog_view_addtypes extends AppCompatDialogFragment {
                     // جلب رقم البضاعة
                     int id = databases.get_id_goods(Text_barcode.getText().toString().trim());
 
-                    if (save.getText().toString().equals("حفظ")){
-                        boolean result2 = databases.insert_quantity(Text_q_type.getEditableText().toString(), Double.parseDouble(Text_q_buy_price.getEditableText().toString()),
-                                Double.parseDouble(Text_q_quantity.getEditableText().toString()), id, Double.parseDouble(Text_q_sale_price.getEditableText().toString()));
+                    if (save.getText().toString().equals("حفظ")){//Double.parseDouble(Text_q_quantity.getText().toString().trim())
+                        boolean result2 = databases.insert_quantity(Text_q_type.getText().toString().trim(), Double.parseDouble(Text_q_buy_price.getText().toString().trim()),
+                                Double.parseDouble(Text_q_quantity.getText().toString().trim()), id, Double.parseDouble(Text_q_sale_price.getText().toString().trim()));
 
                         if (result2) {
                             dismiss();
                             Toast.makeText(getActivity(), "OK", Toast.LENGTH_SHORT).show();//
+                            ////Toast.makeText(getActivity(), String.valueOf(Double.parseDouble(Integer.)), Toast.LENGTH_SHORT).show();//
                         } else{
                             Toast.makeText(getActivity(), "No", Toast.LENGTH_SHORT).show();
                         }

@@ -58,7 +58,6 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
         db.execSQL("DROP TABLE IF EXISTS products_bills");
         onCreate(db);
     }
-
     //////b انشاء نسخة احتاياطية
     public void backup(String outFileName) {
 
@@ -92,9 +91,8 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
             e.printStackTrace();
         }
     }
-
-
-    public int check_baracod(String baracod){ ///  E عملية التاكد من الباركود اذا كان موجود من قبل او لا
+    ///  E عملية التاكد من الباركود اذا كان موجود من قبل او لا
+    public int check_baracod(String baracod){
         SQLiteDatabase db=this.getReadableDatabase();
         int a=0;
         Cursor res=db.rawQuery("select * from goods where barcod like '"+baracod+"' ",null);
@@ -105,9 +103,8 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
         }
         return a;
     }
-
-
-    public boolean insert_goods(String barcod, Double quantity_box,String name,Double quantity,String expiration_date,String date_purchase){//price عملية اللاضافةللبضاعة
+    //price عملية اللاضافةللبضاعة
+    public boolean insert_goods(String barcod, Double quantity_box,String name,Double quantity,String expiration_date,String date_purchase){
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
         contentValues.put("barcod",barcod);
@@ -123,9 +120,8 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
         else
             return true;
     }
-
-    ////
-    public boolean insert_quantity(String name_q, Double price,Double quantity_q,int id_g,Double purchase){//price عملية اضافةللكمية
+    //////price عملية اضافةللكمية
+    public boolean insert_quantity(String name_q, double price,double quantity_q,int id_g,double purchase){
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
         contentValues.put("name_q",name_q);
@@ -141,8 +137,6 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
         else
             return true;
     }
-
-
     //////n جلب رقم البضاعة
     public int get_id_goods(String barcod){
         int i=0;
@@ -158,8 +152,8 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
         return i ;
 
     }
-
-   public String[] get_ALLbaracod(){
+    //////n        جلب كل الباركود
+    public String[] get_ALLbaracod(){
         int lenght=read_Tname();
         SQLiteDatabase db=this.getReadableDatabase();
         String[] sat=new String[read_Tname()];
@@ -180,7 +174,28 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
 
         return sat;
     }
+    //////n        جلب كل اسماء المنتجات
+    public String[] get_ALLname_g(){
+        int lenght=read_Tname();
+        SQLiteDatabase db=this.getReadableDatabase();
+        String[] sat=new String[read_Tname()];
 
+        if (lenght>0) {
+            int i = 0;
+            Cursor res = db.rawQuery("select * from goods", null);
+            res.moveToFirst();
+            while (res.isAfterLast() == false) {
+                String c = res.getString(res.getColumnIndex("name_g"));
+                sat[i] = c;
+                i++;
+                res.moveToNext();
+            }
+        }else{
+            sat=new String[1];
+            sat[0]=" ";}
+
+        return sat;
+    }
     ///////b يقوم بارجاع عدد الصفوف في المصفوفه
     private int read_Tname(){
         SQLiteDatabase db=this.getReadableDatabase();
@@ -193,8 +208,7 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
         }
         return a;
     }
-
-
+    ////////n       جلب بيانات جدول البضاعة باستخدام الباركود
     public String[] get_All_goods_for_barcod(String barcod){
         int lenght=read_Tname();
         SQLiteDatabase db=this.getReadableDatabase();
@@ -206,7 +220,6 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
             res.moveToFirst();
             while (res.isAfterLast() == false) {
                 String c;
-                Double v;
                       c = res.getString(res.getColumnIndex("quantity_box"));
                      sat[i] = String.valueOf(Double.parseDouble(c));
                      i++;
@@ -230,7 +243,7 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
 
         return sat;
     }
-
+    ///////n             يقوم بتجديث جدول البضاعة باستخدام الباركود القديم له
     public boolean get_seve_ubdate_googs(String barcod, Double quantity_box,String name,Double quantity,String expiration_date,String date_purchase,String old_baracod){
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
@@ -247,8 +260,7 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
         else
             return true;
     }
-
-
+     /////////////n                    يقوم بتحديث جدول الكميات بستخدام اسم الكمية القديم
     public boolean get_seve_ubdate_quantity(String name_q, Double price,Double quantity_q,int id_g,Double purchase,String old_q_type){
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
@@ -264,8 +276,7 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
         else
             return true;
     }
-
-    ///////n جلب من جدول الكميات كل الكميات لتعبئة الليستة *_*
+    ///////n جلب من جدول الكميات كل الكميات لتعبئة الليستة *_*////////////////////////////////////
     public String[] get_ALLq_qnuatitytype(int id){
         int lenght=read_Tname_q_type(id);
         SQLiteDatabase db=this.getReadableDatabase();
@@ -286,14 +297,13 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
                 sat[i] = c;
                 i++;
 
-                 c = res.getString(res.getColumnIndex("purchase"));///cشراء ---------- buy
+                c = res.getString(res.getColumnIndex("purchase"));///cشراء ---------- buy
                 sat[i] = c;
                 i++;
 
                 c = res.getString(res.getColumnIndex("price"));///f   البيع   -------- sale
                 sat[i] = c;
                 i++;
-
                 res.moveToNext();
             }
         }else{
@@ -302,7 +312,6 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
 
         return sat;
     }
-
     ///////b يقوم بارجاع عدد الصفوف في المصفوفه
     public int read_Tname_q_type(int id){
         SQLiteDatabase db=this.getReadableDatabase();
