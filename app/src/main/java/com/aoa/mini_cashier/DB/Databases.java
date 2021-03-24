@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
 public class Databases extends SQLiteOpenHelper {/// hello AAB
 
@@ -45,6 +46,8 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
                 "quantity INTEGER,id_bills INTEGER," +
                 "FOREIGN KEY(id_bills) REFERENCES bills(id) ON UPDATE CASCADE ON DELETE CASCADE)");
 
+        db.execSQL("CREATE TABLE quantity_type(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_type TEXT unique)");
+
 
     }
 
@@ -56,7 +59,38 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
         db.execSQL("DROP TABLE IF EXISTS phone_agent");
         db.execSQL("DROP TABLE IF EXISTS bills");
         db.execSQL("DROP TABLE IF EXISTS products_bills");
+        db.execSQL("DROP TABLE IF EXISTS quantity_type");
+
         onCreate(db);
+    }
+
+    public void insert_quantity_type()
+    {
+        String [] add = {"كرتون","درزن","حبة"};
+        for(int i=0;i<3;i++)
+        {
+            try {
+                SQLiteDatabase db = this.getWritableDatabase();
+                ContentValues contentValues = new ContentValues();
+                contentValues.put("name_type", add[i]);
+
+                long result = db.insert("quantity_type", null, contentValues);
+            }catch (Exception e){}
+        }
+    }
+
+    public ArrayList Show_quantity_type()
+    {
+        ArrayList<String> arrayList = new ArrayList<String>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res=db.rawQuery("select * from quantity_type  ",null);
+        res.moveToFirst();
+        while (res.isAfterLast()==false){
+            arrayList.add(res.getString(1));
+            res.moveToNext();
+        }
+
+        return arrayList;
     }
     //////b انشاء نسخة احتاياطية
     public void backup(String outFileName) {
@@ -104,11 +138,10 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
         return a;
     }
     //price عملية اللاضافةللبضاعة
-    public boolean insert_goods(String barcod, Double quantity_box,String name,Double quantity,String expiration_date,String date_purchase){
+    public boolean insert_goods(String barcod,String name,Double quantity,String expiration_date,String date_purchase){
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
         contentValues.put("barcod",barcod);
-        contentValues.put("quantity_box",quantity_box);
         contentValues.put("name_g",name);
         contentValues.put("quantity",quantity);
         contentValues.put("expiration_date",expiration_date);
@@ -220,9 +253,6 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
             res.moveToFirst();
             while (res.isAfterLast() == false) {
                 String c;
-                      c = res.getString(res.getColumnIndex("quantity_box"));
-                     sat[i] = String.valueOf(Double.parseDouble(c));
-                     i++;
                 c = res.getString(res.getColumnIndex("name_g"));
                 sat[i] = c;
                 i++;
@@ -244,11 +274,10 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
         return sat;
     }
     ///////n             يقوم بتجديث جدول البضاعة باستخدام الباركود القديم له
-    public boolean get_seve_ubdate_googs(String barcod, Double quantity_box,String name,Double quantity,String expiration_date,String date_purchase,String old_baracod){
+    public boolean get_seve_ubdate_googs(String barcod, String name,Double quantity,String expiration_date,String date_purchase,String old_baracod){
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
         contentValues.put("barcod",barcod);
-        contentValues.put("quantity_box",quantity_box);
         contentValues.put("name_g",name);
         contentValues.put("quantity",quantity);
         contentValues.put("expiration_date",expiration_date);
@@ -260,8 +289,24 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
         else
             return true;
     }
+
+
+    public int get_id_quantity(String name , int id_g){
+        int i=0;
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor res=db.rawQuery("select * from quantity where name_q like '"+name+"' and id_g =="+id_g,null);
+        res.moveToFirst();
+
+        while (res.isAfterLast()==false){
+            i=res.getInt(res.getColumnIndex("id"));
+
+            res.moveToNext();
+        }
+        return i ;
+
+    }
      /////////////n                    يقوم بتحديث جدول الكميات بستخدام اسم الكمية القديم
-    public boolean get_seve_ubdate_quantity(String name_q, Double price,Double quantity_q,int id_g,Double purchase,String old_q_type){
+    public boolean get_seve_ubdate_quantity(int id, String name_q, Double price,Double quantity_q,int id_g,Double purchase){
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
         contentValues.put("name_q",name_q);
@@ -270,7 +315,19 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
         contentValues.put("id_g",id_g);
         contentValues.put("purchase",purchase);
 
-        long result=db.update("quantity",contentValues,"name_q= ?",new String[]{old_q_type});
+        long result=db.update("quantity",contentValues,"id = ?",new String[]{String.valueOf(id)});
+        if (result==-1)
+            return false;
+        else
+            return true;
+    }
+
+    public boolean get_delete_quantity(int id){
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+
+
+        long result=db.delete("quantity","id = ?",new String[]{String.valueOf(id)});
         if (result==-1)
             return false;
         else
@@ -325,6 +382,52 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
             res.moveToNext();
         }
         return a;
+    }
+
+    public String[] get_All_goods(){
+        int lenght=read_Tname();
+        SQLiteDatabase db=this.getReadableDatabase();
+        String[] sat=new String[5];
+
+        if (lenght>0) {
+            int i = 0;
+            Cursor res = db.rawQuery("select * from goods " , null);
+            res.moveToFirst();
+            while (res.isAfterLast() == false) {
+                String c;
+                c = res.getString(res.getColumnIndex("barcod"));
+                sat[i] = c;
+                i++;
+                c = res.getString(res.getColumnIndex("name_g"));
+                sat[i] = c;
+                i++;
+                c = res.getString(res.getColumnIndex("quantity"));
+                sat[i] = String.valueOf(Double.parseDouble(c));
+                i++;
+                c = res.getString(res.getColumnIndex("expiration_date"));
+                sat[i] = c;
+                i++;
+                c = res.getString(res.getColumnIndex("date_purchase"));
+                sat[i] = c;
+                i++;
+                res.moveToNext();
+            }
+        }else{
+            sat=new String[1];
+            sat[0]=" ";}
+
+        return sat;
+    }
+    public boolean get_delete_goods(String code){
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+
+
+        long result=db.delete("goods","barcod = ?",new String[]{code});
+        if (result==-1)
+            return false;
+        else
+            return true;
     }
 }
 

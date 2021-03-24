@@ -2,24 +2,29 @@ package com.aoa.mini_cashier;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aoa.mini_cashier.DB.Databases;
 import com.aoa.mini_cashier.RED_QR.ScanCodeActivity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static android.widget.Toast.makeText;
 
@@ -33,6 +38,7 @@ public class update_goods_db extends AppCompatActivity {
 
     ArrayList<list_item_update> q_list;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,9 +47,52 @@ public class update_goods_db extends AppCompatActivity {
         searsh_goods_btn =findViewById(R.id.searsh_goods_btn);
 
         ////////////////////////Add List Item//////////////////////////////////////////
+        ListView listView =findViewById(R.id.list_goods_db);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView barcode =view.findViewById(R.id.barcode_view);
+                Intent intent =new Intent(update_goods_db.this,add_goods_db.class);
+                intent.putExtra("key",1);
+                intent.putExtra("barcode",barcode.getText().toString());
+                startActivity(intent);
+            }
+        });
 
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                AlertDialog.Builder builder =new AlertDialog.Builder(update_goods_db.this);
+                builder.setMessage("هل تريد حذف المنتج");
+                builder.setTitle("حذف منتج");
+                builder.setPositiveButton("نعم", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        TextView barcode =view.findViewById(R.id.barcode_view);
+                        if(databases.get_delete_goods(barcode.getText().toString()))
+                        {
+                            makeText(update_goods_db.this, "Done", Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            makeText(update_goods_db.this, "No Way", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                builder.setNegativeButton("لا", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                }).show();
+                return false;
+            }
+        });
         //////////////////////////////////////////////////////////////////////////////////
         get_ALL_baracode_name_g();
+
+        get_goods();
+
 
         searsh_goods_btn.setOnClickListener(v -> {
             Intent intent=new Intent(this,ScanCodeActivity.class);
@@ -81,37 +130,46 @@ public class update_goods_db extends AppCompatActivity {
             LayoutInflater inflater = getLayoutInflater();
             View view =inflater.inflate(R.layout.update_goods_item,null);
 
-            EditText name = (EditText) view.findViewById(R.id.goods_view);
+            TextView barcode = (TextView) view.findViewById(R.id.barcode_view);
 
-            EditText quantity = (EditText) view.findViewById(R.id.quantity_veiw);
+            TextView name = (TextView) view.findViewById(R.id.goods_view);
 
-            EditText quantity_type = (EditText) view.findViewById(R.id.quantity_type_view);
+            TextView quantity = (TextView) view.findViewById(R.id.quantity_veiw);
 
-            EditText date_ex = (EditText) view.findViewById(R.id.date_ex_veiw);
+            TextView date_ex = (TextView) view.findViewById(R.id.date_ex_veiw);
 
-            EditText buy_price = (EditText) view.findViewById(R.id.buy_veiw);
-
-            EditText sale_price = (EditText) view.findViewById(R.id.sale_veiw);
-
-            name.setEnabled(false);
-            quantity.setEnabled(false);
-            buy_price.setEnabled(false);
-            sale_price.setEnabled(false);
-            quantity_type.setEnabled(false);
-            date_ex.setEnabled(false);
+            TextView buy_date = (TextView) view.findViewById(R.id.buy_date_veiw);
 
 
+
+
+
+            barcode.setText(list_item.get(i).barcode );
             name.setText(list_item.get(i).name );
             quantity.setText(String.valueOf(list_item.get(i).quantity ));
-            buy_price.setText(String.valueOf(list_item.get(i).buy_price));
-            sale_price.setText(String.valueOf(list_item.get(i).sale_price));
-            quantity_type.setText(String.valueOf(list_item.get(i).quantity_type));
-            date_ex.setText(String.valueOf(list_item.get(i).date_ex));
+            buy_date.setText(list_item.get(i).date_buy);
+            date_ex.setText(list_item.get(i).date_ex);
 
 
 
             return view;
         }
+    }
+
+    public void get_goods()
+    {
+        try {
+            ListView list = findViewById(R.id.list_goods_db);
+            ArrayList<list_item_update> list_item = new ArrayList<list_item_update>();
+            String[] arrayList = databases.get_All_goods();
+            for (int i = 0; i < arrayList.length; i++) {
+                list_item.add(new list_item_update(arrayList[i], arrayList[i + 1], arrayList[i + 2], arrayList[i + 3], arrayList[i + 4]));
+                i += 5;
+            }
+            ListAdapter adapter = new ListAdupter(list_item);
+            list.setAdapter(adapter);
+        }catch (Exception e){}
+
     }
 
     public void get_ALL_baracode_name_g() {

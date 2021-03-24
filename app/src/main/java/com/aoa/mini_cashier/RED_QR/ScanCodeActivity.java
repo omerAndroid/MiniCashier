@@ -106,7 +106,6 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
                 Toast.makeText(this, "1", Toast.LENGTH_SHORT).show();
                 add_goods_db.Text_name_goods.setText("");
                 add_goods_db.Text_quantity.setText("");
-                add_goods_db.Text_quantity_box.setText("");
                 add_goods_db.Text_date_ex.setText("");
                 add_goods_db.Text_date_sale.setText("");
 
@@ -160,7 +159,6 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
         add_goods_db.Text_quantity.setEnabled(true);
         add_goods_db.date_sale_btn.setEnabled(true);
         add_goods_db.date_ex_btn.setEnabled(true);
-        add_goods_db.Text_quantity_box.setEnabled(true);
 
     }
 
@@ -174,18 +172,16 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
         add_goods_db.Text_quantity.setEnabled(false);
         add_goods_db.date_sale_btn.setEnabled(false);
         add_goods_db.date_ex_btn.setEnabled(false);
-        add_goods_db.Text_quantity_box.setEnabled(false);
     }
 
     private void Packing_for_goods(String item) {
         Modification();
 
         String[] All_goods=databases.get_All_goods_for_barcod(item);
-        add_goods_db.Text_name_goods.setText(All_goods[1]);
-        add_goods_db.Text_quantity.setText(All_goods[2]);
-        add_goods_db.Text_quantity_box.setText(All_goods[0]);
-        add_goods_db.Text_date_ex.setText(All_goods[3]);
-        add_goods_db.Text_date_sale.setText(All_goods[4]);
+        add_goods_db.Text_name_goods.setText(All_goods[0]);
+        add_goods_db.Text_quantity.setText(All_goods[1]);
+        add_goods_db.Text_date_ex.setText(All_goods[2]);
+        add_goods_db.Text_date_sale.setText(All_goods[3]);
 
     }
 

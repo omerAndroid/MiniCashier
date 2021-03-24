@@ -10,11 +10,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aoa.mini_cashier.R;
+import com.aoa.mini_cashier.dialog_view_addtypes;
 import com.aoa.mini_cashier.list_item_qnuatitytype;
 
 import java.util.ArrayList;
 
 public class ListAdupter_quantity extends BaseAdapter {
+
+    dialog_view_addtypes dva = new dialog_view_addtypes();
 
     ArrayList<list_item_qnuatitytype> list_item;
     Context context;
@@ -61,12 +64,15 @@ public class ListAdupter_quantity extends BaseAdapter {
         buy_price.setText(list_item.get(i).getBuy_price());
         sale_price.setText(list_item.get(i).getSale_price());
 
-        view.setOnClickListener(new View.OnClickListener() {
+        /*view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Position "+i, Toast.LENGTH_SHORT).show();
+                if(Text_barcode.isEnabled())
+                {
+                    dva.show(getSupportFragmentManager(), "إضافة نوع");
+                }
             }
-        });
+        });*/
 
         return view;
     }

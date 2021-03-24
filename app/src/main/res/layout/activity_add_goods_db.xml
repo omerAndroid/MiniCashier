@@ -56,21 +56,27 @@
                 android:hint="اسم المنتج"
                 android:inputType="textPersonName" />
 
-            <EditText
-                android:id="@+id/add_quantity"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="الكمية بالحبة"
-                android:inputType="number" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/add_quantity_box"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="الكمية في الكرتون الواحد"
-                android:inputType="number" />
+                <EditText
+                    android:id="@+id/add_extra_quantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="كمية إضافية"
+                    android:inputType="number" />
+
+                <EditText
+                    android:id="@+id/add_quantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="الكمية بالحبة"
+                    android:inputType="number" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

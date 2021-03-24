@@ -3,8 +3,6 @@ package com.aoa.mini_cashier;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -119,27 +117,22 @@ public class buy_restore_goods extends AppCompatActivity {
 
             EditText quantity = (EditText) view.findViewById(R.id.quantity_veiw);
 
-            EditText quantity_type = (EditText) view.findViewById(R.id.quantity_type_view);
 
             EditText date_ex = (EditText) view.findViewById(R.id.date_ex_veiw);
 
-            EditText buy_price = (EditText) view.findViewById(R.id.buy_veiw);
+            EditText buy_price = (EditText) view.findViewById(R.id.buy_date_veiw);
 
-            EditText sale_price = (EditText) view.findViewById(R.id.sale_veiw);
+            EditText sale_price = (EditText) view.findViewById(R.id.quantity_veiw);
 
             name.setEnabled(true);
             quantity.setEnabled(true);
             buy_price.setEnabled(true);
             sale_price.setEnabled(true);
-            quantity_type.setEnabled(true);
             date_ex.setEnabled(true);
 
 
             name.setText(list_item.get(i).name );
             quantity.setText(String.valueOf(list_item.get(i).quantity ));
-            buy_price.setText(String.valueOf(list_item.get(i).buy_price));
-            sale_price.setText(String.valueOf(list_item.get(i).sale_price));
-            quantity_type.setText(String.valueOf(list_item.get(i).quantity_type));
             date_ex.setText(String.valueOf(list_item.get(i).date_ex));
 
 
