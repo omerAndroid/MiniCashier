@@ -135,7 +135,7 @@ public class dialog_view_addtypes extends AppCompatDialogFragment {
         Text_q_type.setAdapter(adapter);*/
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-/*
+
         if(check_work)
         {
             del.setVisibility(View.VISIBLE);
@@ -151,7 +151,7 @@ public class dialog_view_addtypes extends AppCompatDialogFragment {
             del.setVisibility(View.GONE);
 
         }
-*/
+
 
 
         ///////////////////////////////////////////////////////////////////////////////////////
