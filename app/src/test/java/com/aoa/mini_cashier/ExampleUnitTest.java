@@ -2,6 +2,8 @@ package com.aoa.mini_cashier;
 
 
 
+import com.aoa.mini_cashier.DB.Databases;
+
 import org.junit.Test;
 
 import java.text.DecimalFormat;
@@ -36,11 +38,20 @@ public class ExampleUnitTest {
 //        System.out.printf("%f",d);
 //
 //        System.out.println("\nnew : ");
-        System.out.println(" : "+To_double("555525454.1234567"));//555525454.1234567
-
+      //  System.out.println(" : "+To_double("555525454"));//555525454.1234567
+        //TimeOut();
 
     }
-
+    public void TimeOut(){
+        int i=0;
+        boolean b=true;
+        while (b){
+            i++;
+            if (i==350000){
+                b=false;
+            }
+        }
+    }
     public String To_double(String s){
 
         String[] parts = s.split("\\.");
@@ -48,8 +59,8 @@ public class ExampleUnitTest {
         String part2 ;   //
         StringBuilder text_1= new StringBuilder();
         StringBuilder text_2= new StringBuilder(".");
-        double d1,d2=0.0;
-        DecimalFormat df =new DecimalFormat("0.0");
+        double d1,d2;
+        DecimalFormat df ;
         if (s.contains(".")) {
 
             part1 = parts[0];
@@ -72,8 +83,8 @@ public class ExampleUnitTest {
              d1=Double.parseDouble(part1);
              d2=Double.parseDouble(part2);
 
-            d2=d1+d2+5555555555555555.11111111;
-            System.out.println(String.valueOf(d2));
+            d2=d1+d2;
+
             String bb= text_1.toString() +text_2;
 
             System.out.println("this is before formatting: "+d2);
@@ -81,14 +92,67 @@ public class ExampleUnitTest {
 
             System.out.println("Value: " + df.format(d2));
 
+
+
         }else {
             String par=s+".0";
            v= To_double(par);
+            d("55555656656556565656");
         }
 
         return v ;
     }
 
+
+    public void d(String s){
+        String x=" ";
+        double ddf =Double.parseDouble(s);
+        String ss=String.valueOf(ddf);
+
+        String[] parts9 = ss.split("\\.");
+        String part1 ,v ="" ;   //
+        String part2 ;   //
+        StringBuilder text_1= new StringBuilder();
+        StringBuilder text_2= new StringBuilder(".");
+        double d1,d2;
+        DecimalFormat df ;
+        if (ss.contains(".")) {
+
+            part1 = parts9[0];
+            part2 = parts9[1];
+
+            int size1 = part1.length();
+            int size2 = part2.length();
+
+            part2 = "0.";
+            part2 += parts9[1];
+
+            for (int i = 1; i <= size2; i++) {
+                text_2.append("0");
+            }
+
+            for (int i = 1; i <= size1; i++) {
+                text_1.append("0");
+            }
+
+            d1 = Double.parseDouble(part1);
+            d2 = Double.parseDouble(part2);
+
+            d2 = d1 + d2;
+            String bb = text_1.toString() + text_2;
+
+            System.out.println("this is before formatting: " + d2);
+            df = new DecimalFormat(bb);
+
+             x=df.format(d2);
+
+            //System.out.println("Value: " + df.format(d2));
+        }else {
+            String par=s+".0";
+            x= To_double(par);
+        }
+        System.out.println(x);
+    }
     //Lnumber=Double.parseDouble(part1);
     //part1=String.format ("%.0f", dd);
     // Lnumber=Double.parseDouble(part1);

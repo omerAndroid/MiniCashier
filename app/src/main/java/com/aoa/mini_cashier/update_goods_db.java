@@ -1,21 +1,20 @@
 package com.aoa.mini_cashier;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -32,12 +31,13 @@ public class update_goods_db extends AppCompatActivity {
 
     public Databases databases = new Databases(this);
 
+    @SuppressLint("StaticFieldLeak")
     public static Button searsh_goods_btn;
 
+    @SuppressLint("StaticFieldLeak")
     public static AutoCompleteTextView ALL_baracode_name_g;
-
     ArrayList<list_item_update> q_list;
-
+    ArrayList<list_item_update> list_item = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,45 +48,35 @@ public class update_goods_db extends AppCompatActivity {
 
         ////////////////////////Add List Item//////////////////////////////////////////
         ListView listView =findViewById(R.id.list_goods_db);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView barcode =view.findViewById(R.id.barcode_view);
-                Intent intent =new Intent(update_goods_db.this,add_goods_db.class);
-                intent.putExtra("key",1);
-                intent.putExtra("barcode",barcode.getText().toString());
-                startActivity(intent);
-            }
+        //////////////////b يتم فتح كلاس لاضافة لكي يقوم بعملية التعديل
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            TextView barcode =view.findViewById(R.id.barcode_view);
+
+            Intent intent =new Intent(update_goods_db.this,add_goods_db.class);
+            intent.putExtra("key",1);
+            intent.putExtra("barcode",barcode.getText().toString());
+            startActivity(intent);
         });
 
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                AlertDialog.Builder builder =new AlertDialog.Builder(update_goods_db.this);
-                builder.setMessage("هل تريد حذف المنتج");
-                builder.setTitle("حذف منتج");
-                builder.setPositiveButton("نعم", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        TextView barcode =view.findViewById(R.id.barcode_view);
-                        if(databases.get_delete_goods(barcode.getText().toString()))
-                        {
-                            makeText(update_goods_db.this, "Done", Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                        {
-                            makeText(update_goods_db.this, "No Way", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-                builder.setNegativeButton("لا", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+        listView.setOnItemLongClickListener((parent, view, position, id) -> {
+            AlertDialog.Builder builder =new AlertDialog.Builder(update_goods_db.this);
+            builder.setMessage("هل تريد حذف المنتج");
+            builder.setTitle("حذف منتج");
+            builder.setPositiveButton("نعم", (dialog, which) -> {
+                TextView barcode =view.findViewById(R.id.barcode_view);
+                if(databases.get_delete_goods(barcode.getText().toString()))
+                {
+                    makeText(update_goods_db.this, "Done", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    makeText(update_goods_db.this, "No Way", Toast.LENGTH_SHORT).show();
+                }
+            });
+            builder.setNegativeButton("لا", (dialog, which) -> {
 
-                    }
-                }).show();
-                return false;
-            }
+            }).show();
+            return false;
         });
         //////////////////////////////////////////////////////////////////////////////////
         get_ALL_baracode_name_g();
@@ -97,7 +87,7 @@ public class update_goods_db extends AppCompatActivity {
         searsh_goods_btn.setOnClickListener(v -> {
             Intent intent=new Intent(this,ScanCodeActivity.class);
             intent.putExtra("page","update_goods_db");
-            startActivity(intent);
+            startActivityForResult(intent,1);
             //startActivity(new Intent(getApplicationContext(), ScanCodeActivity.class));
         });
 
@@ -105,7 +95,7 @@ public class update_goods_db extends AppCompatActivity {
 
     class ListAdupter extends BaseAdapter
     {
-        ArrayList<list_item_update> list_item =new ArrayList<list_item_update>();
+        ArrayList<list_item_update> list_item;
         ListAdupter(ArrayList<list_item_update> list_item){
             this.list_item = list_item ;
         }
@@ -140,17 +130,11 @@ public class update_goods_db extends AppCompatActivity {
 
             TextView buy_date = (TextView) view.findViewById(R.id.buy_date_veiw);
 
-
-
-
-
             barcode.setText(list_item.get(i).barcode );
             name.setText(list_item.get(i).name );
             quantity.setText(String.valueOf(list_item.get(i).quantity ));
             buy_date.setText(list_item.get(i).date_buy);
             date_ex.setText(list_item.get(i).date_ex);
-
-
 
             return view;
         }
@@ -158,17 +142,23 @@ public class update_goods_db extends AppCompatActivity {
 
     public void get_goods()
     {
+
         try {
             ListView list = findViewById(R.id.list_goods_db);
-            ArrayList<list_item_update> list_item = new ArrayList<list_item_update>();
+            int a=databases.read_Tname();
+
             String[] arrayList = databases.get_All_goods();
-            for (int i = 0; i < arrayList.length; i++) {
+
+            int i=0;
+            for (int j = 0; j < a; j++) {
                 list_item.add(new list_item_update(arrayList[i], arrayList[i + 1], arrayList[i + 2], arrayList[i + 3], arrayList[i + 4]));
-                i += 5;
+                i += 4;
             }
             ListAdapter adapter = new ListAdupter(list_item);
             list.setAdapter(adapter);
-        }catch (Exception e){}
+        }catch (Exception e){
+
+        }
 
     }
 
@@ -200,54 +190,67 @@ public class update_goods_db extends AppCompatActivity {
 
             //////b تعبئة المدخلات بعد اختيار الباركود الموجود من قاعدة البيانات
 
-            String who="";
-            for(String val :Allbaracod){
-                if (val.equals(item)){
-                    Toast.makeText(this, val, Toast.LENGTH_SHORT).show();
-                    who="Allbaracod";
-                }
-            }
-
-            for(String val :Allname_g){
-                if (val.equals(item)){
-                    Toast.makeText(this, val, Toast.LENGTH_SHORT).show();
-                    who="Allname_g";
-                }
-            }
-
-            //Packing_for_goods(item,who);
+            tcack_camera(item);
 
         });
     }
 
     private void Packing_for_goods(String item, String who) {
 
-        if (who.equals("Allbaracod")){
+            String[] g=databases.get_one_goods(item,who);
+            list_item = new ArrayList<>();
+            q_list = new ArrayList<>();
+            for (int j=0;j<1;j++){
 
-            int id = databases.get_id_goods(item);
-            int a=databases.read_Tname_q_type(id);
-            Toast.makeText(this, String.valueOf(a), Toast.LENGTH_SHORT).show();
-            String[] g=databases.get_ALLq_qnuatitytype(id);
-            makeText(this, String.valueOf(g.length), Toast.LENGTH_SHORT).show();
-
-            int i=0;
-            for (int j=0;j<a;j++){
-
-                makeText(this, g[0], Toast.LENGTH_SHORT).show();
-                makeText(this, g[1], Toast.LENGTH_SHORT).show();
-                makeText(this, g[2], Toast.LENGTH_SHORT).show();
-                makeText(this, g[3], Toast.LENGTH_SHORT).show();
-
-                //q_list.add(new list_item_update(g[0],g[1],g[2],g[3]));
-                i+=3;
+                q_list.add(new list_item_update(g[0],g[1],g[2],g[3],g[4]));
             }
 
             ListView list = (ListView) findViewById(R.id.list_goods_db);
             ListAdupter ad =new ListAdupter(q_list);
             list.setAdapter(ad);
+    }
 
-        }else {
-            Toast.makeText(this, "Allname_g", Toast.LENGTH_SHORT).show();
+    public void tcack_camera(String item){
+
+        String[] Allbaracod=databases.get_ALLbaracod();
+
+        String[] Allname_g=databases.get_ALLname_g();
+        String who="";
+        for(String val :Allbaracod){
+            if (val.equals(item)){
+                Toast.makeText(this, val, Toast.LENGTH_SHORT).show();
+                who="Allbaracod";
+            }
+        }
+
+        for(String val :Allname_g){
+            if (val.equals(item)){
+                Toast.makeText(this, val, Toast.LENGTH_SHORT).show();
+                who="Allname_g";
+            }
+        }
+
+        Packing_for_goods(item,who);
+    }
+
+    ///////n      يقوم بارسال تاكيد بانة تمت القراء باستخدام الكمايراء لكي يتم مل الليستة
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        String retern,key;
+        int intent_key = 1;
+        if (requestCode== intent_key){
+            if (resultCode==RESULT_OK){
+
+                key=data.getStringExtra("key");
+                retern=data.getStringExtra("valu");
+
+                if (key.equals("true")){
+                    tcack_camera(retern);
+                }
+            }
         }
     }
+
+
 }

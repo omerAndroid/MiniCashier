@@ -1,7 +1,5 @@
 package com.aoa.mini_cashier.RED_QR;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -12,19 +10,13 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import com.aoa.mini_cashier.Class_Adupter.ListAdupter_quantity;
 import com.aoa.mini_cashier.DB.Databases;
-import com.aoa.mini_cashier.R;
 import com.aoa.mini_cashier.add_goods_db;
-import com.aoa.mini_cashier.list_item_qnuatitytype;
 import com.aoa.mini_cashier.update_goods_db;
 import com.google.zxing.Result;
 
-import java.util.ArrayList;
-import java.util.Objects;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
@@ -32,11 +24,9 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
     ZXingScannerView scannerView;
     public Databases databases = new Databases(this);
 
-    ArrayList<list_item_qnuatitytype> q_list =new ArrayList<list_item_qnuatitytype>();
 
    public String hasOnClick;
 
-   public static boolean get_true_ForList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +85,10 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
             update_goods_db.ALL_baracode_name_g.setText(result.getText());
 
             if (databases.check_baracod(result.getText()) > 0) {
-
+                Intent intent=getIntent();
+                intent.putExtra("key","true");
+                intent.putExtra("valu",result.getText());
+                setResult(RESULT_OK,intent);
             }
 
         }else if (hasOnClick.equals("add_goods_db")){
@@ -114,7 +107,6 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
                 Toast.makeText(this, "2", Toast.LENGTH_SHORT).show();
                 Packing_for_goods(result.getText());
 
-                get_true_ForList =true;
 
                 Intent intent=getIntent();
                 intent.putExtra("page","true");
@@ -159,7 +151,7 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
         add_goods_db.Text_quantity.setEnabled(true);
         add_goods_db.date_sale_btn.setEnabled(true);
         add_goods_db.date_ex_btn.setEnabled(true);
-
+        add_goods_db.Text_extra_quantity.setEnabled(true);
     }
 
     public void Modification() {
@@ -172,6 +164,7 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
         add_goods_db.Text_quantity.setEnabled(false);
         add_goods_db.date_sale_btn.setEnabled(false);
         add_goods_db.date_ex_btn.setEnabled(false);
+        add_goods_db.Text_extra_quantity.setEnabled(false);
     }
 
     private void Packing_for_goods(String item) {
