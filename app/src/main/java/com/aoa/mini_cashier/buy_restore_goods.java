@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class buy_restore_goods extends AppCompatActivity {
 
         ListView list = (ListView) findViewById(R.id.list_buy_restore);
         //////////////////////// Add goods in list //////////////////////////////////////////
-        ArrayList<list_item_update> q_list = new ArrayList<list_item_update>();
+        ArrayList<list_buy_restore> q_list = new ArrayList<list_buy_restore>();
         ListAdupter ad =new ListAdupter(q_list);
         list.setAdapter(ad);
         ////////////////////////show list Options of bills/////////////////////////////////////
@@ -88,8 +89,8 @@ public class buy_restore_goods extends AppCompatActivity {
     }
     class ListAdupter extends BaseAdapter
     {
-        ArrayList<list_item_update> list_item =new ArrayList<list_item_update>();
-        ListAdupter(ArrayList<list_item_update> list_item){
+        ArrayList<list_buy_restore> list_item =new ArrayList<list_buy_restore>();
+        ListAdupter(ArrayList<list_buy_restore> list_item){
             this.list_item = list_item ;
         }
 
@@ -111,29 +112,24 @@ public class buy_restore_goods extends AppCompatActivity {
         @Override
         public View getView(int i, View convertView, ViewGroup parent) {
             LayoutInflater inflater = getLayoutInflater();
-            View view =inflater.inflate(R.layout.add_tg_item,null);
+            View view =inflater.inflate(R.layout.buy_restore_item,null);
 
-            EditText name = (EditText) view.findViewById(R.id.goods_view);
+            TextView name = (TextView) view.findViewById(R.id.goods_name);
 
-            EditText quantity = (EditText) view.findViewById(R.id.quantity_veiw);
+            TextView quantity_type = (TextView) view.findViewById(R.id.goods_q_type);
 
 
-            EditText date_ex = (EditText) view.findViewById(R.id.date_ex_veiw);
+            TextView goods_quanitity = (TextView) view.findViewById(R.id.goods_quanitity);
 
-            EditText buy_price = (EditText) view.findViewById(R.id.buy_date_veiw);
+            TextView buy_price = (TextView) view.findViewById(R.id.goods_buy);
 
-            EditText sale_price = (EditText) view.findViewById(R.id.quantity_veiw);
+            TextView sale_price = (TextView) view.findViewById(R.id.goods_sale);
 
-            name.setEnabled(true);
-            quantity.setEnabled(true);
-            buy_price.setEnabled(true);
-            sale_price.setEnabled(true);
-            date_ex.setEnabled(true);
 
 
             name.setText(list_item.get(i).name );
-            quantity.setText(String.valueOf(list_item.get(i).quantity ));
-            date_ex.setText(String.valueOf(list_item.get(i).date_ex));
+            quantity_type.setText(String.valueOf(list_item.get(i).quantity_type));
+            goods_quanitity.setText(String.valueOf(list_item.get(i).goods_quanitity));
 
 
 
