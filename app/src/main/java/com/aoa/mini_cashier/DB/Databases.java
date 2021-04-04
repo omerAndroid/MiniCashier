@@ -31,7 +31,7 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
 
         db.execSQL("CREATE TABLE goods(id INTEGER PRIMARY KEY AUTOINCREMENT ,bracode TEXT unique,name_g TEXT unique,quantity_stored REAL,quantity_sold REAL" +
                 ",expiration_date TEXT ," +
-                " date_purchase TEXT)");
+                " date_purchase TEXT ,id_d INTEGER)");
 
         db.execSQL("CREATE TABLE quantity(id INTEGER PRIMARY KEY AUTOINCREMENT ,number_q INTEGER,quantity_q REAL,default_q NUMERIC,purchase_price REAL,selling_price REAL," +
                 "id_q INTEGER,id_g INTEGER," +
@@ -97,6 +97,15 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
 
     }
 
+    public boolean insert_new_department(String add) {
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+        contentValues.put("name_dep",add);
+
+        long result=db.insert("department",null,contentValues);
+        return result != -1;
+
+    }
 
     public ArrayList Show_quantity_type() {
         ArrayList<String> arrayList = new ArrayList<String>();
@@ -204,7 +213,7 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
         return result != -1;
 
     }
-    /////////////n                    يقوم بتحديث جدول الكميات بستخدام اسم الكمية القديم
+    /////////////n         يقوم بتحديث جدول الكميات بستخدام اسم الكمية القديم
     public boolean get_seve_ubdate_quantity(int id, String name_q, Double price,Double quantity_q,int id_g,Double purchase){
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
@@ -283,6 +292,55 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
             sat[0]=" ";}
 
         return sat;
+    }
+    //////n        جلب كل اسمماء الاقسام
+    public String[] get_ALL_department(){
+        int lenght=return_lenght_department();
+        SQLiteDatabase db=this.getReadableDatabase();
+        String[] sat=new String[return_lenght_department()];
+
+        if (lenght>0) {
+            int i = 0;
+            Cursor res = db.rawQuery("select * from department", null);
+            res.moveToFirst();
+            while (res.isAfterLast() == false) {
+                String c = res.getString(res.getColumnIndex("name_dep"));
+                sat[i] = c;
+                i++;
+                res.moveToNext();
+            }
+        }else{
+            sat=new String[1];
+            sat[0]=" ";}
+
+        return sat;
+    }
+    ///////b يقوم بارجاع عدد الصفوف في الاقسام
+    public int return_lenght_department(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        int a=0;
+        @SuppressLint("Recycle") Cursor res=db.rawQuery("select name_dep from department",null);
+        res.moveToFirst();
+        while (!res.isAfterLast()){
+            a++;
+            res.moveToNext();
+        }
+        return a;
+    }
+    //////n جلب رقم القسم
+    public int get_id_department(String department){
+        int i=0;
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor res=db.rawQuery("select * from department where name_dep like '"+department+"'",null);
+        res.moveToFirst();
+
+        while (res.isAfterLast()==false){
+            i=res.getInt(res.getColumnIndex("id"));
+
+            res.moveToNext();
+        }
+        return i ;
+
     }
     //////n        جلب كل اسماء المنتجات
     public String[] get_ALLname_g(){
@@ -367,7 +425,6 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
             return true;
     }
 
-
     public int get_id_quantity(String name , int id_g){
         int i=0;
         SQLiteDatabase db=this.getReadableDatabase();
@@ -444,7 +501,6 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
         }
         return i ;
     }
-
     ///////b يقوم بارجاع عدد الصفوف في المصفوفه
     public int read_Tname_q_type(int id){
         SQLiteDatabase db=this.getReadableDatabase();
@@ -542,10 +598,18 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
 
     public boolean get_delete_goods(String code){
         SQLiteDatabase db=this.getWritableDatabase();
-        ContentValues contentValues=new ContentValues();
-
 
         long result=db.delete("goods","bracode = ?",new String[]{code});
+        if (result==-1)
+            return false;
+        else
+            return true;
+    }
+
+    public boolean get_delete_quantity(String id){
+        SQLiteDatabase db=this.getWritableDatabase();
+
+        long result=db.delete("goods","id_g = ?",new String[]{id});
         if (result==-1)
             return false;
         else

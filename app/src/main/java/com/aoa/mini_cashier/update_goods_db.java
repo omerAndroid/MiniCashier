@@ -152,7 +152,7 @@ public class update_goods_db extends AppCompatActivity {
             int i=0;
             for (int j = 0; j < a; j++) {
                 list_item.add(new list_item_update(arrayList[i], arrayList[i + 1], arrayList[i + 2], arrayList[i + 3], arrayList[i + 4]));
-                i += 4;
+                i += 5;
             }
             ListAdapter adapter = new ListAdupter(list_item);
             list.setAdapter(adapter);

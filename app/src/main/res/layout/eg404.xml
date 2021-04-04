@@ -2,9 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="wrap_content"
-
     android:orientation="vertical">
 
     <LinearLayout
@@ -39,7 +37,7 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 >
@@ -49,7 +47,14 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0"
                     android:orientation="vertical"
-                    tools:ignore="NestedWeights">
+                    >
+
+                    <Button
+                        android:layout_width="30dp"
+                        android:layout_height="10dp"
+                        android:layout_weight="1"
+                        android:background="@android:drawable/ic_delete"
+                         />
 
                     <RadioButton
                         android:id="@+id/primary_type"
@@ -58,6 +63,13 @@
                         android:layout_height="wrap_content"
                         android:text="1" />
 
+                    <Button
+                        android:layout_width="30dp"
+                        android:layout_height="10dp"
+                        android:layout_weight="1"
+                        android:background="@android:drawable/ic_delete"
+                         />
+
                     <RadioButton
                         android:id="@+id/primary_type_2"
                         android:layout_width="wrap_content"
@@ -65,12 +77,26 @@
                         android:layout_height="wrap_content"
                         android:text="2" />
 
+                    <Button
+                        android:layout_width="30dp"
+                        android:layout_height="10dp"
+                        android:layout_weight="1"
+                        android:background="@android:drawable/ic_delete"
+                         />
+
                     <RadioButton
                         android:id="@+id/primary_type_3"
                         android:layout_width="wrap_content"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="3" />
+
+                    <Button
+                        android:layout_width="30dp"
+                        android:layout_height="10dp"
+                        android:layout_weight="1"
+                        android:background="@android:drawable/ic_delete"
+                         />
 
                     <RadioButton
                         android:id="@+id/primary_type_4"
@@ -89,59 +115,6 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-
-                            <EditText
-                                android:id="@+id/q_type_4"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:ems="10"
-                                android:hint="نوع الكمية الرابعة"
-                                android:inputType="textPersonName" />
-                        </LinearLayout>
-
-                        <EditText
-                            android:id="@+id/q_quantity_4"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:hint="الكمية في هذا النوع"
-                            android:inputType="number" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-                            <EditText
-                                android:id="@+id/q_buy_price_4"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:ems="10"
-                                android:hint="سعر الشراء"
-                                android:inputType="number|numberDecimal" />
-
-                            <EditText
-                                android:id="@+id/q_sale_price_4"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:ems="10"
-                                android:hint="سعر البيع"
-                                android:inputType="number|numberDecimal" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
                         android:background="#00BFA5"
                         android:orientation="vertical">
 
@@ -152,21 +125,13 @@
 
 
                             <EditText
-                                android:id="@+id/q_type_3"
+                                android:id="@+id/q_type"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:ems="10"
-                                android:hint="نوع الكمية الثالثة"
+                                android:hint="نوع الكمية الأولى"
                                 android:inputType="textPersonName" />
                         </LinearLayout>
-
-                        <EditText
-                            android:id="@+id/q_quantity_3"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:hint="الكمية في هذا النوع"
-                            android:inputType="number" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -174,7 +139,7 @@
                             android:orientation="horizontal">
 
                             <EditText
-                                android:id="@+id/q_buy_price_3"
+                                android:id="@+id/q_buy_price"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -183,7 +148,7 @@
                                 android:inputType="number|numberDecimal" />
 
                             <EditText
-                                android:id="@+id/q_sale_price_3"
+                                android:id="@+id/q_sale_price"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -259,13 +224,21 @@
 
 
                             <EditText
-                                android:id="@+id/q_type"
+                                android:id="@+id/q_type_3"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:ems="10"
-                                android:hint="نوع الكمية الأولى"
+                                android:hint="نوع الكمية الثالثة"
                                 android:inputType="textPersonName" />
                         </LinearLayout>
+
+                        <EditText
+                            android:id="@+id/q_quantity_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:hint="الكمية في هذا النوع"
+                            android:inputType="number" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -273,7 +246,7 @@
                             android:orientation="horizontal">
 
                             <EditText
-                                android:id="@+id/q_buy_price"
+                                android:id="@+id/q_buy_price_3"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -282,7 +255,7 @@
                                 android:inputType="number|numberDecimal" />
 
                             <EditText
-                                android:id="@+id/q_sale_price"
+                                android:id="@+id/q_sale_price_3"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -291,6 +264,60 @@
                                 android:inputType="number|numberDecimal" />
                         </LinearLayout>
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+
+                            <EditText
+                                android:id="@+id/q_type_4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:hint="نوع الكمية الرابعة"
+                                android:inputType="textPersonName" />
+                        </LinearLayout>
+
+                        <EditText
+                            android:id="@+id/q_quantity_4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:hint="الكمية في هذا النوع"
+                            android:inputType="number" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/q_buy_price_4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:hint="سعر الشراء"
+                                android:inputType="number|numberDecimal" />
+
+                            <EditText
+                                android:id="@+id/q_sale_price_4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:hint="سعر البيع"
+                                android:inputType="number|numberDecimal" />
+                        </LinearLayout>
+                    </LinearLayout>
+
                 </LinearLayout>
 
             </LinearLayout>

@@ -38,7 +38,7 @@ public class ExampleUnitTest {
 //        System.out.printf("%f",d);
 //
 //        System.out.println("\nnew : ");
-      //  System.out.println(" : "+To_double("555525454"));//555525454.1234567
+       System.out.println(" : "+To_double("19.0E12"));         //555525454.1234567
         //TimeOut();
 
     }
@@ -80,8 +80,8 @@ public class ExampleUnitTest {
                 text_1.append("0");
             }
 
-             d1=Double.parseDouble(part1);
-             d2=Double.parseDouble(part2);
+             d1=Float.parseFloat(part1);
+             d2=Float.parseFloat(part2);
 
             d2=d1+d2;
 
@@ -97,7 +97,7 @@ public class ExampleUnitTest {
         }else {
             String par=s+".0";
            v= To_double(par);
-            d("55555656656556565656");
+            //d("55555656656556565656");
         }
 
         return v ;

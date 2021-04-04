@@ -7,17 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.aoa.mini_cashier.R;
-import com.aoa.mini_cashier.dialog_view_addtypes;
+import com.aoa.mini_cashier.dialog_view_addtypes_old;
 import com.aoa.mini_cashier.list_item_qnuatitytype;
 
 import java.util.ArrayList;
 
 public class ListAdupter_quantity extends BaseAdapter {
 
-    dialog_view_addtypes dva = new dialog_view_addtypes();
+    dialog_view_addtypes_old dva = new dialog_view_addtypes_old();
 
     ArrayList<list_item_qnuatitytype> list_item;
     Context context;
@@ -59,10 +58,19 @@ public class ListAdupter_quantity extends BaseAdapter {
 
         TextView sale_price = (TextView) view.findViewById(R.id.q_sale_item);
 
+        ///////n     عملية تصحح الطباعة
+
+
         name.setText(list_item.get(i).getName());
         quantity.setText(list_item.get(i).getQuantity());
         buy_price.setText(list_item.get(i).getBuy_price());
         sale_price.setText(list_item.get(i).getSale_price());
+
+        float a=Float.parseFloat(buy_price.getText().toString() + "f");
+        float b=Float.parseFloat(sale_price.getText().toString() + "f");
+
+        buy_price.setText(Float.toString(a));
+        sale_price.setText(Float.toString(b));
 
         /*view.setOnClickListener(new View.OnClickListener() {
             @Override

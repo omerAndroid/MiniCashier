@@ -22,8 +22,8 @@ import java.util.ArrayList;
 public class buy_restore_goods extends AppCompatActivity {
 
     Dialog customer_data;
-    Button list_options,save_btn;
-    EditText c_name;
+    Button list_options,save_btn,add_item_list;
+    EditText c_name,Text_add_name_item;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +31,9 @@ public class buy_restore_goods extends AppCompatActivity {
 
         list_options = findViewById(R.id.list_options);
         save_btn = findViewById(R.id.save_bills);
-        c_name = findViewById(R.id.customer_name);
+        c_name = findViewById(R.id.customer_name);////n  اسم العميل
+        Text_add_name_item= findViewById(R.id.add_name_item);
+        add_item_list = findViewById(R.id.add_item_list);
 
         ListView list = (ListView) findViewById(R.id.list_buy_restore);
         //////////////////////// Add goods in list //////////////////////////////////////////
