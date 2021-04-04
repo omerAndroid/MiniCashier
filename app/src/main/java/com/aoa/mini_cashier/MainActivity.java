@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     Button au_menu,buy_btn,restore_btn;
     public Databases databases = new Databases(this);
-    com.jaredrummler.materialspinner.MaterialSpinner spinner;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,15 +40,16 @@ public class MainActivity extends AppCompatActivity {
         localBackup.performBackup(databases, outFileName);
 
 
-        get_ALL_department();
         //////////////////////n        حفظ لمرة واحده
         sharedPreferences= this.getPreferences(Context.MODE_PRIVATE);
         String tecack=sharedPreferences.getString("key","");
 
         if (!tecack.equals("true")){
             seve_quantity_type_and_department_first();
-
         }
+
+
+
         au_menu = (Button) findViewById(R.id.add_update_menu);
         buy_btn = (Button) findViewById(R.id.buy);
         restore_btn = (Button) findViewById(R.id.restore);
@@ -107,18 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    ///////////////n   يقوم بجلب كل الباركود ويقوم بتخزينها
-    private void get_ALL_department() {
 
-        String[] ALL_department=databases.get_ALL_department();
-
-        Toast.makeText(this, "Clicked " +ALL_department[0], Toast.LENGTH_LONG).show();
-
-        for (int i=0;i<databases.return_lenght_department();i++){
-            spinner.setItems(ALL_department[i]);
-        }
-
-    }
     ///////n       حفظ الكميات الرئيسية لاول مره فقط
     private void seve_quantity_type_and_department_first() {
         Databases databases = new Databases(this);

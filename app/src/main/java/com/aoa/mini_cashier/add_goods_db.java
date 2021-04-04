@@ -67,7 +67,7 @@ public class add_goods_db extends AppCompatActivity {
     private final int intent_key=1;
 
     public String boolen_key,department_item="";
-    com.jaredrummler.materialspinner.MaterialSpinner spinner;
+   public static com.jaredrummler.materialspinner.MaterialSpinner spinner;
 
     dialog_view_addtypes dva = new dialog_view_addtypes();
 
@@ -110,6 +110,7 @@ public class add_goods_db extends AppCompatActivity {
         //////////////////////////b   الادخال في مصفوفة الاختيارات للباركود  /////////////////////////////////////////////
 
         get_ALL_baracode();
+        get_ALL_department();
         Text_extra_quantity.setText("0");
 
         /////////////////////////Date Picker///////////////////////////////////
@@ -215,6 +216,18 @@ public class add_goods_db extends AppCompatActivity {
 
     }
 
+    ///////////////n   يقوم بجلب كل الباركود ويقوم بتخزينها
+    private void get_ALL_department() {
+
+        String[] ALL_department=databases.get_ALL_department();
+
+        Toast.makeText(this, "Clicked " +ALL_department[0], Toast.LENGTH_LONG).show();
+
+        for (int i=0;i<databases.return_lenght_department();i++){
+            add_goods_db.spinner.setItems(ALL_department[i]);
+        }
+
+    }
     ////////////n      عند الضغط على حفظ التغييرات ينتقل الى هنا
      public void get_seve_ubdat_goods_btn(){
          if (check_impot_googs()){
