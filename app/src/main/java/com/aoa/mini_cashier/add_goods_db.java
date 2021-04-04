@@ -67,7 +67,7 @@ public class add_goods_db extends AppCompatActivity {
     private final int intent_key=1;
 
     public String boolen_key,department_item="";
-
+    com.jaredrummler.materialspinner.MaterialSpinner spinner;
 
     dialog_view_addtypes dva = new dialog_view_addtypes();
 
@@ -75,7 +75,7 @@ public class add_goods_db extends AppCompatActivity {
 
 
    ///////n        له علاقة بكلاس الدايلق
-   SharedPreferences sharedPreferences;
+
 
    public static float quantity_stored=1;
 
@@ -106,11 +106,10 @@ public class add_goods_db extends AppCompatActivity {
         Text_extra_quantity= findViewById(R.id.add_extra_quantity);
         Text_date_ex = findViewById(R.id.add_date_ex);////الانتهاء
         Text_date_sale = findViewById(R.id.add_date_sale);
-
-        //////////////////////////b   الادخال في مصفوفة الاختيارات للباركود والاصناف /////////////////////////////////////////////
+        spinner = findViewById(R.id.spinner);
+        //////////////////////////b   الادخال في مصفوفة الاختيارات للباركود  /////////////////////////////////////////////
 
         get_ALL_baracode();
-        get_ALL_department();
         Text_extra_quantity.setText("0");
 
         /////////////////////////Date Picker///////////////////////////////////
@@ -161,15 +160,13 @@ public class add_goods_db extends AppCompatActivity {
 //        });
 
         /////////////////////////////////n حفظ الكميات لاول مره فقط /////////////////////////////////////////////
-        sharedPreferences= this.getPreferences(Context.MODE_PRIVATE);
 
-        String tecack=sharedPreferences.getString("key","");
 
-        if (!tecack.equals("true")){
-            seve_quantity_type_and_department_first();
 
-        }
-
+         //////////////n          عند الضغط على الاقسام
+        spinner.setOnItemSelectedListener((MaterialSpinner.OnItemSelectedListener<String>) (view, position, id, item) ->{
+            department_item=item;
+            Snackbar.make(view, "Clicked " + item, Snackbar.LENGTH_LONG).show();});
         //////////////////////////////////////////////////////////////////////////////////department
 
         add_tg_btn.setOnClickListener(v -> {
@@ -218,22 +215,6 @@ public class add_goods_db extends AppCompatActivity {
 
     }
 
-    ///////n       حفظ الكميات الرئيسية لاول مره فقط
-    private void seve_quantity_type_and_department_first() {
-        Databases databases = new Databases(this);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("key","true");
-        editor.apply();
-        ////////////   quantity_type
-        Toast.makeText(this, "key true", Toast.LENGTH_SHORT).show();
-        databases.insert_new_quantity_type("كرتون");
-        databases.insert_new_quantity_type("درزن");
-        databases.insert_new_quantity_type("حبة");
-
-        //////  department
-        databases.insert_new_department("عام");
-    }
-
     ////////////n      عند الضغط على حفظ التغييرات ينتقل الى هنا
      public void get_seve_ubdat_goods_btn(){
          if (check_impot_googs()){
@@ -273,23 +254,7 @@ public class add_goods_db extends AppCompatActivity {
         });
         
     }
-    ///////////////n   يقوم بجلب كل الباركود ويقوم بتخزينها
-    private void get_ALL_department() {
 
-        String[] ALL_department=databases.get_ALL_department();
-
-        com.jaredrummler.materialspinner.MaterialSpinner spinner = (MaterialSpinner) findViewById(R.id.spinner);
-
-        for (int i=0;i<databases.return_lenght_department();i++){
-            spinner.setItems(ALL_department[i]);
-        }
-
-        //spinner.setItems("Ice Cream Sandwich", "Jelly Bean", "KitKat", "Lollipop", "Marshmallow");
-        spinner.setOnItemSelectedListener((MaterialSpinner.OnItemSelectedListener<String>) (view, position, id, item) ->{
-                department_item=item;
-                Snackbar.make(view, "Clicked " + item, Snackbar.LENGTH_LONG).show();});
-
-    }
     //////b تعبئة المدخلات بعد اختيار الباركود الموجود من قاعدة البيانات
     private void Packing_for_goods(String item) {
         Modification();
