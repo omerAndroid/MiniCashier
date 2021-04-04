@@ -200,6 +200,8 @@ public class add_goods_db extends AppCompatActivity {
             Text_quantity.setText("");
             Text_date_ex.setText("");
             Text_date_sale.setText("");
+            spinner.setText("");
+            spinner.setText("الاقسام");
             save_add_goods.setVisibility(View.VISIBLE);
             clear_all.setVisibility(View.GONE);
             ubdate_btn.setVisibility(View.GONE);///visible      ظاهر
@@ -211,6 +213,8 @@ public class add_goods_db extends AppCompatActivity {
             date_ex_btn.setEnabled(true);
             add_tg_btn.setEnabled(true);
             Text_extra_quantity.setEnabled(true);
+            spinner.setEnabled(true);
+
             listShow_qnuatitytype();
         });
 
@@ -220,8 +224,6 @@ public class add_goods_db extends AppCompatActivity {
     private void get_ALL_department() {
 
         String[] ALL_department=databases.get_ALL_department();
-
-        Toast.makeText(this, "Clicked " +ALL_department[0], Toast.LENGTH_LONG).show();
 
         for (int i=0;i<databases.return_lenght_department();i++){
             add_goods_db.spinner.setItems(ALL_department[i]);
@@ -277,6 +279,7 @@ public class add_goods_db extends AppCompatActivity {
             Text_quantity.setText(All_goods[1]);
             Text_date_ex.setText(All_goods[2]);
             Text_date_sale.setText(All_goods[3]);
+        spinner.setText(All_goods[4]);
         listShow_qnuatitytype();
         
     }
@@ -294,16 +297,16 @@ public class add_goods_db extends AppCompatActivity {
       //////////n        يقوم بحفظ التعديلات
     private boolean seve_ubdate_googs(String old_baracod) {
         boolean check=false;
-        int check_baracod = databases.check_baracod(old_baracod);
+        int check_baracod = databases.check_baracod(old_baracod);///department_item
 
-        /////////////n       يقوم بضرب العدد الكمية مع الحبة      900000000
+        int id_d=databases.get_id_department(department_item);
 
         if (check_baracod >0) {
             boolean result = databases.get_seve_ubdate_googs(Text_barcode.getText().toString().trim(),///Float.parseFloat(Text_quantity.getText().toString() + "f" ) + Float.parseFloat(Text_extra_quantity.getText().toString() + "f")
                     Text_name_goods.getEditableText().toString(),
                     Float.parseFloat(Text_quantity.getText().toString() + "f" ) + Float.parseFloat(Text_extra_quantity.getText().toString() + "f"),
                     Text_date_ex.getEditableText().toString(),
-                    Text_date_sale.getEditableText().toString(),old_baracod);
+                    Text_date_sale.getEditableText().toString(),id_d,old_baracod);
 
             if (result) {
                    check=true;
@@ -379,6 +382,7 @@ public class add_goods_db extends AppCompatActivity {
 
         if (check_impot_googs()) {
 
+            int id_d=databases.get_id_department(department_item);
             int check_baracod = databases.check_baracod(Text_barcode.getText().toString().trim());
 
             if (check_baracod == 0) {
@@ -387,7 +391,7 @@ public class add_goods_db extends AppCompatActivity {
                             Text_name_goods.getEditableText().toString(),
                             Float.parseFloat(Text_quantity.getText().toString() + "f" ),
                             Text_date_ex.getEditableText().toString(),
-                            Text_date_sale.getEditableText().toString());
+                            Text_date_sale.getEditableText().toString(),id_d);
 
                     if (result) {
                         check_add=true;
@@ -427,7 +431,7 @@ public class add_goods_db extends AppCompatActivity {
         date_sale_btn.setEnabled(false);
         date_ex_btn.setEnabled(false);
         clear_all.setVisibility(View.VISIBLE);
-
+        spinner.setEnabled(false);
     }
     ////// n فك التعديل
     public void de_Modification(){
@@ -441,6 +445,7 @@ public class add_goods_db extends AppCompatActivity {
         date_sale_btn.setEnabled(true);
         date_ex_btn.setEnabled(true);
         Text_extra_quantity.setEnabled(true);
+        spinner.setEnabled(true);
     }
 
     private boolean check_impot_googs() {

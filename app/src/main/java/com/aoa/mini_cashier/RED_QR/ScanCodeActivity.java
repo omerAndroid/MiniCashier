@@ -101,6 +101,8 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
                 add_goods_db.Text_quantity.setText("");
                 add_goods_db.Text_date_ex.setText("");
                 add_goods_db.Text_date_sale.setText("");
+                add_goods_db.spinner.setText("");
+                add_goods_db.spinner.setText("الاقسام");
 
                 de_Modification();
             } else {
@@ -152,6 +154,7 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
         add_goods_db.date_sale_btn.setEnabled(true);
         add_goods_db.date_ex_btn.setEnabled(true);
         add_goods_db.Text_extra_quantity.setEnabled(true);
+        add_goods_db.spinner.setEnabled(true);
     }
 
     public void Modification() {
@@ -165,6 +168,7 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
         add_goods_db.date_sale_btn.setEnabled(false);
         add_goods_db.date_ex_btn.setEnabled(false);
         add_goods_db.Text_extra_quantity.setEnabled(false);
+        add_goods_db.spinner.setEnabled(false);
     }
 
     private void Packing_for_goods(String item) {
@@ -175,7 +179,7 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
         add_goods_db.Text_quantity.setText(All_goods[1]);
         add_goods_db.Text_date_ex.setText(All_goods[2]);
         add_goods_db.Text_date_sale.setText(All_goods[3]);
-
+        add_goods_db.spinner.setText(All_goods[4]);
     }
 
 }

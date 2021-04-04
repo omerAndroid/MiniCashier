@@ -165,7 +165,7 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
         return a;
     }
     //price عملية اللاضافةللبضاعة
-    public boolean insert_goods(String bracode,String name,float quantity_stored,String expiration_date,String date_purchase){
+    public boolean insert_goods(String bracode,String name,float quantity_stored,String expiration_date,String date_purchase,int id_d){
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
         contentValues.put("bracode",bracode);
@@ -173,6 +173,7 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
         contentValues.put("quantity_stored",quantity_stored);
         contentValues.put("expiration_date",expiration_date);
         contentValues.put("date_purchase",date_purchase);
+        contentValues.put("id_d",id_d);
 
         long result=db.insert("goods",null,contentValues);
         if (result==-1)
@@ -342,6 +343,20 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
         return i ;
 
     }
+    //////////////n       يقوم بجلب اسم القسم على حسب ال id
+    public String get_name_department(int id){
+        String i="";
+        SQLiteDatabase db=this.getReadableDatabase();
+        @SuppressLint("Recycle") Cursor res=db.rawQuery("select name_dep from department where id = "+id+" ",null);
+        res.moveToFirst();
+
+        while (!res.isAfterLast()){
+            i=res.getString(res.getColumnIndex("name_dep"));
+
+            res.moveToNext();
+        }
+        return i ;
+    }
     //////n        جلب كل اسماء المنتجات
     public String[] get_ALLname_g(){
         int lenght=read_Tname();
@@ -380,7 +395,7 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
     public String[] get_All_goods_for_barcod(String bracode){
         int lenght=read_Tname();
         SQLiteDatabase db=this.getReadableDatabase();
-        String[] sat=new String[5];
+        String[] sat=new String[6];
 
         if (lenght>0) {
             int i = 0;
@@ -400,6 +415,10 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
                 c = res.getString(res.getColumnIndex("date_purchase"));
                 sat[i] = c;
                 i++;
+
+                c = get_name_department(res.getInt(res.getColumnIndex("id_d")));///////////   *---*
+                sat[i] = c;
+                i++;
                      res.moveToNext();
             }
         }else{
@@ -409,7 +428,7 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
         return sat;
     }
     ///////n             يقوم بتجديث جدول البضاعة باستخدام الباركود القديم له
-    public boolean get_seve_ubdate_googs(String bracode,String name,float quantity_stored,String expiration_date,String date_purchase,String old_baracod){
+    public boolean get_seve_ubdate_googs(String bracode,String name,float quantity_stored,String expiration_date,String date_purchase,int id_d,String old_baracod){
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
         contentValues.put("bracode",bracode);
@@ -417,6 +436,7 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
         contentValues.put("quantity_stored",quantity_stored);
         contentValues.put("expiration_date",expiration_date);
         contentValues.put("date_purchase",date_purchase);
+        contentValues.put("id_d",id_d);
 
         long result=db.update("goods",contentValues,"bracode= ?",new String[]{old_baracod});
         if (result==-1)
@@ -487,7 +507,7 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
 
         return sat;
     }
-
+     //////////////n       يقوم بجلب اسم الكمية على حسب ال id
     public String get_name_quantity_type(int id){
         String i="";
         SQLiteDatabase db=this.getReadableDatabase();
