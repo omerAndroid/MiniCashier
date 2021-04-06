@@ -2,6 +2,8 @@ package com.aoa.mini_cashier;
 
 
 
+import android.text.TextUtils;
+
 import com.aoa.mini_cashier.DB.Databases;
 
 import org.junit.Test;
@@ -38,8 +40,20 @@ public class ExampleUnitTest {
 //        System.out.printf("%f",d);
 //
 //        System.out.println("\nnew : ");
-       System.out.println(" : "+To_double("19.0E12"));         //555525454.1234567
+      // System.out.println(" : "+To_double("19.0E12"));         //555525454.1234567
         //TimeOut();
+
+
+        String s="",c="gg";
+        boolean b=false,n=true;
+
+        if (b&&c.equals("")){
+            System.out.println("1");
+        }if (n&& s.length()>0){
+            System.out.println("1");
+        }else {
+            System.out.println("2");
+        }
 
     }
     public void TimeOut(){

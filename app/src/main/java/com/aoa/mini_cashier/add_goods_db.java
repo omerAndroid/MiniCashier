@@ -8,12 +8,8 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Environment;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -26,7 +22,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 import static android.widget.Toast.makeText;
 
@@ -36,12 +31,9 @@ import com.aoa.mini_cashier.RED_QR.ScanCodeActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 
-import java.io.File;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -67,6 +59,7 @@ public class add_goods_db extends AppCompatActivity {
     private final int intent_key=1;
 
     public String boolen_key,department_item="";
+   @SuppressLint("StaticFieldLeak")
    public static com.jaredrummler.materialspinner.MaterialSpinner spinner;
 
     dialog_view_addtypes dva = new dialog_view_addtypes();
@@ -78,7 +71,6 @@ public class add_goods_db extends AppCompatActivity {
 
 
    public static float quantity_stored=1;
-
 
    @SuppressLint("StaticFieldLeak")
    public static ListView list;
@@ -100,7 +92,7 @@ public class add_goods_db extends AppCompatActivity {
         seve_ubdat_goods_btn= findViewById(R.id.seve_ubdat_goods_btn);
 
         /////////////////////////////////////////////////////////////////googs
-        Text_barcode = (AutoCompleteTextView)findViewById(R.id.add_barcode_txt);
+        Text_barcode = findViewById(R.id.add_barcode_txt);
         Text_name_goods = findViewById(R.id.add_name_goods);
         Text_quantity = findViewById(R.id.add_quantity);
         Text_extra_quantity= findViewById(R.id.add_extra_quantity);
@@ -125,7 +117,7 @@ public class add_goods_db extends AppCompatActivity {
             if (key == 1) {
                 Text_barcode.setText(code);
                 Packing_for_goods(code);
-                de_Modification();
+                Modification();
                 listShow_qnuatitytype();
             }
         }catch (Exception ignored){}
@@ -141,6 +133,7 @@ public class add_goods_db extends AppCompatActivity {
             date_place = 1;
             date_picker();
         });
+
         ////////////////////////////////////////////////////////////////////////////////////////////
 //        list.setOnItemClickListener((parent, view, position, id) -> {
 //            if(Text_barcode.isEnabled())
@@ -159,6 +152,10 @@ public class add_goods_db extends AppCompatActivity {
 //                dva.show(getSupportFragmentManager(), "إضافة نوع");
 //            }
 //        });
+
+
+
+
 
         /////////////////////////////////n حفظ الكميات لاول مره فقط /////////////////////////////////////////////
 
@@ -187,12 +184,13 @@ public class add_goods_db extends AppCompatActivity {
                 de_Modification();
             ceack_ubdate=true;
             add_tg_btn.setEnabled(true);
+            dva.check_work=true;///////n  كلاس الكمية
+
         });
 
         ///////n الضغط على عملية حفظ التعديل
-        seve_ubdat_goods_btn.setOnClickListener(v -> {
-            get_seve_ubdat_goods_btn();
-        });
+        seve_ubdat_goods_btn.setOnClickListener(v ->
+                get_seve_ubdat_goods_btn());
 
         clear_all.setOnClickListener(v -> {
             Text_barcode.setText("");
@@ -214,11 +212,12 @@ public class add_goods_db extends AppCompatActivity {
             add_tg_btn.setEnabled(true);
             Text_extra_quantity.setEnabled(true);
             spinner.setEnabled(true);
-
+            department_item="";
             listShow_qnuatitytype();
         });
 
     }
+
 
     ///////////////n   يقوم بجلب كل الباركود ويقوم بتخزينها
     private void get_ALL_department() {
@@ -269,7 +268,6 @@ public class add_goods_db extends AppCompatActivity {
         });
         
     }
-
     //////b تعبئة المدخلات بعد اختيار الباركود الموجود من قاعدة البيانات
     private void Packing_for_goods(String item) {
         Modification();
@@ -279,8 +277,10 @@ public class add_goods_db extends AppCompatActivity {
             Text_quantity.setText(All_goods[1]);
             Text_date_ex.setText(All_goods[2]);
             Text_date_sale.setText(All_goods[3]);
-        spinner.setText(All_goods[4]);
-        listShow_qnuatitytype();
+            spinner.setText(All_goods[4]);
+           department_item=All_goods[4];
+
+                listShow_qnuatitytype();
         
     }
     //////////////n        عند الضغط على الكاميرا ينتقل مبارشرة الى كلاس الكاميره
@@ -374,7 +374,6 @@ public class add_goods_db extends AppCompatActivity {
 
         return check;
     }
-
     /////////n عملية اضافة سريعة للبضائع للتخلص من بعض المشاكل
     public boolean get_seve_fast(){
         check_add=false;
@@ -471,7 +470,7 @@ public class add_goods_db extends AppCompatActivity {
         int id = databases.get_id_goods(Text_barcode.getText().toString().trim());
         int a=databases.read_Tname_q_type(id);
         //Toast.makeText(this, String.valueOf(a), Toast.LENGTH_SHORT).show();
-        String[] quantity=databases.get_ALLq_qnuatitytype(id);
+        String[] quantity=databases.get_ALLq_qnuatity(id);
        // makeText(this, String.valueOf(g.length), Toast.LENGTH_SHORT).show();
         q_list.clear();
         int i=0;
@@ -530,6 +529,7 @@ public class add_goods_db extends AppCompatActivity {
                 if (boolen_key.equals("true")){
                     q_list = new ArrayList<>();
                     add_tg_btn.setEnabled(false);
+                    department_item=spinner.getText().toString();
                     listShow_qnuatitytype();
                 }
             }
@@ -537,6 +537,7 @@ public class add_goods_db extends AppCompatActivity {
     }
 
     ///////////////////////n       عملية الرجوع
+    @Override
      public boolean onKeyDown(int keyCode, KeyEvent event){/////old_baracod_2
         if (keyCode==KeyEvent.KEYCODE_BACK){
 
@@ -600,46 +601,22 @@ public class add_goods_db extends AppCompatActivity {
         return super.onKeyDown(keyCode,event);
     }
 
-    @Override
-    public boolean onKeyLongPress(int keyCode, KeyEvent event) {
-        if (keyCode==KeyEvent.KEYCODE_BACK){
-            makeText(this, "111111111111", Toast.LENGTH_SHORT).show();
-        }
-        return super.onKeyLongPress(keyCode,event);
-    }
-
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode==KeyEvent.KEYCODE_BACK){
-            makeText(this, "222222222222222", Toast.LENGTH_SHORT).show();
-        }
-        return super.onKeyUp(keyCode, event);
-    }
-
-    @Override
-    public boolean onKeyMultiple(int keyCode, int repeatCount, KeyEvent event) {
-        if (keyCode==KeyEvent.KEYCODE_BACK){
-            makeText(this, "333333333333", Toast.LENGTH_SHORT).show();
-        }
-        return super.onKeyMultiple(keyCode, repeatCount, event);
-    }
-
 
 
     ////////n     dialog_view_addtypes
     public static class dialog_view_addtypes extends AppCompatDialogFragment {
 
         @SuppressLint("StaticFieldLeak")
-        public  EditText  Text_q_type, Text_q_buy_price, Text_q_sale_price,Text_q_type_2,
+        public  EditText Text_q_type, Text_q_buy_price, Text_q_sale_price,Text_q_type_2,
                 Text_q_quantity_2,Text_q_buy_price_2,Text_q_sale_price_2,Text_q_type_3,Text_q_quantity_3,
                 Text_q_buy_price_3,Text_q_sale_price_3,Text_q_type_4,Text_q_quantity_4,Text_q_buy_price_4,Text_q_sale_price_4;
-        public  String name_type,quantity,buy_price,sale_price;
+        //public  String name_type,quantity,buy_price,sale_price;
         RadioGroup radioGroup;
         public  boolean check_work=false,check_insert_Data=false,isChecked_1=false,isChecked_2=false,isChecked_3=false,isChecked_4=false;
-        Button  save,del;
-        int id_quantity;
-        public  String old_q_type,add_q_type;
-
+        Button  save,del,clear_1,clear_2,clear_3,clear_4;
+       // int id_quantity;
+      //  public  String old_q_type,add_q_type;
+        RadioButton primary_type,primary_type_2,primary_type_3,primary_type_4;
         androidx.appcompat.app.AlertDialog.Builder builder;
         boolean check_impot;
 
@@ -653,34 +630,37 @@ public class add_goods_db extends AppCompatActivity {
         @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            try {
 
-                builder = new androidx.appcompat.app.AlertDialog.Builder(getActivity());
+                builder = new androidx.appcompat.app.AlertDialog.Builder(Objects.requireNonNull(getActivity()));
                 Databases databases = new Databases(getActivity());
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 View view = inflater.inflate(R.layout.types_goods, null);
                 /////////////////////////////////////////////////////////////////quantity -> dialog
                 save = view.findViewById(R.id.save_tg_add);
-                del = view.findViewById(R.id.delete_tg_add);
+                //del = view.findViewById(R.id.delete_tg_add);
+                clear_1 = view.findViewById(R.id.clear_1);
+                clear_2 = view.findViewById(R.id.clear_2);
+                clear_3 = view.findViewById(R.id.clear_3);
+                clear_4 = view.findViewById(R.id.clear_4);
 
-                //primary_type=view.findViewById(R.id.primary_type);
+               primary_type=view.findViewById(R.id.primary_type);
                 Text_q_type=view.findViewById(R.id.q_type);
                 Text_q_buy_price=view.findViewById(R.id.q_buy_price);
                 Text_q_sale_price=view.findViewById(R.id.q_sale_price);
 
-                //  primary_type_2=view.findViewById(R.id.primary_type_2);
+                primary_type_2=view.findViewById(R.id.primary_type_2);
                 Text_q_type_2=view.findViewById(R.id.q_type_2);
                 Text_q_quantity_2=view.findViewById(R.id.q_quantity_2);
                 Text_q_buy_price_2=view.findViewById(R.id.q_buy_price_2);
                 Text_q_sale_price_2=view.findViewById(R.id.q_sale_price_2);
 
-                // primary_type_3=view.findViewById(R.id.primary_type_3);
+                primary_type_3=view.findViewById(R.id.primary_type_3);
                 Text_q_type_3=view.findViewById(R.id.q_type_3);
                 Text_q_quantity_3=view.findViewById(R.id.q_quantity_3);
                 Text_q_buy_price_3=view.findViewById(R.id.q_buy_price_3);
                 Text_q_sale_price_3=view.findViewById(R.id.q_sale_price_3);
 
-                //  primary_type_4=view.findViewById(R.id.primary_type_4);
+                primary_type_4=view.findViewById(R.id.primary_type_4);
                 Text_q_type_4=view.findViewById(R.id.q_type_4);
                 Text_q_quantity_4=view.findViewById(R.id.q_quantity_4);
                 Text_q_buy_price_4=view.findViewById(R.id.q_buy_price_4);
@@ -710,49 +690,16 @@ public class add_goods_db extends AppCompatActivity {
                     }
                 });
 
+               ///////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-        /*databases.insert_quantity_type();
-
-        ArrayList<String> add_spinner = databases.Show_quantity_type();
-        add_q_type = add_spinner.get(0);
-        ArrayAdapter adapter = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,add_spinner);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Text_q_type.setAdapter(adapter);*/
-///////////////////////////////////////////////////////////////////////////////////////////////
-
-
-                if(check_work)
-                {
-                    del.setVisibility(View.VISIBLE);
-                    add_q_type = name_type;
-                    // Text_q_quantity.setText(quantity);
-                    Text_q_buy_price.setText(buy_price);
-                    Text_q_sale_price.setText(sale_price);
-                    save.setText("تعديل");
-                    id_quantity=databases.get_id_quantity(name_type,databases.get_id_goods(Text_barcode.getText().toString().trim()));
-                }
-                else {
+                if(check_work) {
+                    insert_into_qnuatity();
+                    setVisibility_clear();
+                    save.setText("حفظ التعديل");
+                }else {
                     save.setText("حفظ");
-                    del.setVisibility(View.GONE);
-
                 }
 
-
-
-                ///////////////////////////////////////////////////////////////////////////////////////
-        /*Text_q_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                add_q_type= add_spinner.get(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });*/
                 //////////////////////////////////////////////////////////////////////////////
 
                 //save Button on clicked
@@ -772,34 +719,54 @@ public class add_goods_db extends AppCompatActivity {
                                 if (!isChecked_1&&!isChecked_2&&!isChecked_3&&!isChecked_4){
                                     Toast.makeText(getActivity(), "حدد احد الخيارات التي بالاسفل", Toast.LENGTH_SHORT).show();
                                 }else {
-                                    boolean result =insert_Data();
-                                    if (result) {
-                                        /////////m     يقوم بادخال الكمية المخزونة
-                                        //databases.insert_fast_to_quantity_stored_in_goods(quantity_stored,Text_barcode.getText().toString().trim());
-                                        /////////m     يقوم لارسال القيمة الى العرض
-                                        quantity_stored = quantity_stored * Float.parseFloat(Text_quantity.getText().toString() + "f" );
-                                        quantity_stored+=Float.parseFloat(Text_extra_quantity.getText().toString() + "f");
-                                        Text_quantity.setText(Float.toString(quantity_stored));
+                                    if (!return_cheacked_rideo()) {
+                                        Toast.makeText(getActivity(), "حدد احد الخيارات التي أدخلتها ", Toast.LENGTH_SHORT).show();
+                                    }else {
 
-                                        ceack_save_quantity=true;
-                                        dismiss();
-                                        Toast.makeText(getActivity(), "OK", Toast.LENGTH_SHORT).show();
-                                    } else{
-                                        Toast.makeText(getActivity(), "No", Toast.LENGTH_SHORT).show();
+                                        boolean result = insert_Data();
+                                        if (result) {
+                                            /////////m     يقوم بادخال الكمية المخزونة
+                                            //databases.insert_fast_to_quantity_stored_in_goods(quantity_stored,Text_barcode.getText().toString().trim());
+                                            /////////m     يقوم لارسال القيمة الى العرض
+                                            quantity_stored = quantity_stored * Float.parseFloat(Text_quantity.getText().toString() + "f");
+                                            quantity_stored += Float.parseFloat(Text_extra_quantity.getText().toString() + "f");
+                                            Text_quantity.setText(Float.toString(quantity_stored));
+
+                                            ceack_save_quantity = true;
+                                            dismiss();
+                                            Toast.makeText(getActivity(), "OK", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(getActivity(), "No", Toast.LENGTH_SHORT).show();
+                                        }
+
                                     }
                                 }
                             }
                             else
                             {
-//                        boolean result2 = databases.get_seve_ubdate_quantity(id_quantity,add_q_type, Double.parseDouble(Text_q_buy_price.getText().toString().trim()),
-//                                Double.parseDouble(Text_q_quantity.getText().toString().trim()), id, Double.parseDouble(Text_q_sale_price.getText().toString().trim()));
+                                if (!return_cheacked_rideo()) {
+                                        Toast.makeText(getActivity(), "حدد احد الخيارات التي أدخلتها ", Toast.LENGTH_SHORT).show();
+                                }else {
+                                    /////////////n     يقوم بحذف الكميات القديمة ويضيف الجديدة
+                                    int idd = databases.get_id_goods(Text_barcode.getText().toString().trim());
+                                    String s=String.valueOf(idd);
+                                    databases.get_delete_quantity(s);
 
-                                if (true) {
-                                    dismiss();
-                                    Toast.makeText(getActivity(), "OK", Toast.LENGTH_SHORT).show();//
-                                    ////Toast.makeText(getActivity(), String.valueOf(Double.parseDouble(Integer.)), Toast.LENGTH_SHORT).show();//
-                                } else{
-                                    Toast.makeText(getActivity(), "No", Toast.LENGTH_SHORT).show();
+                                        boolean result = insert_Data();
+
+                                        if (result) {
+
+                                            /////////m     يقوم لارسال القيمة الى العرض
+                                            quantity_stored = quantity_stored * Float.parseFloat(Text_quantity.getText().toString() + "f");
+                                            quantity_stored += Float.parseFloat(Text_extra_quantity.getText().toString() + "f");
+                                            Text_quantity.setText(Float.toString(quantity_stored));
+
+                                            ceack_save_quantity = true;
+                                            dismiss();
+                                            Toast.makeText(getActivity(), "OK", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(getActivity(), "No", Toast.LENGTH_SHORT).show();
+                                        }
                                 }
                             }
                         }//
@@ -807,40 +774,28 @@ public class add_goods_db extends AppCompatActivity {
 
                 });
 
-                del.setOnClickListener(v -> {
-                    boolean result2 = databases.get_delete_quantity(id_quantity);
-                    if (result2) {
-                        dismiss();
-                        Toast.makeText(getActivity(), "OK", Toast.LENGTH_SHORT).show();//
-                        ////Toast.makeText(getActivity(), String.valueOf(Double.parseDouble(Integer.)), Toast.LENGTH_SHORT).show();//
-                    } else{
-                        Toast.makeText(getActivity(), "No", Toast.LENGTH_SHORT).show();
-                    }
+                clear_1.setOnClickListener(v -> opreshen_in_clear(1));
+                clear_2.setOnClickListener(v -> opreshen_in_clear(2));
+                clear_3.setOnClickListener(v -> opreshen_in_clear(3));
+                clear_4.setOnClickListener(v -> opreshen_in_clear(4));
 
-                });
-
-
-
-                builder.setView(view)
-                        .setTitle("إضافة نوع");
-        /*
-                .setPositiveButton("حفظ", (dialogInterface, i) -> {
-
-                });*/
-
-
-            }catch (Exception e){
-                //////
-            }
+            builder.setView(view).setTitle("إضافة نوع");
             return builder.create();
         }
 
-
+        public void setVisibility_clear(){
+            clear_1.setVisibility(View.VISIBLE);
+            clear_2.setVisibility(View.VISIBLE);
+            clear_3.setVisibility(View.VISIBLE);
+            clear_4.setVisibility(View.VISIBLE);
+        }
+        /////////n     عملية الادخال في قتعدة البيانات
         public boolean insert_Data(){
             Databases databases = new Databases(getActivity());
             int id_g = databases.get_id_goods(Text_barcode.getText().toString().trim());
             int id_q,number_type=0;
             check_insert_Data=false;
+            quantity_stored =1;
             if (!TextUtils.isEmpty(Text_q_type.getEditableText().toString())){
                 number_type=1;
                 id_q=databases.get_id_quantity_type(Text_q_type.getEditableText().toString());
@@ -879,8 +834,7 @@ public class add_goods_db extends AppCompatActivity {
             return check_insert_Data;
 
         }
-
-
+        ////////////n للتحقق من المدخلات
         private boolean check_impot_quantity() {
             size_impout=0;
             sum_q=0;
@@ -948,7 +902,6 @@ public class add_goods_db extends AppCompatActivity {
 
             return check_impot;
         }
-
         ////////////////////n       اشعار تنبية اذا لم يكن نوع الكمية مخزون من قبل ويريد اضافتة
         boolean b=false;
         public boolean AlertDialog_show(String new_type){
@@ -980,7 +933,138 @@ public class add_goods_db extends AppCompatActivity {
 
             return cheack;
         }
+         /////////n     للتحقق انه ضغط راديوا فية بيانات
+        public boolean return_cheacked_rideo(){
+             b=false;
+            if (isChecked_1&&!TextUtils.isEmpty(Text_q_type.getEditableText().toString())){
+                b=true;
+            } if (isChecked_2&&!TextUtils.isEmpty(Text_q_type_2.getEditableText().toString())){
+                b=true;
+            } if (isChecked_3&&!TextUtils.isEmpty(Text_q_type_3.getEditableText().toString())){
+                b=true;
+            } if (isChecked_4&&!TextUtils.isEmpty(Text_q_type_4.getEditableText().toString())){
+                b=true;
+            }
+            Toast.makeText(getContext(), String.valueOf(b), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), String.valueOf(!TextUtils.isEmpty(Text_q_type.getEditableText().toString())), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), String.valueOf(isChecked_1), Toast.LENGTH_SHORT).show();
+            return b;
+        }
+        /////////////////n     التعبئة في حقول الكمية
+        private void insert_into_qnuatity() {
+            Databases databases = new Databases(getActivity());
+            int id = databases.get_id_goods(Text_barcode.getText().toString().trim());
+            int a=databases.read_Tname_q_type(id);
+            String[] quantity=databases.get_ALLq_qnuatity(id);
+            int i=1;
+            for (int j=0;j<a;j++){
+                if (i==1){
+                    Text_q_type.setText(quantity[0]);
+                    Text_q_buy_price.setText(quantity[2]);
+                    Text_q_sale_price.setText(quantity[3]);
+                    set_rideou_cheack(1,quantity[0]);
+                    i+=1;
+                }else if (i==2){
+                    Text_q_type_2.setText(quantity[4]);
+                    Text_q_quantity_2.setText(quantity[5]);
+                    Text_q_buy_price_2.setText(quantity[6]);
+                    Text_q_sale_price_2.setText(quantity[7]);
+                    set_rideou_cheack(2,quantity[4]);
+                    i+=1;
+                }else if (i==3){
+                    Text_q_type_3.setText(quantity[8]);
+                    Text_q_quantity_3.setText(quantity[9]);
+                    Text_q_buy_price_3.setText(quantity[10]);
+                    Text_q_sale_price_3.setText(quantity[11]);
+                    set_rideou_cheack(3,quantity[8]);
+                    i+=1;
+                }else if (i==4){
+                    Text_q_type_4.setText(quantity[12]);
+                    Text_q_quantity_4.setText(quantity[13]);
+                    Text_q_buy_price_4.setText(quantity[14]);
+                    Text_q_sale_price_4.setText(quantity[15]);
+                    set_rideou_cheack(4,quantity[12]);
+                }
 
+            }
+        }
+        ////////////////n     عند الضغط على عملية الحذف
+        public void opreshen_in_clear(int i){
+            if (i==1){
+                Text_q_type.setText("");
+                Text_q_buy_price.setText("");
+                Text_q_sale_price.setText("");
+                if (!TextUtils.isEmpty(Text_q_type_2.getEditableText().toString())){
+                    Text_q_type.setText(Text_q_type_2.getText().toString());
+                    Text_q_buy_price.setText(Text_q_buy_price_2.getText().toString());
+                    Text_q_sale_price.setText(Text_q_sale_price_2.getText().toString());
+                    Text_q_type_2.setText("");
+                    Text_q_quantity_2.setText("");
+                    Text_q_buy_price_2.setText("");
+                    Text_q_sale_price_2.setText("");
+                }
+            }
+            if (i==2){
+                Text_q_type_2.setText("");
+                Text_q_quantity_2.setText("");
+                Text_q_buy_price_2.setText("");
+                Text_q_sale_price_2.setText("");
+                if (!TextUtils.isEmpty(Text_q_type_3.getEditableText().toString())){
+                    Text_q_type_2.setText(Text_q_type_3.getText().toString());
+                    Text_q_quantity_2.setText(Text_q_quantity_3.getText().toString());
+                    Text_q_buy_price_2.setText(Text_q_buy_price_3.getText().toString());
+                    Text_q_sale_price_2.setText(Text_q_sale_price_3.getText().toString());
+                    Text_q_type_3.setText("");
+                    Text_q_quantity_3.setText("");
+                    Text_q_buy_price_3.setText("");
+                    Text_q_sale_price_3.setText("");
+                }
+            }
+            if (i==3){
+                Text_q_type_3.setText("");
+                Text_q_quantity_3.setText("");
+                Text_q_buy_price_3.setText("");
+                Text_q_sale_price_3.setText("");
+                if (!TextUtils.isEmpty(Text_q_type_4.getEditableText().toString())){
+                    Text_q_type_3.setText(Text_q_type_4.getText().toString());
+                    Text_q_quantity_3.setText(Text_q_quantity_4.getText().toString());
+                    Text_q_buy_price_3.setText(Text_q_buy_price_4.getText().toString());
+                    Text_q_sale_price_3.setText(Text_q_sale_price_4.getText().toString());
+                    Text_q_type_4.setText("");
+                    Text_q_quantity_4.setText("");
+                    Text_q_buy_price_4.setText("");
+                    Text_q_sale_price_4.setText("");
+                }
+            }
+            if (i==4){
+                Text_q_type_4.setText("");
+                Text_q_quantity_4.setText("");
+                Text_q_buy_price_4.setText("");
+                Text_q_sale_price_4.setText("");
+            }
+        }
+
+        public void set_rideou_cheack(int i,String number_q){
+            Databases databases = new Databases(getActivity());
+            int id = databases.get_id_goods(Text_barcode.getText().toString().trim());
+
+            int treu=databases.get_retern_cheack(id,number_q);
+
+            if (i==1&&treu==1){
+                primary_type.setChecked(true);
+                isChecked_1=true;
+            }else if (i==2&&treu==1){
+                primary_type_2.setChecked(true);
+                isChecked_2=true;
+            }else if (i==3&&treu==1){
+                primary_type_3.setChecked(true);
+                isChecked_3=true;
+            }else if (i==4&&treu==1){
+                primary_type_4.setChecked(true);
+                isChecked_4=true;
+            }
+
+        }
 
     }
 }

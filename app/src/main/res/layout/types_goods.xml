@@ -50,6 +50,7 @@
                     >
 
                     <Button
+                        android:id="@+id/clear_1"
                         android:layout_width="30dp"
                         android:layout_height="10dp"
                         android:visibility="gone"
@@ -65,6 +66,7 @@
                         android:text="1" />
 
                     <Button
+                        android:id="@+id/clear_2"
                         android:layout_width="30dp"
                         android:layout_height="10dp"
                         android:visibility="gone"
@@ -80,6 +82,7 @@
                         android:text="2" />
 
                     <Button
+                        android:id="@+id/clear_3"
                         android:layout_width="30dp"
                         android:layout_height="10dp"
                         android:visibility="gone"
@@ -95,6 +98,7 @@
                         android:text="3" />
 
                     <Button
+                        android:id="@+id/clear_4"
                         android:layout_width="23dp"
                         android:layout_height="10dp"
                         android:layout_weight="1"

@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -25,7 +24,6 @@ import com.aoa.mini_cashier.RED_QR.ScanCodeActivity;
 
 import java.util.ArrayList;
 
-import static android.widget.Toast.makeText;
 
 public class update_goods_db extends AppCompatActivity {
 
@@ -48,33 +46,28 @@ public class update_goods_db extends AppCompatActivity {
 
         ////////////////////////Add List Item//////////////////////////////////////////
         ListView listView =findViewById(R.id.list_goods_db);
-        //////////////////b يتم فتح كلاس لاضافة لكي يقوم بعملية التعديل
-        listView.setOnItemClickListener((parent, view, position, id) -> {
-            TextView barcode =view.findViewById(R.id.barcode_view);
-
-            Intent intent =new Intent(update_goods_db.this,add_goods_db.class);
-            intent.putExtra("key",1);
-            intent.putExtra("barcode",barcode.getText().toString());
-            startActivity(intent);
-        });
 
         listView.setOnItemLongClickListener((parent, view, position, id) -> {
-            AlertDialog.Builder builder =new AlertDialog.Builder(update_goods_db.this);
-            builder.setMessage("هل تريد حذف المنتج");
-            builder.setTitle("حذف منتج");
-            builder.setPositiveButton("نعم", (dialog, which) -> {
-                TextView barcode =view.findViewById(R.id.barcode_view);
-                if(databases.get_delete_goods(barcode.getText().toString()))
-                {
-                    makeText(update_goods_db.this, "Done", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    makeText(update_goods_db.this, "No Way", Toast.LENGTH_SHORT).show();
-                }
-            });
-            builder.setNegativeButton("لا", (dialog, which) -> {
+            AlertDialog.Builder builder =new AlertDialog.Builder(update_goods_db.this);/////////////////////////n        يوجد خطا هنا تاكد لا تنسسسسسس
+            builder.setMessage("أختر العملية التي تريدها");
+            builder.setTitle("حذف أو تعديل المنتج ");
+            builder.setPositiveButton("حذف", (dialog, which) -> {
 
+                int idd = databases.get_id_goods(ALL_baracode_name_g.getText().toString());
+                String s=String.valueOf(idd);
+                databases.get_delete_goods(ALL_baracode_name_g.getText().toString());
+                databases.get_delete_quantity(s);
+                get_ALL_baracode_name_g();
+                list_item.clear();
+                q_list.clear();
+                
+            });
+            builder.setNegativeButton("تعديل", (dialog, which) -> {
+                //////////////////b يتم فتح كلاس لاضافة لكي يقوم بعملية التعديل
+                Intent intent =new Intent(update_goods_db.this,add_goods_db.class);
+                intent.putExtra("key",1);
+                intent.putExtra("barcode",ALL_baracode_name_g.getText().toString());
+                startActivity(intent);
             }).show();
             return false;
         });
@@ -82,7 +75,6 @@ public class update_goods_db extends AppCompatActivity {
         get_ALL_baracode_name_g();
 
         get_goods();
-
 
         searsh_goods_btn.setOnClickListener(v -> {
             Intent intent=new Intent(this,ScanCodeActivity.class);
@@ -118,17 +110,17 @@ public class update_goods_db extends AppCompatActivity {
         @Override
         public View getView(int i, View convertView, ViewGroup parent) {
             LayoutInflater inflater = getLayoutInflater();
-            View view =inflater.inflate(R.layout.update_goods_item,null);
+            @SuppressLint({"ViewHolder", "InflateParams"}) View view =inflater.inflate(R.layout.update_goods_item,null);
 
-            TextView barcode = (TextView) view.findViewById(R.id.barcode_view);
+            TextView barcode =  view.findViewById(R.id.barcode_view);
 
-            TextView name = (TextView) view.findViewById(R.id.goods_view);
+            TextView name =view.findViewById(R.id.goods_view);
 
-            TextView quantity = (TextView) view.findViewById(R.id.quantity_veiw);
+            TextView quantity = view.findViewById(R.id.quantity_veiw);
 
-            TextView date_ex = (TextView) view.findViewById(R.id.date_ex_veiw);
+            TextView date_ex = view.findViewById(R.id.date_ex_veiw);
 
-            TextView buy_date = (TextView) view.findViewById(R.id.buy_date_veiw);
+            TextView buy_date =  view.findViewById(R.id.buy_date_veiw);
 
             barcode.setText(list_item.get(i).barcode );
             name.setText(list_item.get(i).name );
@@ -156,7 +148,7 @@ public class update_goods_db extends AppCompatActivity {
             }
             ListAdapter adapter = new ListAdupter(list_item);
             list.setAdapter(adapter);
-        }catch (Exception e){
+        }catch (Exception ignored){
 
         }
 
@@ -177,7 +169,7 @@ public class update_goods_db extends AppCompatActivity {
         ArrayAdapter<String> adapter1 = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, All);
 
-        ALL_baracode_name_g = (AutoCompleteTextView)
+        ALL_baracode_name_g =
                 findViewById(R.id.searsh_goods_txt);
 
         ALL_baracode_name_g.setAdapter(adapter1);
@@ -205,7 +197,7 @@ public class update_goods_db extends AppCompatActivity {
                 q_list.add(new list_item_update(g[0],g[1],g[2],g[3],g[4]));
             }
 
-            ListView list = (ListView) findViewById(R.id.list_goods_db);
+            ListView list =  findViewById(R.id.list_goods_db);
             ListAdupter ad =new ListAdupter(q_list);
             list.setAdapter(ad);
     }
@@ -242,6 +234,7 @@ public class update_goods_db extends AppCompatActivity {
         if (requestCode== intent_key){
             if (resultCode==RESULT_OK){
 
+                assert data != null;
                 key=data.getStringExtra("key");
                 retern=data.getStringExtra("valu");
 

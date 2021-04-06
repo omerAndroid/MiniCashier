@@ -266,8 +266,8 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
         int a=0;
         Cursor res=db.rawQuery("select * from quantity_type where name_type like '"+name_type+"' ",null);
         res.moveToFirst();
-        while (res.isAfterLast()==false){
-            a++;
+        while (!res.isAfterLast()){
+            a=res.getInt(res.getColumnIndex("id"));
             res.moveToNext();
         }
         return a;
@@ -472,7 +472,7 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
             return true;
     }
     ///////n جلب من جدول الكميات كل الكميات لتعبئة الليستة *_*////////////////////////////////////
-    public String[] get_ALLq_qnuatitytype(int id){
+    public String[] get_ALLq_qnuatity(int id){
         int lenght=read_Tname_q_type(id);
         SQLiteDatabase db=this.getReadableDatabase();
         String[] sat=new String[4*read_Tname_q_type(id)];
@@ -629,11 +629,26 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
     public boolean get_delete_quantity(String id){
         SQLiteDatabase db=this.getWritableDatabase();
 
-        long result=db.delete("goods","id_g = ?",new String[]{id});
+        long result=db.delete("quantity","id_g = ?",new String[]{id});
         if (result==-1)
             return false;
         else
             return true;
+    }
+
+    public int get_retern_cheack(int id_g,String number_q){
+
+        SQLiteDatabase db=this.getReadableDatabase();
+        int id_q = get_check_quantity_type(number_q);
+        int a=0;
+
+        @SuppressLint("Recycle") Cursor res=db.rawQuery("select default_q from quantity where id_g = "+id_g+" and id_q = "+id_q+" ",null);
+        res.moveToFirst();
+        while (!res.isAfterLast()){
+            a=res.getInt(res.getColumnIndex("default_q"));
+            res.moveToNext();
+        }
+        return a;
     }
 
 
