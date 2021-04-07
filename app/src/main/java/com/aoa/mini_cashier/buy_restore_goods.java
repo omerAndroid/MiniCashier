@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ public class buy_restore_goods extends AppCompatActivity {
     Dialog customer_data;
     Button list_options,save_btn,add_item_list;
     EditText c_name,Text_add_name_item;
+    Switch buy_or_restore,money_or_debt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +36,11 @@ public class buy_restore_goods extends AppCompatActivity {
         c_name = findViewById(R.id.customer_name);////n  اسم العميل
         Text_add_name_item= findViewById(R.id.add_name_item);
         add_item_list = findViewById(R.id.add_item_list);
+
+        buy_or_restore = findViewById(R.id.buy_or_restore);
+        money_or_debt = findViewById(R.id.cash_or_debt);
+
+
 
         ListView list = (ListView) findViewById(R.id.list_buy_restore);
         //////////////////////// Add goods in list //////////////////////////////////////////
@@ -81,6 +88,34 @@ public class buy_restore_goods extends AppCompatActivity {
             }
         });
         ///////////////////////////////////////////////////////////////////////////////////
+
+        buy_or_restore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(buy_or_restore.isChecked())
+                {
+                    buy_or_restore.setText("استرجاع");
+                }
+                else {
+                    buy_or_restore.setText("بيع");
+                }
+
+            }
+        });
+
+        money_or_debt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(money_or_debt.isChecked())
+                {
+                    money_or_debt.setText("آجل");
+                }
+                else {
+                    money_or_debt.setText("نقد");
+                }
+
+            }
+        });
 
         save_btn.setOnClickListener(new View.OnClickListener() {
             @Override
