@@ -64,9 +64,11 @@ public class update_goods_db extends AppCompatActivity {
             });
             builder.setNegativeButton("تعديل", (dialog, which) -> {
                 //////////////////b يتم فتح كلاس لاضافة لكي يقوم بعملية التعديل
+
+                TextView barcode =view.findViewById(R.id.barcode_view);
                 Intent intent =new Intent(update_goods_db.this,add_goods_db.class);
                 intent.putExtra("key",1);
-                intent.putExtra("barcode",ALL_baracode_name_g.getText().toString());
+                intent.putExtra("barcode",barcode.getText().toString());
                 startActivity(intent);
             }).show();
             return false;

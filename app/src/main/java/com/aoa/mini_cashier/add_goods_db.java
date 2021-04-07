@@ -322,10 +322,10 @@ public class add_goods_db extends AppCompatActivity {
         return check;
     }
 
-    public boolean get_seve_goods() {
+    public void get_seve_goods() {
 
         check_add=false;
-        boolean check;
+       // boolean check;
 
         if (check_impot_googs()) {
 
@@ -342,7 +342,6 @@ public class add_goods_db extends AppCompatActivity {
 
                     if (result) {
                         check_add=true;
-                        check = true;
                         Toast.makeText(this, "OK", Toast.LENGTH_SHORT).show();
                         Modification();/////v  تعديل بعد عملية الادخال
                         get_ALL_baracode();
@@ -355,24 +354,19 @@ public class add_goods_db extends AppCompatActivity {
 
                     } else {
 
-                        check = false;
                         Toast.makeText(this, "No", Toast.LENGTH_SHORT).show();
                     }
 
                 }else {
                     Toast.makeText(this, "أدخل كمية للبضاعة", Toast.LENGTH_SHORT).show();
-                    check = false;
                 }
             } else {
                 check_add=true;
-                check = false;
             }
 
-        } else {
-            check = false;
         }
 
-        return check;
+        //return check;
     }
     /////////n عملية اضافة سريعة للبضائع للتخلص من بعض المشاكل
     public boolean get_seve_fast(){
@@ -523,6 +517,7 @@ public class add_goods_db extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode==intent_key){
             if (resultCode==RESULT_OK){
+                assert data != null;
                 boolen_key=data.getStringExtra("page");
 
                 makeText(this, boolen_key, Toast.LENGTH_SHORT).show();
@@ -582,9 +577,7 @@ public class add_goods_db extends AppCompatActivity {
                                 get_seve_ubdat_goods_btn();
                                 finish();
                             })
-                            .setNegativeButton("لا", (dialog, id) -> {
-                                finish();
-                            }).show();
+                            .setNegativeButton("لا", (dialog, id) -> finish()).show();
                 }else {
                     finish();
                 }
@@ -793,7 +786,7 @@ public class add_goods_db extends AppCompatActivity {
         public boolean insert_Data(){
             Databases databases = new Databases(getActivity());
             int id_g = databases.get_id_goods(Text_barcode.getText().toString().trim());
-            int id_q,number_type=0;
+            int id_q,number_type;
             check_insert_Data=false;
             quantity_stored =1;
             if (!TextUtils.isEmpty(Text_q_type.getEditableText().toString())){
@@ -914,9 +907,7 @@ public class add_goods_db extends AppCompatActivity {
                         databases.insert_new_quantity_type(new_type);
                         b=true;
                     })
-                    .setNegativeButton("لا", (dialog, id) ->{
-                        b=false;
-                    }).show();
+                    .setNegativeButton("لا", (dialog, id) -> b=false).show();
             return b;
         }
         //////////////////n         عملية التاكد بان اسم الكمية مسجل من قبل
@@ -938,11 +929,11 @@ public class add_goods_db extends AppCompatActivity {
              b=false;
             if (isChecked_1&&!TextUtils.isEmpty(Text_q_type.getEditableText().toString())){
                 b=true;
-            } if (isChecked_2&&!TextUtils.isEmpty(Text_q_type_2.getEditableText().toString())){
+            }else if (isChecked_2&&!TextUtils.isEmpty(Text_q_type_2.getEditableText().toString())){
                 b=true;
-            } if (isChecked_3&&!TextUtils.isEmpty(Text_q_type_3.getEditableText().toString())){
+            }else if (isChecked_3&&!TextUtils.isEmpty(Text_q_type_3.getEditableText().toString())){
                 b=true;
-            } if (isChecked_4&&!TextUtils.isEmpty(Text_q_type_4.getEditableText().toString())){
+            }else if (isChecked_4&&!TextUtils.isEmpty(Text_q_type_4.getEditableText().toString())){
                 b=true;
             }
             Toast.makeText(getContext(), String.valueOf(b), Toast.LENGTH_SHORT).show();

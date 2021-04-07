@@ -34,10 +34,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        LocalBackup  localBackup = new LocalBackup(this);
-        Databases databases=new Databases(this);
-        String outFileName = Environment.getExternalStorageDirectory() + File.separator + getResources().getString(R.string.app_name) + File.separator;
-        localBackup.performBackup(databases, outFileName);
+//        LocalBackup  localBackup = new LocalBackup(this);
+//        Databases databases=new Databases(this);
+//        String outFileName = Environment.getExternalStorageDirectory() + File.separator + getResources().getString(R.string.app_name) + File.separator;
+//        localBackup.performBackup(databases, outFileName);
 
 
         //////////////////////n        حفظ لمرة واحده

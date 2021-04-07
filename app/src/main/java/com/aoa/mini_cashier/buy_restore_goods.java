@@ -91,7 +91,7 @@ public class buy_restore_goods extends AppCompatActivity {
     }
     class ListAdupter extends BaseAdapter
     {
-        ArrayList<list_buy_restore> list_item =new ArrayList<list_buy_restore>();
+        ArrayList<list_buy_restore> list_item;
         ListAdupter(ArrayList<list_buy_restore> list_item){
             this.list_item = list_item ;
         }
