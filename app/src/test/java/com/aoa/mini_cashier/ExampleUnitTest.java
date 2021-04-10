@@ -82,39 +82,42 @@ public class ExampleUnitTest {
              // 9999999999.123
         //TimeOut();
 
-          String ss="",nu="999999999.1239";
-           for (int i=0;i<=nu.length()-1;i++){
-               if (String.valueOf(nu.charAt(i)).equals("٠")){
-                   ss+="0";
-               }else if(String.valueOf(nu.charAt(i)).equals("٩")){
-                   ss+="9";
-               }else if(String.valueOf(nu.charAt(i)).equals("١")){
-                   ss+="1";
-               }else if(String.valueOf(nu.charAt(i)).equals("٢")){
-                   ss+="2";
-               }else if(String.valueOf(nu.charAt(i)).equals("٣")){
-                   ss+="3";
-               }else if(String.valueOf(nu.charAt(i)).equals("٤")){
-                   ss+="4";
-               }else if(String.valueOf(nu.charAt(i)).equals("٥")){
-                   ss+="5";
-               }else if(String.valueOf(nu.charAt(i)).equals("٦")){///١٢٣٤٥٦٧٨٩٫٠٠٠
-                   ss+="6";
-               }else if(String.valueOf(nu.charAt(i)).equals("٧")){
-                   ss+="7";
-               }else if(String.valueOf(nu.charAt(i)).equals("٨")){
-                   ss+="8";
-               }else if(String.valueOf(nu.charAt(i)).equals("٫")){
-                   ss+=".";
-               }
-           }
-        System.out.println(" nn : " +ss);
-        System.out.println(" nn : " + nu.length());
 
+        System.out.println(" int : " + To_int("12.0"));
 
     }
 
 
+    public void set_nu(){
+        String ss="",nu="999999999.1239";
+        for (int i=0;i<=nu.length()-1;i++){
+            if (String.valueOf(nu.charAt(i)).equals("٠")){
+                ss+="0";
+            }else if(String.valueOf(nu.charAt(i)).equals("٩")){
+                ss+="9";
+            }else if(String.valueOf(nu.charAt(i)).equals("١")){
+                ss+="1";
+            }else if(String.valueOf(nu.charAt(i)).equals("٢")){
+                ss+="2";
+            }else if(String.valueOf(nu.charAt(i)).equals("٣")){
+                ss+="3";
+            }else if(String.valueOf(nu.charAt(i)).equals("٤")){
+                ss+="4";
+            }else if(String.valueOf(nu.charAt(i)).equals("٥")){
+                ss+="5";
+            }else if(String.valueOf(nu.charAt(i)).equals("٦")){///١٢٣٤٥٦٧٨٩٫٠٠٠
+                ss+="6";
+            }else if(String.valueOf(nu.charAt(i)).equals("٧")){
+                ss+="7";
+            }else if(String.valueOf(nu.charAt(i)).equals("٨")){
+                ss+="8";
+            }else if(String.valueOf(nu.charAt(i)).equals("٫")){
+                ss+=".";
+            }
+        }
+        System.out.println(" nn : " +ss);
+        System.out.println(" nn : " + nu.length());
+    }
 
 
     public String To_double(String s){
@@ -172,6 +175,21 @@ public class ExampleUnitTest {
         }
         return v ;
     }
+
+
+    public String To_int(String s){
+        String[] parts = s.split("\\.");
+        String part1 ,v  ;
+        if (s.contains(".")) {
+
+            part1 = parts[0];
+            v=part1;
+        }else {
+            v=s;
+        }
+        return v;
+    }
+
 
     public String To_double2(String s){
 

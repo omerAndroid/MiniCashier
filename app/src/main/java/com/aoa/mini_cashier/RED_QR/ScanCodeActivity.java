@@ -179,7 +179,7 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
         String[] All_goods=databases.get_All_goods_for_barcod(item);
         double[] All_goods_double=databases.get_All_goods_for_barcod_Double(item);
         add_goods_db.Text_name_goods.setText(All_goods[0]);
-        add_goods_db.Text_quantity.setText(theack_aggen(MessageFormat.format("{0}", All_goods_double[0])));
+        add_goods_db.Text_quantity.setText(To_int(theack_aggen(MessageFormat.format("{0}", All_goods_double[0]))));
         add_goods_db.Text_date_ex.setText(All_goods[1]);
         add_goods_db.Text_date_sale.setText(All_goods[2]);
         add_goods_db.spinner.setText(All_goods[3]);
@@ -216,5 +216,18 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
         }
 
         return ss.toString();
+    }
+    /////////////n      للتحويل الرقم من دبل الى انتجر
+    public String To_int(String s){
+        String[] parts = s.split("\\.");
+        String part1 ,v  ;
+        if (s.contains(".")) {
+
+            part1 = parts[0];
+            v=part1;
+        }else {
+            v=s;
+        }
+        return v;
     }
 }

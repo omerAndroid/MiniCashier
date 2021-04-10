@@ -288,7 +288,7 @@ public class add_goods_db extends AppCompatActivity {
         String[] All_goods=databases.get_All_goods_for_barcod(item);
         double[] All_goods_double=databases.get_All_goods_for_barcod_Double(item);
             Text_name_goods.setText(All_goods[0]);
-            Text_quantity.setText(theack_aggen(MessageFormat.format("{0}", All_goods_double[0])));
+            Text_quantity.setText(To_int(theack_aggen(MessageFormat.format("{0}", All_goods_double[0]))));
             Text_date_ex.setText(All_goods[1]);
             Text_date_sale.setText(All_goods[2]);
             spinner.setText(All_goods[3]);
@@ -297,6 +297,19 @@ public class add_goods_db extends AppCompatActivity {
 
                 listShow_qnuatitytype();
         
+    }
+    /////////////n      للتحويل الرقم من دبل الى انتجر
+    public String To_int(String s){
+        String[] parts = s.split("\\.");
+        String part1 ,v  ;
+        if (s.contains(".")) {
+
+            part1 = parts[0];
+            v=part1;
+        }else {
+            v=s;
+        }
+        return v;
     }
     /////////////////n     خوارزمية تساعد لعملية عرض وادخال الارقام
     public String theack_aggen(String s){
@@ -776,7 +789,7 @@ public class add_goods_db extends AppCompatActivity {
                                             /////////m     يقوم لارسال القيمة الى العرض
                                             quantity_stored = quantity_stored * Double.parseDouble(Text_quantity.getText().toString());
                                             quantity_stored += Double.parseDouble(Text_extra_quantity.getText().toString());
-                                            Text_quantity.setText( Double.toString(quantity_stored));
+                                            Text_quantity.setText(To_int(Double.toString(quantity_stored)));
 
                                             ceack_save_quantity = true;
                                             dismiss();
@@ -805,7 +818,7 @@ public class add_goods_db extends AppCompatActivity {
                                             /////////m     يقوم لارسال القيمة الى العرض
                                             quantity_stored = quantity_stored * Double.parseDouble(Text_quantity.getText().toString() +"d");
                                             quantity_stored += Double.parseDouble(Text_extra_quantity.getText().toString() +"d");
-                                            Text_quantity.setText(Double.toString(quantity_stored));
+                                            Text_quantity.setText(To_int(Double.toString(quantity_stored)));
 
                                             ceack_save_quantity = true;
                                             dismiss();
@@ -860,7 +873,7 @@ public class add_goods_db extends AppCompatActivity {
                 number_type=2;
                 id_q=databases.get_id_quantity_type(Text_q_type_2.getEditableText().toString());
 
-                check_insert_Data=databases.insert_quantity(number_type,Integer.parseInt(Text_q_quantity_2.getText().toString() ),isChecked_2,
+                check_insert_Data=databases.insert_quantity(number_type,Integer.parseInt(To_int(Text_q_quantity_2.getText().toString())),isChecked_2,
                         Double.parseDouble(Text_q_buy_price_2.getText().toString()), Double.parseDouble(Text_q_sale_price_2.getText().toString() ),id_q,id_g);
 
                 quantity_stored *=Double.parseDouble(Text_q_quantity_2.getText().toString());
@@ -868,7 +881,7 @@ public class add_goods_db extends AppCompatActivity {
             if (!TextUtils.isEmpty(Text_q_type_3.getEditableText().toString())){
                 number_type=3;
                 id_q=databases.get_id_quantity_type(Text_q_type_3.getEditableText().toString());
-                check_insert_Data= databases.insert_quantity(number_type,Integer.parseInt(Text_q_quantity_3.getText().toString()),isChecked_3,
+                check_insert_Data= databases.insert_quantity(number_type,Integer.parseInt(To_int(Text_q_quantity_3.getText().toString())),isChecked_3,
                         Double.parseDouble(Text_q_buy_price_3.getText().toString()  ), Double.parseDouble(Text_q_sale_price_3.getText().toString()),id_q,id_g);
 
                 quantity_stored *=Double.parseDouble(Text_q_quantity_3.getText().toString());
@@ -876,13 +889,14 @@ public class add_goods_db extends AppCompatActivity {
             if (!TextUtils.isEmpty(Text_q_type_4.getEditableText().toString())){
                 number_type=4;
                 id_q=databases.get_id_quantity_type(Text_q_type_4.getEditableText().toString());
-                check_insert_Data= databases.insert_quantity(number_type,Integer.parseInt(Text_q_quantity_4.getText().toString()),isChecked_4,
+                check_insert_Data= databases.insert_quantity(number_type,Integer.parseInt(To_int(Text_q_quantity_4.getText().toString())),isChecked_4,
                         Double.parseDouble(Text_q_buy_price_4.getText().toString()  ), Double.parseDouble(Text_q_sale_price_4.getText().toString()),id_q,id_g);
 
                 quantity_stored *=Double.parseDouble(Text_q_quantity_4.getText().toString());
             }
             return check_insert_Data;
         }
+
 
         ////////////n للتحقق من المدخلات
         private boolean check_impot_quantity() {
@@ -1114,7 +1128,19 @@ public class add_goods_db extends AppCompatActivity {
 
             return ss.toString();
         }
+        /////////////n      للتحويل الرقم من دبل الى انتجر
+        public String To_int(String s){
+            String[] parts = s.split("\\.");
+            String part1 ,v  ;
+            if (s.contains(".")) {
 
+                part1 = parts[0];
+                v=part1;
+            }else {
+                v=s;
+            }
+            return v;
+        }
         /////////////////n     التعبئة في حقول الكمية
         private void insert_into_qnuatity() {
             Databases databases = new Databases(getActivity());
@@ -1135,23 +1161,23 @@ public class add_goods_db extends AppCompatActivity {
                     i+=1;
                 }else if (i==2){
                     Text_q_type_2.setText(quantity[1]);
-                    Text_q_quantity_2.setText( To_double(new DecimalFormat("#.000#").format( quantity_Double[3])));
-                    Text_q_buy_price_2.setText(To_double( new DecimalFormat("#.000#").format( quantity_Double[4])));
-                    Text_q_sale_price_2.setText( To_double(new DecimalFormat("#.000#").format( quantity_Double[5])));
+                    Text_q_quantity_2.setText(To_int(theack_aggen(To_double(new DecimalFormat("#.00#").format( quantity_Double[3])))));
+                    Text_q_buy_price_2.setText(theack_aggen(To_double(new DecimalFormat("#.00#").format( quantity_Double[4]))));
+                    Text_q_sale_price_2.setText(theack_aggen(To_double(new DecimalFormat("#.00#").format( quantity_Double[5]))));
                     set_rideou_cheack(2,quantity[1]);
                     i+=1;
                 }else if (i==3){
                     Text_q_type_3.setText(quantity[2]);
-                    Text_q_quantity_3.setText( To_double(new DecimalFormat("#.000#").format( quantity_Double[6])));
-                    Text_q_buy_price_3.setText(To_double( new DecimalFormat("#.000#").format( quantity_Double[7])));
-                    Text_q_sale_price_3.setText( To_double(new DecimalFormat("#.000#").format( quantity_Double[8])));
+                    Text_q_quantity_3.setText(To_int(theack_aggen(To_double(new DecimalFormat("#.00#").format( quantity_Double[6])))));
+                    Text_q_buy_price_3.setText(theack_aggen(To_double(new DecimalFormat("#.00#").format( quantity_Double[7]))));
+                    Text_q_sale_price_3.setText(theack_aggen(To_double(new DecimalFormat("#.00#").format( quantity_Double[8]))));
                     set_rideou_cheack(3,quantity[2]);
                     i+=1;
                 }else if (i==4){
                     Text_q_type_4.setText(quantity[3]);
-                    Text_q_quantity_4.setText( To_double(new DecimalFormat("#.000#").format( quantity_Double[9])));
-                    Text_q_buy_price_4.setText( To_double(new DecimalFormat("#.000#").format( quantity_Double[10])));
-                    Text_q_sale_price_4.setText(To_double(( new DecimalFormat("#.000#").format( quantity_Double[11]))));
+                    Text_q_quantity_4.setText(To_int(theack_aggen(To_double(new DecimalFormat("#.00#").format( quantity_Double[9])))));
+                    Text_q_buy_price_4.setText(theack_aggen(To_double(new DecimalFormat("#.00#").format( quantity_Double[10]))));
+                    Text_q_sale_price_4.setText(theack_aggen(To_double(new DecimalFormat("#.00#").format( quantity_Double[11]))));
                     set_rideou_cheack(4,quantity[3]);
                 }
 
