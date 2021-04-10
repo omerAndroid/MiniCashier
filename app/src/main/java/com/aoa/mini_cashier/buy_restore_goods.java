@@ -14,9 +14,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupMenu;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import java.util.ArrayList;
 
@@ -25,7 +26,8 @@ public class buy_restore_goods extends AppCompatActivity {
     Dialog customer_data;
     Button list_options,save_btn,add_item_list;
     EditText c_name,Text_add_name_item;
-    Switch buy_or_restore,money_or_debt;
+
+    SwitchMaterial buy_or_restore,money_or_debt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -19,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:ignore="AllowBackup">
-        <activity android:name=".Settings"></activity>
+        <activity android:name=".Settings" />
         <activity android:name=".buy_restore_goods" />
         <activity android:name=".RED_QR.ScanCodeActivity" />
         <activity android:name=".update_goods_db" />

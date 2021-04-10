@@ -18,6 +18,8 @@ import com.aoa.mini_cashier.update_goods_db;
 import com.google.zxing.Result;
 
 
+import java.text.MessageFormat;
+
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
 
@@ -175,11 +177,44 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
         Modification();
 
         String[] All_goods=databases.get_All_goods_for_barcod(item);
+        double[] All_goods_double=databases.get_All_goods_for_barcod_Double(item);
         add_goods_db.Text_name_goods.setText(All_goods[0]);
-        add_goods_db.Text_quantity.setText(All_goods[1]);
-        add_goods_db.Text_date_ex.setText(All_goods[2]);
-        add_goods_db.Text_date_sale.setText(All_goods[3]);
-        add_goods_db.spinner.setText(All_goods[4]);
-    }
+        add_goods_db.Text_quantity.setText(theack_aggen(MessageFormat.format("{0}", All_goods_double[0])));
+        add_goods_db.Text_date_ex.setText(All_goods[1]);
+        add_goods_db.Text_date_sale.setText(All_goods[2]);
+        add_goods_db.spinner.setText(All_goods[3]);
 
+        add_goods_db.department_item=All_goods[3];
+    }
+    /////////////////n     خوارزمية تساعد لعملية عرض وادخال الارقام
+    public String theack_aggen(String s){
+        StringBuilder ss= new StringBuilder();
+        for (int i = 0; i<= s.length()-1; i++){
+            if (String.valueOf(s.charAt(i)).equals("٠")){
+                ss.append("0");
+            }else if(String.valueOf(s.charAt(i)).equals("٩")){
+                ss.append("9");
+            }else if(String.valueOf(s.charAt(i)).equals("١")){
+                ss.append("1");
+            }else if(String.valueOf(s.charAt(i)).equals("٢")){
+                ss.append("2");
+            }else if(String.valueOf(s.charAt(i)).equals("٣")){
+                ss.append("3");
+            }else if(String.valueOf(s.charAt(i)).equals("٤")){
+                ss.append("4");
+            }else if(String.valueOf(s.charAt(i)).equals("٥")){
+                ss.append("5");
+            }else if(String.valueOf(s.charAt(i)).equals("٦")){///١٢٣٤٥٦٧٨٩٫٠٠٠
+                ss.append("6");
+            }else if(String.valueOf(s.charAt(i)).equals("٧")){
+                ss.append("7");
+            }else if(String.valueOf(s.charAt(i)).equals("٨")){
+                ss.append("8");
+            }else if(String.valueOf(s.charAt(i)).equals("٫")){
+                ss.append(".");
+            }
+        }
+
+        return ss.toString();
+    }
 }

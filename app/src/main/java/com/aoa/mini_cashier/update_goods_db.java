@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.aoa.mini_cashier.DB.Databases;
 import com.aoa.mini_cashier.RED_QR.ScanCodeActivity;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 
 
@@ -87,8 +88,7 @@ public class update_goods_db extends AppCompatActivity {
 
     }
 
-    class ListAdupter extends BaseAdapter
-    {
+    class ListAdupter extends BaseAdapter {
         ArrayList<list_item_update> list_item;
         ListAdupter(ArrayList<list_item_update> list_item){
             this.list_item = list_item ;
@@ -141,12 +141,14 @@ public class update_goods_db extends AppCompatActivity {
             ListView list = findViewById(R.id.list_goods_db);
             int a=databases.read_Tname();
 
-            String[] arrayList = databases.get_All_goods();
-
-            int i=0;
+            String[] arrayList = databases.get_All_goods();//get_All_goods_Double()
+            double[] arrayList_Double = databases.get_All_goods_Double();
+            int i=0,g=0;
             for (int j = 0; j < a; j++) {
-                list_item.add(new list_item_update(arrayList[i], arrayList[i + 1], arrayList[i + 2], arrayList[i + 3], arrayList[i + 4]));
-                i += 5;
+                list_item.add(new list_item_update(arrayList[i], arrayList[i + 1], MessageFormat.format("{0}", arrayList_Double[g]),
+                        arrayList[i + 2], arrayList[i + 3]));
+                i+=4;
+                g+=1;
             }
             ListAdapter adapter = new ListAdupter(list_item);
             list.setAdapter(adapter);

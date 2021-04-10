@@ -28,7 +28,8 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="اسم المستلم نيابة عن العميل"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                tools:ignore="Autofill,HardcodedText" />
 
             <EditText
                 android:id="@+id/customer_name"
@@ -37,7 +38,8 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="اسم العميل"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                tools:ignore="Autofill,HardcodedText" />
         </LinearLayout>
 
         <LinearLayout
@@ -48,27 +50,36 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginStart="5dp"
+                android:orientation="vertical"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp">
 
-                <Switch
+                <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/buy_or_restore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="بيع" />
 
-                <Switch
+                    android:text="بيع"/>
+
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/cash_or_debt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="نقد" />
+                    android:text="نقد"/>
+
+
             </LinearLayout>
 
             <Button
                 android:id="@+id/bills_number"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="رقم الفاتورة" />
+                android:text="رقم الفاتورة"
+                tools:ignore="HardcodedText" />
 
             <Button
                 android:id="@+id/list_options"
@@ -79,7 +90,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal">
 
@@ -90,14 +101,16 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="إضافة بالإسم أو الباركود"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                tools:ignore="Autofill,HardcodedText,NestedWeights" />
 
             <Button
                 android:id="@+id/add_item_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="إضافة" />
+                android:text="إضافة"
+                tools:ignore="HardcodedText" />
 
             <Button
                 android:id="@+id/bracode_reader"
@@ -131,7 +144,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            tools:ignore="InefficientWeight">
 
             <EditText
                 android:id="@+id/discount_bill_items"
@@ -140,7 +154,8 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="خصم من الفاتورة"
-                android:inputType="numberDecimal" />
+                android:inputType="numberDecimal"
+                tools:ignore="Autofill,HardcodedText,NestedWeights" />
 
             <EditText
                 android:id="@+id/total_price"
@@ -150,7 +165,8 @@
                 android:ems="10"
                 android:enabled="false"
                 android:hint="الإجمالي"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                tools:ignore="Autofill,HardcodedText" />
 
         </LinearLayout>
 
@@ -161,11 +177,12 @@
 
             <Button
                 android:id="@+id/save_bills"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="حفظ"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                tools:ignore="HardcodedText" />
 
         </LinearLayout>
 

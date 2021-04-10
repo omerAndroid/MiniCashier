@@ -1,328 +1,191 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".buy_restore_goods">
 
     <LinearLayout
+        android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/save_tg_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="حفظ" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/delete_tg_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="حذف"
-            android:visibility="gone" />
+            <EditText
+                android:id="@+id/name_sender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="اسم المستلم نيابة عن العميل"
+                android:inputType="textPersonName"
+                tools:ignore="Autofill,HardcodedText" />
 
-    </LinearLayout>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+            <EditText
+                android:id="@+id/customer_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="اسم العميل"
+                android:inputType="textPersonName"
+                tools:ignore="Autofill,HardcodedText" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
-                <RadioGroup
-                    android:id="@+id/radioGroup"
+                android:layout_marginStart="5dp"
+                android:orientation="vertical"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp">
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/buy_or_restore"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0"
-                    android:orientation="vertical"
-                    >
-
-                    <Button
-                        android:layout_width="30dp"
-                        android:layout_height="10dp"
-                        android:layout_weight="1"
-                        android:background="@android:drawable/ic_delete"
-                         />
-
-                    <RadioButton
-                        android:id="@+id/primary_type"
-                        android:layout_width="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="1" />
-
-                    <Button
-                        android:layout_width="30dp"
-                        android:layout_height="10dp"
-                        android:layout_weight="1"
-                        android:background="@android:drawable/ic_delete"
-                         />
-
-                    <RadioButton
-                        android:id="@+id/primary_type_2"
-                        android:layout_width="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="2" />
-
-                    <Button
-                        android:layout_width="30dp"
-                        android:layout_height="10dp"
-                        android:layout_weight="1"
-                        android:background="@android:drawable/ic_delete"
-                         />
-
-                    <RadioButton
-                        android:id="@+id/primary_type_3"
-                        android:layout_width="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="3" />
-
-                    <Button
-                        android:layout_width="30dp"
-                        android:layout_height="10dp"
-                        android:layout_weight="1"
-                        android:background="@android:drawable/ic_delete"
-                         />
-
-                    <RadioButton
-                        android:id="@+id/primary_type_4"
-                        android:layout_width="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="4" />
-                </RadioGroup>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#00BFA5"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
+                    android:text="بيع"/>
 
 
-                            <EditText
-                                android:id="@+id/q_type"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:ems="10"
-                                android:hint="نوع الكمية الأولى"
-                                android:inputType="textPersonName" />
-                        </LinearLayout>
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/cash_or_debt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="نقد"/>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-                            <EditText
-                                android:id="@+id/q_buy_price"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:ems="10"
-                                android:hint="سعر الشراء"
-                                android:inputType="number|numberDecimal" />
-
-                            <EditText
-                                android:id="@+id/q_sale_price"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:ems="10"
-                                android:hint="سعر البيع"
-                                android:inputType="number|numberDecimal" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-
-                            <EditText
-                                android:id="@+id/q_type_2"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:ems="10"
-                                android:hint="نوع الكمية الثانية"
-                                android:inputType="textPersonName" />
-                        </LinearLayout>
-
-                        <EditText
-                            android:id="@+id/q_quantity_2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:hint="الكمية في هذا النوع"
-                            android:inputType="number" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-                            <EditText
-                                android:id="@+id/q_buy_price_2"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:ems="10"
-                                android:hint="سعر الشراء"
-                                android:inputType="number|numberDecimal" />
-
-                            <EditText
-                                android:id="@+id/q_sale_price_2"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:ems="10"
-                                android:hint="سعر البيع"
-                                android:inputType="number|numberDecimal" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#00BFA5"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-
-                            <EditText
-                                android:id="@+id/q_type_3"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:ems="10"
-                                android:hint="نوع الكمية الثالثة"
-                                android:inputType="textPersonName" />
-                        </LinearLayout>
-
-                        <EditText
-                            android:id="@+id/q_quantity_3"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:hint="الكمية في هذا النوع"
-                            android:inputType="number" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-                            <EditText
-                                android:id="@+id/q_buy_price_3"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:ems="10"
-                                android:hint="سعر الشراء"
-                                android:inputType="number|numberDecimal" />
-
-                            <EditText
-                                android:id="@+id/q_sale_price_3"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:ems="10"
-                                android:hint="سعر البيع"
-                                android:inputType="number|numberDecimal" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-
-                            <EditText
-                                android:id="@+id/q_type_4"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:ems="10"
-                                android:hint="نوع الكمية الرابعة"
-                                android:inputType="textPersonName" />
-                        </LinearLayout>
-
-                        <EditText
-                            android:id="@+id/q_quantity_4"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:hint="الكمية في هذا النوع"
-                            android:inputType="number" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-                            <EditText
-                                android:id="@+id/q_buy_price_4"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:ems="10"
-                                android:hint="سعر الشراء"
-                                android:inputType="number|numberDecimal" />
-
-                            <EditText
-                                android:id="@+id/q_sale_price_4"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:ems="10"
-                                android:hint="سعر البيع"
-                                android:inputType="number|numberDecimal" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                </LinearLayout>
 
             </LinearLayout>
 
-        </LinearLayout>
-    </ScrollView>
+            <Button
+                android:id="@+id/bills_number"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="رقم الفاتورة"
+                tools:ignore="HardcodedText" />
 
-</LinearLayout>
+            <Button
+                android:id="@+id/list_options"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/ic_list_black_24dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/add_name_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="إضافة بالإسم أو الباركود"
+                android:inputType="textPersonName"
+                tools:ignore="Autofill,HardcodedText,NestedWeights" />
+
+            <Button
+                android:id="@+id/add_item_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="إضافة"
+                tools:ignore="HardcodedText" />
+
+            <Button
+                android:id="@+id/bracode_reader"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/ic_camera_alt_black_24dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/list_buy_restore"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            tools:ignore="InefficientWeight">
+
+            <EditText
+                android:id="@+id/discount_bill_items"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="خصم من الفاتورة"
+                android:inputType="numberDecimal"
+                tools:ignore="Autofill,HardcodedText,NestedWeights" />
+
+            <EditText
+                android:id="@+id/total_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:enabled="false"
+                android:hint="الإجمالي"
+                android:inputType="textPersonName"
+                tools:ignore="Autofill,HardcodedText" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/save_bills"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="حفظ"
+                android:textSize="20sp"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -66,11 +66,11 @@ public class ListAdupter_quantity extends BaseAdapter {
         buy_price.setText(list_item.get(i).getBuy_price());
         sale_price.setText(list_item.get(i).getSale_price());
 
-        float a=Float.parseFloat(buy_price.getText().toString() + "f");
-        float b=Float.parseFloat(sale_price.getText().toString() + "f");
-
-        buy_price.setText(Float.toString(a));
-        sale_price.setText(Float.toString(b));
+//        float a=Float.parseFloat(buy_price.getText().toString() + "f");
+//        float b=Float.parseFloat(sale_price.getText().toString() + "f");
+//
+//        buy_price.setText(Float.toString(a));
+//        sale_price.setText(Float.toString(b));
 
         /*view.setOnClickListener(new View.OnClickListener() {
             @Override

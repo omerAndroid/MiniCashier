@@ -16,10 +16,10 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
-public class Databases extends SQLiteOpenHelper {/// hello AAB
+public class Databases extends SQLiteOpenHelper {/// Databases_quantity
 
     static final String DBNAME="DB 0,1.db";///NOT NULL
-    private Context mContext;
+    private final Context mContext;
 
     public Databases(@Nullable Context context) {
         super(context,DBNAME,null,2);
@@ -33,7 +33,8 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
                 ",expiration_date TEXT ," +
                 " date_purchase TEXT ,id_d INTEGER)");
 
-        db.execSQL("CREATE TABLE quantity(id INTEGER PRIMARY KEY AUTOINCREMENT ,number_q INTEGER,quantity_q REAL,default_q NUMERIC,purchase_price REAL,selling_price REAL," +
+        db.execSQL("CREATE TABLE quantity(id INTEGER PRIMARY KEY AUTOINCREMENT ,number_q INTEGER,quantity_q INTEGER," +
+                "default_q NUMERIC,purchase_price REAL,selling_price REAL," +
                 "id_q INTEGER,id_g INTEGER," +
                 "FOREIGN KEY(id_g) REFERENCES goods(id) ON UPDATE CASCADE ON DELETE CASCADE," +
                 "FOREIGN KEY(id_q) REFERENCES quantity_type(id) ON UPDATE CASCADE ON DELETE CASCADE)");
@@ -83,7 +84,7 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
 
                 long result = db.insert("quantity_type", null, contentValues);
 
-            }catch (Exception e){}
+            }catch (Exception ignored){}
         }
     }
      ////////////////n        عملية اضافة نوع كمية جديدة
@@ -165,7 +166,8 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
         return a;
     }
     //price عملية اللاضافةللبضاعة
-    public boolean insert_goods(String bracode,String name,float quantity_stored,String expiration_date,String date_purchase,int id_d){
+    public boolean insert_goods(String bracode,String name,double quantity_stored,String expiration_date,
+                                String date_purchase,int id_d){
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
         contentValues.put("bracode",bracode);
@@ -182,7 +184,8 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
             return true;
     }
     //////price عملية اضافةللكمية
-    public boolean insert_quantity(int number_q, float quantity_q,boolean default_q,float purchase_price,float selling_price,int id_q,int id_g){
+    public boolean insert_quantity(int number_q, int quantity_q,boolean default_q,double purchase_price,
+                                   double selling_price,int id_q,int id_g){
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
         contentValues.put("number_q",number_q);
@@ -215,7 +218,8 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
 
     }
     /////////////n         يقوم بتحديث جدول الكميات بستخدام اسم الكمية القديم
-    public boolean get_seve_ubdate_quantity(int id, String name_q, Double price,Double quantity_q,int id_g,Double purchase){
+    public boolean get_seve_ubdate_quantity(int id, String name_q, Double price,Double quantity_q,
+                                            int id_g,Double purchase){
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
         contentValues.put("name_q",name_q);
@@ -395,7 +399,7 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
     public String[] get_All_goods_for_barcod(String bracode){
         int lenght=read_Tname();
         SQLiteDatabase db=this.getReadableDatabase();
-        String[] sat=new String[6];
+        String[] sat=new String[5];
 
         if (lenght>0) {
             int i = 0;
@@ -406,9 +410,9 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
                 c = res.getString(res.getColumnIndex("name_g"));
                 sat[i] = c;
                 i++;
-                c = res.getString(res.getColumnIndex("quantity_stored"));
-                sat[i] = c;
-                i++;
+//                c = res.getString(res.getColumnIndex("quantity_stored"));
+//                sat[i] = c;
+//                i++;
                 c = res.getString(res.getColumnIndex("expiration_date"));
                 sat[i] = c;
                 i++;
@@ -427,8 +431,34 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
 
         return sat;
     }
+    ////////n         جلب بيانات جدول البضاعة باستخدام الباركود الراجع double
+    public double[] get_All_goods_for_barcod_Double(String bracode){
+        int lenght=read_Tname();
+        SQLiteDatabase db=this.getReadableDatabase();
+        double[] sat=new double[1];
+
+        if (lenght>0) {
+            int i = 0;
+            Cursor res = db.rawQuery("select * from goods where bracode like '"+bracode+"'", null);
+            res.moveToFirst();
+            while (res.isAfterLast() == false) {
+                double c;
+
+                c = res.getDouble(res.getColumnIndex("quantity_stored"));
+                sat[i] = c;
+                i++;
+
+                res.moveToNext();
+            }
+        }else{
+            sat=new double[1];
+            sat[0]=0.0;}
+
+        return sat;
+    }
     ///////n             يقوم بتجديث جدول البضاعة باستخدام الباركود القديم له
-    public boolean get_seve_ubdate_googs(String bracode,String name,float quantity_stored,String expiration_date,String date_purchase,int id_d,String old_baracod){
+    public boolean get_seve_ubdate_googs(String bracode,String name,double quantity_stored,
+                                         String expiration_date,String date_purchase,int id_d,String old_baracod){
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
         contentValues.put("bracode",bracode);
@@ -475,7 +505,7 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
     public String[] get_ALLq_qnuatity(int id){
         int lenght=read_Tname_q_type(id);
         SQLiteDatabase db=this.getReadableDatabase();
-        String[] sat=new String[4*read_Tname_q_type(id)];
+        String[] sat=new String[1*read_Tname_q_type(id)];
 
         if (lenght>0) {
             int i = 0;
@@ -488,22 +518,55 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
                 sat[i] = c;
                 i++;
 
-                c = res.getString(res.getColumnIndex("quantity_q"));
-                sat[i] = c;
-                i++;
-
-                c = res.getString(res.getColumnIndex("purchase_price"));///cشراء ---------- buy
-                sat[i] = c;
-                i++;
-
-                c = res.getString(res.getColumnIndex("selling_price"));///f   البيع   -------- sale
-                sat[i] = c;
-                i++;
+//                c = res.getString(res.getColumnIndex("quantity_q"));
+//                sat[i] = c;
+//                i++;
+//
+//                c = res.getString(res.getColumnIndex("purchase_price"));///cشراء ---------- buy
+//                sat[i] = c;
+//                i++;
+//
+//                c = res.getString(res.getColumnIndex("selling_price"));///f   البيع   -------- sale
+//                sat[i] = c;
+//                i++;
                 res.moveToNext();
             }
         }else{
             sat=new String[1];
             sat[0]=" ";}
+
+        return sat;
+    }
+    ///////n جلب من جدول الكميات كل الكميات لتعبئة الليستة *_*/////////////////  Double
+    public double[] get_ALLq_qnuatity_Double(int id){
+        int lenght=read_Tname_q_type(id);
+        SQLiteDatabase db=this.getReadableDatabase();
+        double[] sat=new double[3*read_Tname_q_type(id)];
+
+        if (lenght>0) {
+            int i = 0;
+
+            @SuppressLint("Recycle") Cursor res = db.rawQuery("select * from quantity where id_g = "+id+" ", null);
+            res.moveToFirst();
+            while (!res.isAfterLast()) {
+                double c;
+
+                c = res.getDouble(res.getColumnIndex("quantity_q"));
+                sat[i] = c;
+                i++;
+
+                c = res.getDouble(res.getColumnIndex("purchase_price"));///cشراء ---------- buy
+                sat[i] = c;
+                i++;
+
+                c = res.getDouble(res.getColumnIndex("selling_price"));///f   البيع   -------- sale
+                sat[i] = c;
+                i++;
+                res.moveToNext();
+            }
+        }else{
+            sat=new double[1];
+            sat[0]=0.0;}
 
         return sat;
     }
@@ -539,7 +602,7 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
     public String[] get_All_goods(){
         int lenght=read_Tname();
         SQLiteDatabase db=this.getReadableDatabase();
-        String[] sat=new String[5*read_Tname()];
+        String[] sat=new String[4*read_Tname()];
 
         if (lenght>0) {
             int i = 0;
@@ -553,9 +616,9 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
                 c = res.getString(res.getColumnIndex("name_g"));
                 sat[i] = c;
                 i++;
-                c = res.getString(res.getColumnIndex("quantity_stored"));
-                sat[i] = String.valueOf(Double.parseDouble(c));
-                i++;
+//                c = res.getString(res.getColumnIndex("quantity_stored"));
+//                sat[i] = String.valueOf(Double.parseDouble(c));
+//                i++;
                 c = res.getString(res.getColumnIndex("expiration_date"));
                 sat[i] = c;
                 i++;
@@ -570,7 +633,41 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
 
         return sat;
     }
+     //////n                                               _Double
+    public double[] get_All_goods_Double(){
+        int lenght=read_Tname();
+        SQLiteDatabase db=this.getReadableDatabase();
+        double[] sat=new double[read_Tname()];
 
+        if (lenght>0) {
+            int i = 0;
+            Cursor res = db.rawQuery("select * from goods " , null);
+            res.moveToFirst();
+            while (res.isAfterLast() == false) {
+                double c;
+//                c = res.getString(res.getColumnIndex("bracode"));
+//                sat[i] = c;
+//                i++;
+//                c = res.getString(res.getColumnIndex("name_g"));
+//                sat[i] = c;
+//                i++;
+                c = res.getDouble(res.getColumnIndex("quantity_stored"));
+                sat[i] = c;
+                i++;
+//                c = res.getString(res.getColumnIndex("expiration_date"));
+//                sat[i] = c;
+//                i++;
+//                c = res.getString(res.getColumnIndex("date_purchase"));
+//                sat[i] = c;
+//                i++;
+                res.moveToNext();
+            }
+        }else{
+            sat=new double[1];
+            sat[0]=0.0;}
+
+        return sat;
+    }
     Cursor res1;
     public String[] get_one_goods(String searsh ,String key){
         int lenght=read_Tname();
@@ -642,7 +739,7 @@ public class Databases extends SQLiteOpenHelper {/// hello AAB
         int id_q = get_check_quantity_type(number_q);
         int a=0;
 
-        @SuppressLint("Recycle") Cursor res=db.rawQuery("select default_q from quantity where id_g = "+id_g+" and id_q = "+id_q+" ",null);
+      @SuppressLint("Recycle") Cursor res=db.rawQuery("select default_q from quantity where id_g = "+id_g+" and id_q = "+id_q+" ",null);
         res.moveToFirst();
         while (!res.isAfterLast()){
             a=res.getInt(res.getColumnIndex("default_q"));

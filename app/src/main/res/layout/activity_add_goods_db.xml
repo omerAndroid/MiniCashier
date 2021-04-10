@@ -176,6 +176,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/ic_playlist_add_black_24dp" />
 
+
             <Button
                 android:id="@+id/save_add_goods"
                 android:layout_width="0dp"
