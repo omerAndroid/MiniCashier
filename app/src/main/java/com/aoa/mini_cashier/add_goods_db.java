@@ -1135,23 +1135,23 @@ public class add_goods_db extends AppCompatActivity {
                     i+=1;
                 }else if (i==2){
                     Text_q_type_2.setText(quantity[1]);
-                    Text_q_quantity_2.setText( new DecimalFormat("#.000#").format( quantity_Double[3]));
-                    Text_q_buy_price_2.setText( new DecimalFormat("#.000#").format( quantity_Double[4]));
-                    Text_q_sale_price_2.setText( new DecimalFormat("#.000#").format( quantity_Double[5]));
+                    Text_q_quantity_2.setText( To_double(new DecimalFormat("#.000#").format( quantity_Double[3])));
+                    Text_q_buy_price_2.setText(To_double( new DecimalFormat("#.000#").format( quantity_Double[4])));
+                    Text_q_sale_price_2.setText( To_double(new DecimalFormat("#.000#").format( quantity_Double[5])));
                     set_rideou_cheack(2,quantity[1]);
                     i+=1;
                 }else if (i==3){
                     Text_q_type_3.setText(quantity[2]);
-                    Text_q_quantity_3.setText( new DecimalFormat("#.000#").format( quantity_Double[6]));
-                    Text_q_buy_price_3.setText( new DecimalFormat("#.000#").format( quantity_Double[7]));
-                    Text_q_sale_price_3.setText( new DecimalFormat("#.000#").format( quantity_Double[8]));
+                    Text_q_quantity_3.setText( To_double(new DecimalFormat("#.000#").format( quantity_Double[6])));
+                    Text_q_buy_price_3.setText(To_double( new DecimalFormat("#.000#").format( quantity_Double[7])));
+                    Text_q_sale_price_3.setText( To_double(new DecimalFormat("#.000#").format( quantity_Double[8])));
                     set_rideou_cheack(3,quantity[2]);
                     i+=1;
                 }else if (i==4){
                     Text_q_type_4.setText(quantity[3]);
-                    Text_q_quantity_4.setText( new DecimalFormat("#.000#").format( quantity_Double[9]));
-                    Text_q_buy_price_4.setText( new DecimalFormat("#.000#").format( quantity_Double[10]));
-                    Text_q_sale_price_4.setText( new DecimalFormat("#.000#").format( quantity_Double[11]));
+                    Text_q_quantity_4.setText( To_double(new DecimalFormat("#.000#").format( quantity_Double[9])));
+                    Text_q_buy_price_4.setText( To_double(new DecimalFormat("#.000#").format( quantity_Double[10])));
+                    Text_q_sale_price_4.setText(To_double(( new DecimalFormat("#.000#").format( quantity_Double[11]))));
                     set_rideou_cheack(4,quantity[3]);
                 }
 
