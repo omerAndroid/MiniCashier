@@ -29,7 +29,8 @@
         <Button
             android:id="@+id/options"
             android:layout_width="50dp"
-            android:layout_height="50dp" />
+            android:layout_height="50dp"
+            android:background="@drawable/ic_settings_black_24dp" />
 
         <Button
             android:id="@+id/button6"
