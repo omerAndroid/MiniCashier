@@ -713,6 +713,75 @@ public class Databases extends SQLiteOpenHelper {/// Databases_quantity
         return sat;
     }
 
+    public int get_one_goods(String name_goods){
+        SQLiteDatabase db=this.getReadableDatabase();
+        int a=0;
+        Cursor res=db.rawQuery("select * from goods where name_g like '"+name_goods+"' ",null);
+        res.moveToFirst();
+        while (!res.isAfterLast()){
+            a=res.getInt(res.getColumnIndex("id"));
+            res.moveToNext();
+        }
+        return a;
+    }
+
+    public String[] get_one_quantity(int id_g ){
+        int lenght=read_Tname();
+        SQLiteDatabase db=this.getReadableDatabase();
+        String[] sat=new String[1];
+
+        if (lenght>0) {
+
+            Cursor res  = db.rawQuery("select * from quantity where  id_g = "+id_g+" and default_q = "+1+" ",null);
+
+            int i = 0;
+
+            res.moveToFirst();
+            while (res.isAfterLast() == false) {
+                String c;
+//                c = res.getString(res.getColumnIndex("selling_price"));///////n   البيع
+//                sat[i] = c;
+//                i++;
+                c = get_name_quantity_type(res.getInt(res.getColumnIndex("id_q")));///////////   *---*
+                sat[0] = c;
+                i++;
+
+                res.moveToNext();
+            }
+        }else{
+            sat=new String[1];
+            sat[0]=" ";}
+
+        return sat;
+    }
+
+    public double[] get_one_quantity_double(int id_g ){
+        int lenght=read_Tname();
+        SQLiteDatabase db=this.getReadableDatabase();
+        double[] sat=new double[1];
+
+        if (lenght>0) {
+
+            Cursor res  = db.rawQuery("select * from quantity where  id_g = "+id_g+" and default_q = "+1+" ",null);
+
+            int i = 0;
+
+            res.moveToFirst();
+            while (res.isAfterLast() == false) {
+                double c;
+                c = res.getDouble(res.getColumnIndex("selling_price"));///////n     البيع
+                sat[0] = c;
+                i++;
+
+                res.moveToNext();
+            }
+        }else{
+            sat=new double[1];
+            sat[0]=0.0;}
+
+        return sat;
+    }
+
     public boolean get_delete_goods(String code){
         SQLiteDatabase db=this.getWritableDatabase();
 

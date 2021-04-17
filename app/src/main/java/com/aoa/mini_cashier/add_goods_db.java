@@ -29,7 +29,6 @@ import static android.widget.Toast.makeText;
 import com.aoa.mini_cashier.Class_Adupter.ListAdupter_quantity;
 import com.aoa.mini_cashier.DB.Databases;
 import com.aoa.mini_cashier.RED_QR.ScanCodeActivity;
-import com.google.android.material.snackbar.Snackbar;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 
 import java.text.DecimalFormat;
@@ -107,7 +106,7 @@ public class add_goods_db extends AppCompatActivity {
         get_ALL_baracode();
         get_ALL_department();
         Text_extra_quantity.setText("0");
-
+        department_item="";
         /////////////////////////Date Picker///////////////////////////////////
         calendar = Calendar.getInstance();
         date_format = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
@@ -167,7 +166,8 @@ public class add_goods_db extends AppCompatActivity {
          //////////////n          عند الضغط على الاقسام
         spinner.setOnItemSelectedListener((MaterialSpinner.OnItemSelectedListener<String>) (view, position, id, item) ->{
             department_item=item;
-            Snackbar.make(view, "Clicked " + item, Snackbar.LENGTH_LONG).show();});
+            //Snackbar.make(view, "Clicked " + item, Snackbar.LENGTH_LONG).show();
+        });
 
         //////////////////////////////////////////////////////////////////////////////////department
         counter counter=new counter(3800,120);
@@ -177,7 +177,7 @@ public class add_goods_db extends AppCompatActivity {
                 counter.start();
             }
             //shaw quantity adder
-            if(get_seve_fast()||check_add) {
+            if(get_seve_fast()||check_add&&!department_item.equals("الاقسام")) {
                 if (!Text_barcode.getText().toString().trim().isEmpty()){
                     ceack_save_ALL=true;
                     dva.show(getSupportFragmentManager(), "إضافة نوع");
@@ -273,7 +273,7 @@ public class add_goods_db extends AppCompatActivity {
 
         Text_barcode.setOnItemClickListener((parent, arg1, pos, id) -> {
             String item = parent.getItemAtPosition(pos).toString();
-            Toast.makeText(getApplication(),"Selected Item is: \t " + item, Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplication(),"Selected Item is: \t " + item, Toast.LENGTH_LONG).show();
 
             //////b تعبئة المدخلات بعد اختيار الباركود الموجود من قاعدة البيانات
             Packing_for_goods(item);
@@ -288,7 +288,7 @@ public class add_goods_db extends AppCompatActivity {
         String[] All_goods=databases.get_All_goods_for_barcod(item);
         double[] All_goods_double=databases.get_All_goods_for_barcod_Double(item);
             Text_name_goods.setText(All_goods[0]);
-            Text_quantity.setText(To_int(theack_aggen(MessageFormat.format("{0}", All_goods_double[0]))));
+            Text_quantity.setText(theack_aggen(new DecimalFormat("#.00#").format( All_goods_double[0])));
             Text_date_ex.setText(All_goods[1]);
             Text_date_sale.setText(All_goods[2]);
             spinner.setText(All_goods[3]);
@@ -299,7 +299,7 @@ public class add_goods_db extends AppCompatActivity {
         
     }
     /////////////n      للتحويل الرقم من دبل الى انتجر
-    public String To_int(String s){
+    public String To_int(@NonNull String s){
         String[] parts = s.split("\\.");
         String part1 ,v  ;
         if (s.contains(".")) {
@@ -312,35 +312,53 @@ public class add_goods_db extends AppCompatActivity {
         return v;
     }
     /////////////////n     خوارزمية تساعد لعملية عرض وادخال الارقام
-    public String theack_aggen(String s){
+    public String theack_aggen(@NonNull String s){
         StringBuilder ss= new StringBuilder();
+
+        boolean b=false;
         for (int i = 0; i<= s.length()-1; i++){
             if (String.valueOf(s.charAt(i)).equals("٠")){
                 ss.append("0");
+                b=true;
             }else if(String.valueOf(s.charAt(i)).equals("٩")){
                 ss.append("9");
+                b=true;
             }else if(String.valueOf(s.charAt(i)).equals("١")){
                 ss.append("1");
+                b=true;
             }else if(String.valueOf(s.charAt(i)).equals("٢")){
                 ss.append("2");
+                b=true;
             }else if(String.valueOf(s.charAt(i)).equals("٣")){
                 ss.append("3");
+                b=true;
             }else if(String.valueOf(s.charAt(i)).equals("٤")){
                 ss.append("4");
+                b=true;
             }else if(String.valueOf(s.charAt(i)).equals("٥")){
                 ss.append("5");
+                b=true;
             }else if(String.valueOf(s.charAt(i)).equals("٦")){///١٢٣٤٥٦٧٨٩٫٠٠٠
                 ss.append("6");
+                b=true;
             }else if(String.valueOf(s.charAt(i)).equals("٧")){
                 ss.append("7");
+                b=true;
             }else if(String.valueOf(s.charAt(i)).equals("٨")){
                 ss.append("8");
+                b=true;
             }else if(String.valueOf(s.charAt(i)).equals("٫")){
                 ss.append(".");
+                b=true;
             }
         }
 
-        return ss.toString();
+        if (b){
+            return ss.toString();
+        }else {
+            return s;
+        }
+
     }
     //////////////n        عند الضغط على الكاميرا ينتقل مبارشرة الى كلاس الكاميره
     public void red_qr(View view) {
@@ -369,13 +387,13 @@ public class add_goods_db extends AppCompatActivity {
 
             if (result) {
                    check=true;
-                Toast.makeText(this, "OK ubdate  ok", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "OK ubdate  ok", Toast.LENGTH_SHORT).show();
                 Modification();/////v  تعديل بعد عملية التعديل
 
 
             } else {
                 check=false;
-                Toast.makeText(this, "No ubdate", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(this, "No ubdate", Toast.LENGTH_SHORT).show();
             }
         }
         return check;
@@ -402,7 +420,7 @@ public class add_goods_db extends AppCompatActivity {
                     if (result) {
                         ceack_save_ALL=false;
                         check_add=true;
-                        Toast.makeText(this, "OK", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(this, "OK", Toast.LENGTH_SHORT).show();
                         Modification();/////v  تعديل بعد عملية الادخال
                         get_ALL_baracode();
                         add_tg_btn.setEnabled(false);
@@ -414,7 +432,7 @@ public class add_goods_db extends AppCompatActivity {
 
                     } else {
 
-                        Toast.makeText(this, "No", Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(this, "No", Toast.LENGTH_SHORT).show();
                     }
 
                 }else {
@@ -456,7 +474,7 @@ public class add_goods_db extends AppCompatActivity {
 //                        //save_add_goods.setVisibility(View.VISIBLE);
 //                        save_add_goods.setVisibility(View.GONE);
                     } else {
-                        Toast.makeText(this, "يوجد باركود مشابة أو اسم منتج مشابه", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(this, "يوجد باركود مشابة أو اسم منتج مشابه", Toast.LENGTH_SHORT).show();
                         check = false;
                     }
 
@@ -506,7 +524,7 @@ public class add_goods_db extends AppCompatActivity {
         if (TextUtils.isEmpty(Text_barcode.getText().toString().trim()) || TextUtils.isEmpty(Text_name_goods.getText().toString().trim())
                 || TextUtils.isEmpty(Text_quantity.getText().toString().trim())|| TextUtils.isEmpty(Text_extra_quantity.getText().toString().trim())
                 || TextUtils.isEmpty(Text_date_sale.getText().toString().trim())|| TextUtils.isEmpty(Text_date_ex.getText().toString().trim())||
-                TextUtils.isEmpty(department_item)) {
+                TextUtils.isEmpty(department_item)|| department_item.equals("الاقسام")) {
 
             //mEmail.setError("Email is Required.");
 
@@ -584,7 +602,7 @@ public class add_goods_db extends AppCompatActivity {
                 assert data != null;
                 boolen_key=data.getStringExtra("page");
 
-                makeText(this, boolen_key, Toast.LENGTH_SHORT).show();
+               // makeText(this, boolen_key, Toast.LENGTH_SHORT).show();
                 if (boolen_key.equals("true")){
                     q_list = new ArrayList<>();
                     add_tg_btn.setEnabled(false);
@@ -789,7 +807,7 @@ public class add_goods_db extends AppCompatActivity {
                                             /////////m     يقوم لارسال القيمة الى العرض
                                             quantity_stored = quantity_stored * Double.parseDouble(Text_quantity.getText().toString());
                                             quantity_stored += Double.parseDouble(Text_extra_quantity.getText().toString());
-                                            Text_quantity.setText(To_int(Double.toString(quantity_stored)));
+                                            Text_quantity.setText(theack_aggen(new DecimalFormat("#.00#").format(quantity_stored)));
 
                                             ceack_save_quantity = true;
                                             dismiss();
@@ -818,7 +836,7 @@ public class add_goods_db extends AppCompatActivity {
                                             /////////m     يقوم لارسال القيمة الى العرض
                                             quantity_stored = quantity_stored * Double.parseDouble(Text_quantity.getText().toString() +"d");
                                             quantity_stored += Double.parseDouble(Text_extra_quantity.getText().toString() +"d");
-                                            Text_quantity.setText(To_int(Double.toString(quantity_stored)));
+                                            Text_quantity.setText(theack_aggen(new DecimalFormat("#.00#").format(quantity_stored)));
 
                                             ceack_save_quantity = true;
                                             dismiss();
@@ -860,14 +878,10 @@ public class add_goods_db extends AppCompatActivity {
                 number_type=1;
                 id_q=databases.get_id_quantity_type(Text_q_type.getEditableText().toString());
 
-
-
-
-
                 check_insert_Data= databases.insert_quantity(number_type,1,isChecked_1,Double.parseDouble(Text_q_buy_price.getText().toString()  ),
                         Double.parseDouble(Text_q_sale_price.getText().toString()  ),id_q,id_g);
 
-                quantity_stored *=1.0;
+                quantity_stored *=1;
             }
             if (!TextUtils.isEmpty(Text_q_type_2.getEditableText().toString())){
                 number_type=2;
@@ -983,7 +997,7 @@ public class add_goods_db extends AppCompatActivity {
         }
         //////////////////n         عملية التاكد بان اسم الكمية مسجل من قبل
         public boolean checked_quantity_type(String s){
-            Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
             int number;
             boolean cheack;
 
@@ -998,13 +1012,13 @@ public class add_goods_db extends AppCompatActivity {
          /////////n     للتحقق انه ضغط راديوا فية بيانات
         public boolean return_cheeked_radio(){
              b=false;
-            if (isChecked_1&&!TextUtils.isEmpty(Text_q_type.getEditableText().toString())){
+            if (primary_type.isChecked()&&!TextUtils.isEmpty(Text_q_type.getEditableText().toString())){
                 b=true;
-            }else if (isChecked_2&&!TextUtils.isEmpty(Text_q_type_2.getEditableText().toString())){
+            }else if (primary_type_2.isChecked()&&!TextUtils.isEmpty(Text_q_type_2.getEditableText().toString())){
                 b=true;
-            }else if (isChecked_3&&!TextUtils.isEmpty(Text_q_type_3.getEditableText().toString())){
+            }else if (primary_type_3.isChecked()&&!TextUtils.isEmpty(Text_q_type_3.getEditableText().toString())){
                 b=true;
-            }else if (isChecked_4&&!TextUtils.isEmpty(Text_q_type_4.getEditableText().toString())){
+            }else if (primary_type_4.isChecked()&&!TextUtils.isEmpty(Text_q_type_4.getEditableText().toString())){
                 b=true;
             }
             Toast.makeText(getContext(), String.valueOf(b), Toast.LENGTH_SHORT).show();
@@ -1049,7 +1063,7 @@ public class add_goods_db extends AppCompatActivity {
             String part1 ,v  ;   //
             String part2 ;   //
             StringBuilder text_1= new StringBuilder();
-            StringBuilder text_2= new StringBuilder(".");
+            StringBuilder text_2= new StringBuilder(".");///////////////////************************
             double d1,d2;
             DecimalFormat df ;
             if (s.contains(".")) {
@@ -1100,33 +1114,51 @@ public class add_goods_db extends AppCompatActivity {
         }
         public String theack_aggen(String s){
             StringBuilder ss= new StringBuilder();
+
+            boolean b=false;
             for (int i = 0; i<= s.length()-1; i++){
                 if (String.valueOf(s.charAt(i)).equals("٠")){
                     ss.append("0");
+                    b=true;
                 }else if(String.valueOf(s.charAt(i)).equals("٩")){
                     ss.append("9");
+                    b=true;
                 }else if(String.valueOf(s.charAt(i)).equals("١")){
                     ss.append("1");
+                    b=true;
                 }else if(String.valueOf(s.charAt(i)).equals("٢")){
                     ss.append("2");
+                    b=true;
                 }else if(String.valueOf(s.charAt(i)).equals("٣")){
                     ss.append("3");
+                    b=true;
                 }else if(String.valueOf(s.charAt(i)).equals("٤")){
                     ss.append("4");
+                    b=true;
                 }else if(String.valueOf(s.charAt(i)).equals("٥")){
                     ss.append("5");
+                    b=true;
                 }else if(String.valueOf(s.charAt(i)).equals("٦")){///١٢٣٤٥٦٧٨٩٫٠٠٠
                     ss.append("6");
+                    b=true;
                 }else if(String.valueOf(s.charAt(i)).equals("٧")){
                     ss.append("7");
+                    b=true;
                 }else if(String.valueOf(s.charAt(i)).equals("٨")){
                     ss.append("8");
+                    b=true;
                 }else if(String.valueOf(s.charAt(i)).equals("٫")){
                     ss.append(".");
+                    b=true;
                 }
             }
 
-            return ss.toString();
+            if (b){
+                return ss.toString();
+            }else {
+                return s;
+            }
+
         }
         /////////////n      للتحويل الرقم من دبل الى انتجر
         public String To_int(String s){
@@ -1143,6 +1175,7 @@ public class add_goods_db extends AppCompatActivity {
         }
         /////////////////n     التعبئة في حقول الكمية
         private void insert_into_qnuatity() {
+
             Databases databases = new Databases(getActivity());
             int id = databases.get_id_goods(Text_barcode.getText().toString().trim());
             int a=databases.read_Tname_q_type(id);
@@ -1155,29 +1188,29 @@ public class add_goods_db extends AppCompatActivity {
             for (int j=0;j<a;j++){////   String.format("%.3f", quantity_Double[2])
                 if (i==1){
                     Text_q_type.setText(quantity[0]);
-                    Text_q_buy_price.setText(theack_aggen(To_double(new DecimalFormat("#.00#").format( quantity_Double[1]))));
-                    Text_q_sale_price.setText(theack_aggen(To_double(new DecimalFormat("#.00#").format( quantity_Double[2]))));
+                    Text_q_buy_price.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[1])));
+                    Text_q_sale_price.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[2])));
                     set_rideou_cheack(1,quantity[0]);
                     i+=1;
                 }else if (i==2){
                     Text_q_type_2.setText(quantity[1]);
-                    Text_q_quantity_2.setText(To_int(theack_aggen(To_double(new DecimalFormat("#.00#").format( quantity_Double[3])))));
-                    Text_q_buy_price_2.setText(theack_aggen(To_double(new DecimalFormat("#.00#").format( quantity_Double[4]))));
-                    Text_q_sale_price_2.setText(theack_aggen(To_double(new DecimalFormat("#.00#").format( quantity_Double[5]))));
+                    Text_q_quantity_2.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[3])));
+                    Text_q_buy_price_2.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[4])));
+                    Text_q_sale_price_2.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[5])));
                     set_rideou_cheack(2,quantity[1]);
                     i+=1;
                 }else if (i==3){
                     Text_q_type_3.setText(quantity[2]);
-                    Text_q_quantity_3.setText(To_int(theack_aggen(To_double(new DecimalFormat("#.00#").format( quantity_Double[6])))));
-                    Text_q_buy_price_3.setText(theack_aggen(To_double(new DecimalFormat("#.00#").format( quantity_Double[7]))));
-                    Text_q_sale_price_3.setText(theack_aggen(To_double(new DecimalFormat("#.00#").format( quantity_Double[8]))));
+                    Text_q_quantity_3.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[6])));
+                    Text_q_buy_price_3.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[7])));
+                    Text_q_sale_price_3.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[8])));
                     set_rideou_cheack(3,quantity[2]);
                     i+=1;
                 }else if (i==4){
                     Text_q_type_4.setText(quantity[3]);
-                    Text_q_quantity_4.setText(To_int(theack_aggen(To_double(new DecimalFormat("#.00#").format( quantity_Double[9])))));
-                    Text_q_buy_price_4.setText(theack_aggen(To_double(new DecimalFormat("#.00#").format( quantity_Double[10]))));
-                    Text_q_sale_price_4.setText(theack_aggen(To_double(new DecimalFormat("#.00#").format( quantity_Double[11]))));
+                    Text_q_quantity_4.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[9])));
+                    Text_q_buy_price_4.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[10])));
+                    Text_q_sale_price_4.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[11])));
                     set_rideou_cheack(4,quantity[3]);
                 }
 

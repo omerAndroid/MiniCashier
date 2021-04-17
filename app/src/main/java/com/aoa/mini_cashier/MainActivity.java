@@ -16,16 +16,15 @@ import android.widget.Toast;
 
 import com.aoa.mini_cashier.DB.Databases;
 import com.aoa.mini_cashier.DB.LocalBackup;
-import com.google.android.material.snackbar.Snackbar;
-import com.jaredrummler.materialspinner.MaterialSpinner;
 
 import java.io.File;
+
 
 public class MainActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
     Button au_menu,buy_btn,restore_btn, options;
-    public Databases databases = new Databases(this);
+    //public Databases databases = new Databases(this);
 
 
     @Override
@@ -34,10 +33,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-//        LocalBackup  localBackup = new LocalBackup(this);
-//        Databases databases=new Databases(this);
-//        String outFileName = Environment.getExternalStorageDirectory() + File.separator + getResources().getString(R.string.app_name) + File.separator;
-//        localBackup.performBackup(databases, outFileName);
+        LocalBackup localBackup = new LocalBackup(this);
+        Databases databases=new Databases(this);
+        String outFileName = Environment.getExternalStorageDirectory() + File.separator + getResources().getString(R.string.app_name) + File.separator;
+        localBackup.performBackup(databases, outFileName);
 
 
         //////////////////////n        حفظ لمرة واحده

@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.aoa.mini_cashier.DB.Databases;
 import com.aoa.mini_cashier.RED_QR.ScanCodeActivity;
@@ -54,14 +53,14 @@ public class update_goods_db extends AppCompatActivity {
             builder.setTitle("حذف أو تعديل المنتج ");
             builder.setPositiveButton("حذف", (dialog, which) -> {
 
-                int idd = databases.get_id_goods(ALL_baracode_name_g.getText().toString());
+                TextView barcode =view.findViewById(R.id.barcode_view);
+
+                int idd = databases.get_id_goods(barcode.getText().toString());
                 String s=String.valueOf(idd);
-                databases.get_delete_goods(ALL_baracode_name_g.getText().toString());
+                databases.get_delete_goods(barcode.getText().toString());
                 databases.get_delete_quantity(s);
                 get_ALL_baracode_name_g();
-                list_item.clear();
-                q_list.clear();
-                
+                get_goods();
             });
             builder.setNegativeButton("تعديل", (dialog, which) -> {
                 //////////////////b يتم فتح كلاس لاضافة لكي يقوم بعملية التعديل
@@ -134,10 +133,12 @@ public class update_goods_db extends AppCompatActivity {
         }
     }
 
-    public void get_goods()
-    {
+    public void get_goods() {
 
         try {
+
+            list_item = new ArrayList<>();
+
             ListView list = findViewById(R.id.list_goods_db);
             int a=databases.read_Tname();
 
@@ -182,7 +183,7 @@ public class update_goods_db extends AppCompatActivity {
 
         ALL_baracode_name_g.setOnItemClickListener((parent, arg1, pos, id) -> {
             String item = parent.getItemAtPosition(pos).toString();
-            Toast.makeText(getApplication(),"Selected Item is: \t " + item, Toast.LENGTH_LONG).show();
+           // Toast.makeText(getApplication(),"Selected Item is: \t " + item, Toast.LENGTH_LONG).show();
 
             //////b تعبئة المدخلات بعد اختيار الباركود الموجود من قاعدة البيانات
 
@@ -213,16 +214,18 @@ public class update_goods_db extends AppCompatActivity {
         String[] Allname_g=databases.get_ALLname_g();
         String who="";
         for(String val :Allbaracod){
-            if (val.equals(item)){
-                Toast.makeText(this, val, Toast.LENGTH_SHORT).show();
-                who="Allbaracod";
+            if (val.equals(item)) {
+                //Toast.makeText(this, val, Toast.LENGTH_SHORT).show();
+                who = "Allbaracod";
+                break;
             }
         }
 
         for(String val :Allname_g){
-            if (val.equals(item)){
-                Toast.makeText(this, val, Toast.LENGTH_SHORT).show();
-                who="Allname_g";
+            if (val.equals(item)) {
+                //   Toast.makeText(this, val, Toast.LENGTH_SHORT).show();
+                who = "Allname_g";
+                break;
             }
         }
 

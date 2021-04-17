@@ -1,14 +1,19 @@
 package com.aoa.mini_cashier;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,17 +22,28 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aoa.mini_cashier.DB.Databases;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
+import java.text.DecimalFormat;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 
 public class buy_restore_goods extends AppCompatActivity {
 
+    public Databases databases = new Databases(this);
     Dialog customer_data;
     Button list_options,save_btn,add_item_list;
-    EditText c_name,Text_add_name_item;
-
+    EditText c_name,name_sender,discount_bill_items,total_price;
+    public static boolean  check_impot;
     SwitchMaterial buy_or_restore,money_or_debt;
+    ArrayList<list_buy_restore> list_item= new ArrayList<>();
+
+    double aDouble=0;
+
+    @SuppressLint("StaticFieldLeak")
+    public static AutoCompleteTextView Text_add_name_item;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,12 +51,21 @@ public class buy_restore_goods extends AppCompatActivity {
 
         list_options = findViewById(R.id.list_options);
         save_btn = findViewById(R.id.save_bills);
-        c_name = findViewById(R.id.customer_name);////n  اسم العميل
-        Text_add_name_item= findViewById(R.id.add_name_item);
         add_item_list = findViewById(R.id.add_item_list);
+
+        c_name = findViewById(R.id.customer_name);////n  اسم العميل
+        Text_add_name_item= findViewById(R.id.add_name_item);/////baracod
+        name_sender = findViewById(R.id.name_sender);//////n     اسم المستلم
+        discount_bill_items = findViewById(R.id.discount_bill_items);//////n      الخصم
+        total_price = findViewById(R.id.total_price);//////n      المجموع
 
         buy_or_restore = findViewById(R.id.buy_or_restore);
         money_or_debt = findViewById(R.id.cash_or_debt);
+
+
+        /////////////////////////////////
+        get_ALL_baracode_name_g();
+        discount_bill_items.setText("0");
 
 
 
@@ -122,12 +147,257 @@ public class buy_restore_goods extends AppCompatActivity {
         save_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                add_customer_data();
+                if (money_or_debt.getText().toString().equals("نقد")){
+                    if (check_impot_save_btn()){
+                        Toast.makeText(buy_restore_goods.this, "ok", Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    add_customer_data();
+                }
             }
         });
     }
-    class ListAdupter extends BaseAdapter
-    {
+
+    private boolean check_impot_save_btn() {
+
+        if (money_or_debt.getText().toString().equals("نقد")){//TextUtils.isEmpty(Text_add_name_item.getText().toString().trim()) ||
+
+            if ( TextUtils.isEmpty(discount_bill_items.getText().toString().trim())) {
+
+                //mEmail.setError("Email is Required.");
+
+                Toast.makeText(this, "أكمل البيانات", Toast.LENGTH_SHORT).show();
+                // return;
+                check_impot = false;
+            }else {
+                check_impot = true;
+            }
+        }
+
+        return check_impot;
+    }
+
+    public void get_ALL_baracode_name_g() {
+
+        String[] Allbaracod=databases.get_ALLbaracod();
+
+        String[] Allname_g=databases.get_ALLname_g();
+
+        String[] All=new String[Allbaracod.length+Allname_g.length];
+
+        ////n   تستخدم لنسخ محتوى مصفوفة و وضعه في مصفوفة أخرى
+        System.arraycopy(Allbaracod, 0, All, 0, Allbaracod.length);
+        System.arraycopy(Allname_g, 0, All, Allbaracod.length, Allname_g.length);
+
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, All);
+
+        Text_add_name_item =
+                findViewById(R.id.add_name_item);
+
+        Text_add_name_item.setAdapter(adapter1);
+
+        Text_add_name_item.setThreshold(1);//will start working from first
+
+        Text_add_name_item.setOnItemClickListener((parent, arg1, pos, id) -> {
+            String item = parent.getItemAtPosition(pos).toString();
+           // Toast.makeText(getApplication(),"Selected Item is: \t " + item, Toast.LENGTH_LONG).show();
+
+            //////b تعبئة المدخلات بعد اختيار الباركود الموجود من قاعدة البيانات
+
+            tcack_camera(item);
+
+        });
+    }
+
+    public void tcack_camera(String item){
+
+        String[] Allbaracod=databases.get_ALLbaracod();
+
+        String[] Allname_g=databases.get_ALLname_g();
+        String who="";
+        for(String val :Allbaracod){
+            if (val.equals(item)){
+                Toast.makeText(this, val, Toast.LENGTH_SHORT).show();
+                who="Allbaracod";
+            }
+        }
+
+        for(String val :Allname_g){
+            if (val.equals(item)){
+                Toast.makeText(this, val, Toast.LENGTH_SHORT).show();
+                who="Allname_g";
+            }
+        }
+
+        Packing_for_goods(item,who);
+    }
+
+    private void Packing_for_goods(String item, String who) {
+
+        int id_goods;
+        if (who.equals("Allname_g")){
+            id_goods = databases.get_one_goods(item);
+
+
+        }else {
+             id_goods = databases.get_id_goods(item);
+        }
+
+        String[] g=databases.get_one_goods(item,who);///////n     الاسم
+        String[] q=databases.get_one_quantity(id_goods);///////n    نوع الكمية
+        double[] q_Double=databases.get_one_quantity_double(id_goods);///////n    نوع الكمية
+
+       // list_item = new ArrayList<>();
+        for (int j=0;j<1;j++){
+
+            list_item.add(new list_buy_restore(g[1],q[0],"1"," ",
+                    theack_aggen(new DecimalFormat("#.00#").format( q_Double[0]))));
+        }
+
+        aDouble +=Double.parseDouble(theack_aggen(new DecimalFormat("#.00#").format( q_Double[0])));
+        total_price.setText(theack_aggen(new DecimalFormat("#.00#").format( aDouble)));
+
+
+        ListView list =  findViewById(R.id.list_buy_restore);
+        buy_restore_goods.ListAdupter ad =new buy_restore_goods.ListAdupter(list_item);
+        list.setAdapter(ad);
+    }
+
+    /////////////////n     خوارزمية تساعد لعملية عرض وادخال الارقام
+    public String To_double(String s){
+
+        StringBuilder ss= new StringBuilder();
+        String nu=s;
+        for (int i=0;i<=nu.length()-1;i++){
+            if (String.valueOf(nu.charAt(i)).equals("٠")){
+                ss.append("0");
+            }else if(String.valueOf(nu.charAt(i)).equals("٩")){
+                ss.append("9");
+            }else if(String.valueOf(nu.charAt(i)).equals("١")){
+                ss.append("1");
+            }else if(String.valueOf(nu.charAt(i)).equals("٢")){
+                ss.append("2");
+            }else if(String.valueOf(nu.charAt(i)).equals("٣")){
+                ss.append("3");
+            }else if(String.valueOf(nu.charAt(i)).equals("٤")){
+                ss.append("4");
+            }else if(String.valueOf(nu.charAt(i)).equals("٥")){
+                ss.append("5");
+            }else if(String.valueOf(nu.charAt(i)).equals("٦")){///١٢٣٤٥٦٧٨٩٫٠٠٠
+                ss.append("6");
+            }else if(String.valueOf(nu.charAt(i)).equals("٧")){
+                ss.append("7");
+            }else if(String.valueOf(nu.charAt(i)).equals("٨")){
+                ss.append("8");
+            }else if(String.valueOf(nu.charAt(i)).equals("٫")){
+                ss.append(".");
+            }
+        }
+        s= ss.toString();
+        String[] parts = s.split("\\.");
+        String part1 ,v  ;   //
+        String part2 ;   //
+        StringBuilder text_1= new StringBuilder();
+        StringBuilder text_2= new StringBuilder(".");
+        double d1,d2;
+        DecimalFormat df ;
+        if (s.contains(".")) {
+
+            part1 = parts[0];
+            part2 = parts[1];
+
+            int size1=part1.length();
+            int size2=part2.length();
+
+            part2 ="0.";
+            part2 += parts[1];
+
+            for (int i=1;i<=size2;i++){
+                text_2.append("0");
+            }
+
+            for (int i=1;i<=size1;i++){
+                text_1.append("0");
+            }
+
+            String arr;
+            arr=parts[1];
+
+            if (String.valueOf(arr.charAt(0)).equals("0")&&String.valueOf(arr.charAt(1)).equals("0")){
+                text_2= new StringBuilder(".");
+                text_2.append("0");
+            }
+
+            d1=Double.parseDouble(part1);
+            d2=Double.parseDouble(part2);
+
+            d2=d1+d2;
+
+            String bb= text_1.toString() +text_2;
+
+            System.out.println("this is before formatting: "+d2);
+            df = new DecimalFormat(bb);
+
+            System.out.println("Value: " + df.format(d2));
+            v=df.format(d2);
+
+        }else {
+            String par=s+".0";
+            v= To_double(par);
+        }
+        return v ;
+    }
+    public String theack_aggen(@NonNull String s){
+        StringBuilder ss= new StringBuilder();
+
+        boolean b=false;
+        for (int i = 0; i<= s.length()-1; i++){
+            if (String.valueOf(s.charAt(i)).equals("٠")){
+                ss.append("0");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٩")){
+                ss.append("9");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("١")){
+                ss.append("1");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٢")){
+                ss.append("2");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٣")){
+                ss.append("3");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٤")){
+                ss.append("4");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٥")){
+                ss.append("5");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٦")){///١٢٣٤٥٦٧٨٩٫٠٠٠
+                ss.append("6");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٧")){
+                ss.append("7");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٨")){
+                ss.append("8");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٫")){
+                ss.append(".");
+                b=true;
+            }
+        }
+
+        if (b){
+            return ss.toString();
+        }else {
+            return s;
+        }
+
+    }
+
+    class ListAdupter extends BaseAdapter {
         ArrayList<list_buy_restore> list_item;
         ListAdupter(ArrayList<list_buy_restore> list_item){
             this.list_item = list_item ;
@@ -151,7 +421,7 @@ public class buy_restore_goods extends AppCompatActivity {
         @Override
         public View getView(int i, View convertView, ViewGroup parent) {
             LayoutInflater inflater = getLayoutInflater();
-            View view =inflater.inflate(R.layout.buy_restore_item,null);
+            @SuppressLint({"ViewHolder", "InflateParams"}) View view =inflater.inflate(R.layout.buy_restore_item,null);
 
             TextView name = (TextView) view.findViewById(R.id.goods_name);
 
@@ -162,22 +432,18 @@ public class buy_restore_goods extends AppCompatActivity {
 
             TextView buy_price = (TextView) view.findViewById(R.id.goods_buy);
 
-            TextView sale_price = (TextView) view.findViewById(R.id.goods_sale);
-
+            TextView sale_price = (TextView) view.findViewById(R.id.goods_sale);///n   البيع
 
 
             name.setText(list_item.get(i).name );
             quantity_type.setText(String.valueOf(list_item.get(i).quantity_type));
             goods_quanitity.setText(String.valueOf(list_item.get(i).goods_quanitity));
-
-
-
+            sale_price.setText(String.valueOf(list_item.get(i).sale_price));
             return view;
         }
     }
 
-    public void add_customer_data ()
-    {
+    public void add_customer_data () {
 
         //Dialog Customer Data viewer
         customer_data = new Dialog(this);
