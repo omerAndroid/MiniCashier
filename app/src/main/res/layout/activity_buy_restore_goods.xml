@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:hint="اسم المستلم نيابة عن العميل"
+                android:hint="اسم المستلم"
                 android:inputType="textPersonName"
                 tools:ignore="Autofill,HardcodedText" />
 
@@ -94,11 +94,11 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/add_name_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:ems="10"
                 android:hint="إضافة بالإسم أو الباركود"
                 android:inputType="textPersonName"
