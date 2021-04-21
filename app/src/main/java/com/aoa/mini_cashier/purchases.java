@@ -3,22 +3,36 @@ package com.aoa.mini_cashier;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class purchases extends AppCompatActivity {
 
 
+    Dialog purchase,Date_Dialog;
     ListView list_purchases;
     Button add_purchases,add_policy;
+    private SimpleDateFormat date_format;
+    private Calendar calendar;
+    String date_viewe= "asdf";
+
 
     public static ArrayList<list_item_resource> q_list = new ArrayList<list_item_resource>();
 
@@ -35,22 +49,127 @@ public class purchases extends AppCompatActivity {
         ListAdupter ad = new ListAdupter(q_list);
         list_purchases.setAdapter(ad);
 
+
+        /////////////////////////Date Picker///////////////////////////////////
+        calendar = Calendar.getInstance();
+        date_format = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
+
         add_policy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //add policy
+                add_policy_data();
             }
         });
 
         add_purchases.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //add purchases
+                add_purchases_data();
             }
         });
 
     }
 
+
+
+    public void date_picker () {
+        //Dialog Date viewer
+        Date_Dialog = new Dialog(this);
+        Date_Dialog.setContentView(R.layout.dailog_date);
+        final DatePicker picker =  Date_Dialog.findViewById(R.id.calendar_View);
+        Button date_viewer =  Date_Dialog.findViewById(R.id.date_veiwer);
+
+        picker.setMinDate(calendar.getTimeInMillis());
+
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.add(Calendar.YEAR, 5);
+        picker.setMaxDate(calendar1.getTimeInMillis());
+
+        date_viewer.setOnClickListener(v -> {
+            //Get Date to Edit Text
+            final Calendar calendar2 = Calendar.getInstance();
+
+            calendar2.set(picker.getYear(), picker.getMonth(), picker.getDayOfMonth());
+
+            ///////////////////////////////////////////////////////////////
+            final Button date_paid=(Button) purchase.findViewById(R.id.date_paid);
+            ///////////////////////////////////////////////////////////////
+            date_paid.setText(date_format.format(calendar2.getTime()));
+            Date_Dialog.dismiss();
+        });
+        Date_Dialog.show();
+    }
+
+
+    public void add_purchases_data () {
+
+        //Dialog Customer Data viewer
+        purchase = new Dialog(this);
+        purchase.setContentView(R.layout.activity_add_goods_db);
+        purchase.setTitle("إضافة مشتريات ");
+        final AutoCompleteTextView add_barcode_txt=(AutoCompleteTextView) purchase.findViewById(R.id.add_barcode_txt);
+        final EditText add_name_goods=(EditText) purchase.findViewById(R.id.add_name_goods);
+        final EditText add_quantity=(EditText) purchase.findViewById(R.id.add_quantity);
+        final EditText add_extra_quantity=(EditText) purchase.findViewById(R.id.add_extra_quantity);
+        final EditText add_date_sale=(EditText) purchase.findViewById(R.id.add_date_sale);
+        final EditText add_date_ex=(EditText) purchase.findViewById(R.id.add_date_ex);
+
+        final Button add_barcode = (Button) purchase.findViewById(R.id.add_barcode);
+
+
+        add_barcode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //save Data of customer
+
+            }
+        });
+        purchase.show();
+    }
+
+
+    public void add_policy_data () {
+
+        //Dialog Customer Data viewer
+        purchase = new Dialog(this);
+        purchase.setContentView(R.layout.dialog_policy);
+        purchase.setTitle("إضافة سند ");
+        final TextView resource_name=(TextView) purchase.findViewById(R.id.resource_name);
+        final EditText amount_policy=(EditText) purchase.findViewById(R.id.amount_policy);
+        final Button date_paid=(Button) purchase.findViewById(R.id.date_paid);
+        final MultiAutoCompleteTextView note_txt=(MultiAutoCompleteTextView) purchase.findViewById(R.id.note_txt);
+
+
+        final Button catch_btn=(Button) purchase.findViewById(R.id.catch_btn);
+        final Button pure_btn = (Button) purchase.findViewById(R.id.pure_btn);
+
+        Date date =new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy ");
+        date_paid.setText(sdf.format(date));
+
+        date_paid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                date_picker();
+            }
+        });
+
+        catch_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //قبض
+
+            }
+        });
+        pure_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //صرف
+
+            }
+        });
+        purchase.show();
+    }
 
 
     class ListAdupter extends BaseAdapter {

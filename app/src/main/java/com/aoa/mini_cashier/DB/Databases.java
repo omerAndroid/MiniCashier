@@ -57,7 +57,10 @@ public class Databases extends SQLiteOpenHelper {/// Databases_quantity
                 "FOREIGN KEY(id_bills) REFERENCES bills(id) ON UPDATE CASCADE ON DELETE CASCADE)");
 
         db.execSQL("CREATE TABLE resource(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_res TEXT,mobile INTEGER,phone INTEGER,address INTEGER)");
- }
+        db.execSQL("CREATE TABLE money_box(id INTEGER PRIMARY KEY AUTOINCREMENT ,money Real)");
+
+
+    }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -70,6 +73,7 @@ public class Databases extends SQLiteOpenHelper {/// Databases_quantity
         db.execSQL("DROP TABLE IF EXISTS department");
         db.execSQL("DROP TABLE IF EXISTS paid_type");
         db.execSQL("DROP TABLE IF EXISTS resource");
+        db.execSQL("DROP TABLE IF EXISTS money_box");
 
         onCreate(db);
     }
