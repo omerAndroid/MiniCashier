@@ -64,10 +64,10 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/restore"
+                android:id="@+id/purchases_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="استرجاع"
+                android:text="مشتريات"
                 android:textSize="30sp" />
 
             <Button
@@ -85,7 +85,7 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/buy"
+                android:id="@+id/buy_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="بيع"

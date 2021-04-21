@@ -30,8 +30,7 @@ public class Databases extends SQLiteOpenHelper {/// Databases_quantity
     public void onCreate(SQLiteDatabase db) {////REAL  = DOUBLE + FLOAT    /////  NUMERIC = Boolean
 
         db.execSQL("CREATE TABLE goods(id INTEGER PRIMARY KEY AUTOINCREMENT ,bracode TEXT unique,name_g TEXT unique,quantity_stored REAL,quantity_sold REAL" +
-                ",expiration_date TEXT ," +
-                " date_purchase TEXT ,id_d INTEGER)");
+                ",expiration_date TEXT ,date_purchase TEXT ,id_d INTEGER)");
 
         db.execSQL("CREATE TABLE quantity(id INTEGER PRIMARY KEY AUTOINCREMENT ,number_q INTEGER,quantity_q INTEGER," +
                 "default_q NUMERIC,purchase_price REAL,selling_price REAL," +

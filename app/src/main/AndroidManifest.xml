@@ -19,6 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:ignore="AllowBackup">
+        <activity android:name=".resources"></activity>
+        <activity android:name=".purchases" />
         <activity android:name=".Settings" />
         <activity android:name=".buy_restore_goods" />
         <activity android:name=".RED_QR.ScanCodeActivity" />

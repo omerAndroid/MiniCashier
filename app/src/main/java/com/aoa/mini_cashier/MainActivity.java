@@ -23,7 +23,7 @@ import java.io.File;
 public class MainActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
-    Button au_menu,buy_btn,restore_btn, options;
+    Button au_menu,buy_btn,purchases_btn, options;
     //public Databases databases = new Databases(this);
 
 
@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
 
         options = (Button) findViewById(R.id.options);
         au_menu = (Button) findViewById(R.id.add_update_menu);
-        buy_btn = (Button) findViewById(R.id.buy);
-        restore_btn = (Button) findViewById(R.id.restore);
+        buy_btn = (Button) findViewById(R.id.buy_btn);
+        purchases_btn = (Button) findViewById(R.id.purchases_btn);
 
         options.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,10 +69,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        restore_btn.setOnClickListener(new View.OnClickListener() {
+        purchases_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this ,buy_restore_goods.class);
+                Intent intent = new Intent(MainActivity.this ,resources.class);
                 startActivity(intent);
             }
         });
