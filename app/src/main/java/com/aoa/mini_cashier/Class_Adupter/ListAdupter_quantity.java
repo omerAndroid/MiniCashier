@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class ListAdupter_quantity extends BaseAdapter {
 
-    dialog_view_addtypes_old dva = new dialog_view_addtypes_old();
+    //dialog_view_addtypes_old dva = new dialog_view_addtypes_old();
 
     ArrayList<list_item_qnuatitytype> list_item;
     Context context;

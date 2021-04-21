@@ -55,6 +55,8 @@ public class Databases extends SQLiteOpenHelper {/// Databases_quantity
         db.execSQL("CREATE TABLE products_bills(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_prod TEXT,purchase_price REAL,selling_price REAL," +
                 "quantity REAL,id_bills INTEGER," +
                 "FOREIGN KEY(id_bills) REFERENCES bills(id) ON UPDATE CASCADE ON DELETE CASCADE)");
+
+        db.execSQL("CREATE TABLE resource(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_res TEXT,mobile INTEGER,phone INTEGER,address INTEGER)");
  }
 
     @Override
@@ -67,6 +69,7 @@ public class Databases extends SQLiteOpenHelper {/// Databases_quantity
         db.execSQL("DROP TABLE IF EXISTS quantity_type");
         db.execSQL("DROP TABLE IF EXISTS department");
         db.execSQL("DROP TABLE IF EXISTS paid_type");
+        db.execSQL("DROP TABLE IF EXISTS resource");
 
         onCreate(db);
     }

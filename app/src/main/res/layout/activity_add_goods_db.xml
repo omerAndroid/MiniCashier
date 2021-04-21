@@ -84,18 +84,28 @@
                 <EditText
                     android:id="@+id/add_extra_quantity"
                     android:layout_width="wrap_content"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="كمية إضافية"
+                    android:hint="كمية بالكرتون"
                     android:inputType="number" />
 
                 <EditText
                     android:id="@+id/add_quantity"
                     android:layout_width="wrap_content"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="الكمية بالحبة"
                     android:inputType="number" />
+
+                <Button
+                    android:id="@+id/dileg_q"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:text="الكميات"
+                    />
             </LinearLayout>
 
             <LinearLayout

@@ -104,13 +104,13 @@
                 android:inputType="textPersonName"
                 tools:ignore="Autofill,HardcodedText,NestedWeights" />
 
-            <Button
-                android:id="@+id/add_item_list"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="إضافة"
-                tools:ignore="HardcodedText" />
+<!--            <Button-->
+<!--                android:id="@+id/add_item_list"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="إضافة"-->
+<!--                tools:ignore="HardcodedText" />-->
 
             <Button
                 android:id="@+id/bracode_reader"
