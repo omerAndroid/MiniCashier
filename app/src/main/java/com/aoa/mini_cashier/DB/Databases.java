@@ -56,10 +56,13 @@ public class Databases extends SQLiteOpenHelper {/// Databases_quantity
                 "quantity REAL,id_bills INTEGER," +
                 "FOREIGN KEY(id_bills) REFERENCES bills(id) ON UPDATE CASCADE ON DELETE CASCADE)");
 
-        db.execSQL("CREATE TABLE resource(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_res TEXT unique,mobile INTEGER,phone INTEGER,address INTEGER)");
-        db.execSQL("CREATE TABLE money_box(id INTEGER PRIMARY KEY AUTOINCREMENT ,money Real)");
+        db.execSQL("CREATE TABLE resource(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_res TEXT unique,mobile INTEGER,phone INTEGER,address INTEGER)");//////n  المورد
+        db.execSQL("CREATE TABLE money_box(id INTEGER PRIMARY KEY AUTOINCREMENT ,money REAL)");
 
-        db.execSQL("CREATE TABLE policy(id INTEGER PRIMARY KEY AUTOINCREMENT ,amount Real,date_policy TEXT,note_policy TEXT,type_policy TEXT,place TEXT)");////n   سند  ///place موقع
+        db.execSQL("CREATE TABLE policy(id INTEGER PRIMARY KEY AUTOINCREMENT ,amount REAL,date_policy TEXT,note_policy TEXT,type_policy TEXT," +
+                "id_resource INTEGER,id_agent INTEGER," +
+                "FOREIGN KEY(id_resource) REFERENCES resource(id) ON UPDATE CASCADE ON DELETE CASCADE," +
+                "FOREIGN KEY(id_agent) REFERENCES agent(id) ON UPDATE CASCADE ON DELETE CASCADE)");////n   سند
 
     }
 
@@ -879,6 +882,58 @@ public class Databases extends SQLiteOpenHelper {/// Databases_quantity
             res.moveToNext();
         }
         return a;
+    }
+
+    public String[] get_address_resource(String name_res){////dri
+        int lenght=read_Tname_resource();
+        SQLiteDatabase db=this.getReadableDatabase();
+        String[] sat=new String[1];
+
+        int i = 0;
+        Cursor res  = db.rawQuery("select * from resource where name_res like '"+name_res+"' ",null);
+        res.moveToFirst();
+        while (res.isAfterLast() == false) {
+            String c;
+
+            c = res.getString(res.getColumnIndex("address"));
+            sat[i] = c;
+            i++;
+
+            res.moveToNext();
+
+        }
+
+        return sat;
+    }
+
+
+    public boolean insert_policy(double amount, String date_policy,String note_policy,String type_policy,int id_resource,int id_agent){
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+        contentValues.put("amount",amount);
+        contentValues.put("date_policy",date_policy);
+        contentValues.put("note_policy",note_policy);
+        contentValues.put("type_policy",type_policy);
+        contentValues.put("id_resource",id_resource);
+        contentValues.put("id_agent",id_agent);
+
+        long result=db.insert("policy",null,contentValues);
+        return result != -1;
+    }
+
+    public int get_id_resource(String resource){
+        int i=0;
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor res=db.rawQuery("select * from resource where name_res like '"+resource+"'",null);
+        res.moveToFirst();
+
+        while (res.isAfterLast()==false){
+            i=res.getInt(res.getColumnIndex("id"));
+
+            res.moveToNext();
+        }
+        return i ;
+
     }
 }
 

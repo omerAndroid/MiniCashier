@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.aoa.mini_cashier.DB.Databases;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,7 +30,7 @@ import java.util.Locale;
 
 public class purchases extends AppCompatActivity {
 
-
+    public Databases databases = new Databases(this);
     Dialog purchase,Date_Dialog;
     ListView list_purchases;
     Button add_purchases,add_policy;
@@ -148,17 +152,18 @@ public class purchases extends AppCompatActivity {
         purchase = new Dialog(this);
         purchase.setContentView(R.layout.dialog_policy);
         purchase.setTitle("إضافة سند ");
-        final TextView resource_name=(TextView) purchase.findViewById(R.id.resource_name);
-        final EditText amount_policy=(EditText) purchase.findViewById(R.id.amount_policy);
-        final Button date_paid=(Button) purchase.findViewById(R.id.date_paid);
-        final MultiAutoCompleteTextView note_txt=(MultiAutoCompleteTextView) purchase.findViewById(R.id.note_txt);
+         TextView resource_name=(TextView) purchase.findViewById(R.id.resource_name);
+         EditText amount_policy=(EditText) purchase.findViewById(R.id.amount_policy);/////n  المبلغ
+         Button date_paid=(Button) purchase.findViewById(R.id.date_paid);
+         MultiAutoCompleteTextView note_txt=(MultiAutoCompleteTextView) purchase.findViewById(R.id.note_txt);/////n     ملاحظة
 
 
+        resource_name.setText(name_resource_txt.getText().toString());
         final Button catch_btn=(Button) purchase.findViewById(R.id.catch_btn);
         final Button pure_btn = (Button) purchase.findViewById(R.id.pure_btn);
 
         Date date =new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy ");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy ");
         date_paid.setText(sdf.format(date));
 
         date_paid.setOnClickListener(new View.OnClickListener() {
@@ -172,6 +177,21 @@ public class purchases extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //قبض
+                if (!TextUtils.isEmpty(resource_name.getText().toString())||!TextUtils.isEmpty(amount_policy.getText().toString())||
+                        !TextUtils.isEmpty(note_txt.getText().toString())){
+
+                    int id_resource=databases.get_id_resource(name_resource_txt.getText().toString());
+                    boolean result = databases.insert_policy(
+                            Double.parseDouble(amount_policy.getText().toString()),
+                            date_paid.getText().toString(),
+                            note_txt.getText().toString(),
+                            "قبض",id_resource,0);
+
+                    if (result) {
+                        Toast.makeText(purchases.this, "ok", Toast.LENGTH_SHORT).show();
+                    }else Toast.makeText(purchases.this, "no no no ", Toast.LENGTH_SHORT).show();
+
+                }
 
             }
         });

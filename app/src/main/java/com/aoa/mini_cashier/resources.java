@@ -28,6 +28,7 @@ import java.util.ArrayList;
 public class resources extends AppCompatActivity {
     Dialog customer_data;
     Button add_resource;
+   @SuppressLint("StaticFieldLeak")
    public static ListView list_resource;
     public Databases databases = new Databases(this);
 
@@ -46,25 +47,6 @@ public class resources extends AppCompatActivity {
 
         add_resource.setOnClickListener(v -> add_customer_data ());
 
-        list_resource.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final TextView name=view.findViewById(R.id.name_resouce);
-                final TextView mobile_resource=view.findViewById(R.id.mobile_resource);
-                final TextView phone_resource=view.findViewById(R.id.phone_resource);
-
-
-                Toast.makeText(getApplicationContext(), name.getText().toString(), Toast.LENGTH_SHORT).show();
-
-                Intent intent=new Intent(resources.this, purchases.class);
-                intent.putExtra("name",name.getText().toString());
-                intent.putExtra("mobile_resource",mobile_resource.getText().toString());
-                intent.putExtra("phone_resource",phone_resource.getText().toString());
-                intent.putExtra("address","address");//address
-
-                startActivity(intent);
-            }
-        });
 
 //
 //        list_resource.setOnItemClickListener((parent, view, position, id) -> {
@@ -174,6 +156,31 @@ public class resources extends AppCompatActivity {
             name_resouce.setText(list_item.get(i).name );
             phone_resouce.setText(String.valueOf(list_item.get(i).phone));
             mobile_resouce.setText(String.valueOf(list_item.get(i).mobile));
+
+            name_resouce.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    final TextView name=view.findViewById(R.id.name_resouce);
+                    final TextView mobile_resource=view.findViewById(R.id.mobile_resource);
+                    final TextView phone_resource=view.findViewById(R.id.phone_resource);
+
+                    String[] address=databases.get_address_resource(name.getText().toString());
+
+                    Intent intent=new Intent(resources.this, purchases.class);
+                    intent.putExtra("name",name.getText().toString());
+                    intent.putExtra("mobile_resource",mobile_resource.getText().toString());
+                    intent.putExtra("phone_resource",phone_resource.getText().toString());
+                    intent.putExtra("address",address[0]);//address
+
+                    startActivity(intent);
+
+                }
+            });
+
+
+
+
             return view;
         }
     }
