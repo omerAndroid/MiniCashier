@@ -46,23 +46,31 @@ public class resources extends AppCompatActivity {
 
         add_resource.setOnClickListener(v -> add_customer_data ());
 
-        list_resource.setOnItemClickListener((parent, view, position, id) -> {
+        list_resource.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final TextView name=view.findViewById(R.id.name_resouce);
+                final TextView mobile_resource=view.findViewById(R.id.mobile_resource);
+                final TextView phone_resource=view.findViewById(R.id.phone_resource);
 
-            final TextView name=view.findViewById(R.id.name_resouce);
-            final TextView mobile_resource=view.findViewById(R.id.mobile_resource);
-            final TextView phone_resource=view.findViewById(R.id.phone_resource);
 
+                Toast.makeText(getApplicationContext(), name.getText().toString(), Toast.LENGTH_SHORT).show();
 
-            Toast.makeText(getApplicationContext(), name.getText().toString(), Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(resources.this, purchases.class);
+                intent.putExtra("name",name.getText().toString());
+                intent.putExtra("mobile_resource",mobile_resource.getText().toString());
+                intent.putExtra("phone_resource",phone_resource.getText().toString());
+                intent.putExtra("address","address");//address
 
-            Intent intent=new Intent(resources.this, purchases.class);
-            intent.putExtra("name",name.getText().toString());
-            intent.putExtra("mobile_resource",mobile_resource.getText().toString());
-            intent.putExtra("phone_resource",phone_resource.getText().toString());
-            intent.putExtra("address","address");//address
-
-            startActivity(intent);
+                startActivity(intent);
+            }
         });
+
+//
+//        list_resource.setOnItemClickListener((parent, view, position, id) -> {
+//
+//
+//        });
     }
 
     public void add_customer_data () {
@@ -98,6 +106,7 @@ public class resources extends AppCompatActivity {
 
                 if (result) {
                     Toast.makeText(resources.this, "ok", Toast.LENGTH_SHORT).show();
+                    listShow_qnuatitytype();
                 }else Toast.makeText(resources.this, "bad", Toast.LENGTH_SHORT).show();
             }else Toast.makeText(resources.this, "0000000000", Toast.LENGTH_SHORT).show();
             customer_data.dismiss();
@@ -110,24 +119,18 @@ public class resources extends AppCompatActivity {
 
     public void listShow_qnuatitytype(){
 
-
-        String[] resource=databases.get_one_resource("add");
-        int[] resource_int=databases.get_one_resource_int("add");
+        String[] resource=databases.get_All_resource();
+       // int[] resource_int=databases.get_one_resource_int("qq");
 
         // makeText(this, String.valueOf(g.length), Toast.LENGTH_SHORT).show();
         q_list.clear();
-        for (int j=0;j<1;j++){
+        int i=0;
+        for (int j=0;j<databases.read_Tname_resource();j++){
 
-            q_list.add(new list_item_resource(resource[0],String.valueOf(resource_int[1]),String.valueOf(resource_int[0]),resource[1]));
-
+            q_list.add(new list_item_resource(resource[i],resource[i+3],resource[i+2],resource[i+1]));
+            i+=4;
         }
-
-
         //////////////////////////////Add List Item//////////////////////////////////////
-
-
-
-
         ListAdupter ad = new ListAdupter(q_list);
         list_resource.setAdapter(ad);
 

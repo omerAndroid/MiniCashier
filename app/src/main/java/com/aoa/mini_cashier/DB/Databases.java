@@ -56,8 +56,10 @@ public class Databases extends SQLiteOpenHelper {/// Databases_quantity
                 "quantity REAL,id_bills INTEGER," +
                 "FOREIGN KEY(id_bills) REFERENCES bills(id) ON UPDATE CASCADE ON DELETE CASCADE)");
 
-        db.execSQL("CREATE TABLE resource(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_res TEXT,mobile INTEGER,phone INTEGER,address INTEGER)");
+        db.execSQL("CREATE TABLE resource(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_res TEXT unique,mobile INTEGER,phone INTEGER,address INTEGER)");
         db.execSQL("CREATE TABLE money_box(id INTEGER PRIMARY KEY AUTOINCREMENT ,money Real)");
+
+        db.execSQL("CREATE TABLE policy(id INTEGER PRIMARY KEY AUTOINCREMENT ,amount Real,date_policy TEXT,note_policy TEXT,type_policy TEXT,place TEXT)");////n   سند  ///place موقع
 
     }
 
@@ -834,14 +836,13 @@ public class Databases extends SQLiteOpenHelper {/// Databases_quantity
         return result != -1;
     }
 
-    public String[] get_one_resource(String name_res){////dri
-        int lenght=read_Tname();
+    public String[] get_All_resource(){////dri
+        int lenght=read_Tname_resource();
         SQLiteDatabase db=this.getReadableDatabase();
-        String[] sat=new String[2];
+        String[] sat=new String[4*read_Tname_resource()];
 
-        Cursor res  = db.rawQuery("select * from resource where  name_res like '"+name_res+"' ",null);
         int i = 0;
-
+        Cursor res  = db.rawQuery("select * from resource",null);
         res.moveToFirst();
         while (res.isAfterLast() == false) {
             String c;
@@ -854,6 +855,13 @@ public class Databases extends SQLiteOpenHelper {/// Databases_quantity
             sat[i] = c;
             i++;
 
+            c = res.getString(res.getColumnIndex("mobile"));///////n
+            sat[i] = c;
+            i++;
+
+            c = res.getString(res.getColumnIndex("phone"));///////n
+            sat[i] = c;
+            i++;
             res.moveToNext();
 
         }
@@ -861,30 +869,16 @@ public class Databases extends SQLiteOpenHelper {/// Databases_quantity
         return sat;
     }
 
-    public int[] get_one_resource_int(String name_res){
+    public int read_Tname_resource(){
         SQLiteDatabase db=this.getReadableDatabase();
-        int[] sat=new int[2];
-
-        Cursor res  = db.rawQuery("select * from resource where name_res like '"+name_res+"' ",null);
-
-        int i = 0;
-
+        int a=0;
+        @SuppressLint("Recycle") Cursor res=db.rawQuery("select name_res from resource",null);
         res.moveToFirst();
-        while (res.isAfterLast() == false) {
-            int c;
-
-            c = res.getInt(res.getColumnIndex("mobile"));///////n
-            sat[i] = c;
-            i++;
-
-            c = res.getInt(res.getColumnIndex("phone"));///////n
-            sat[i] = c;
-            i++;
-
+        while (!res.isAfterLast()){
+            a++;
             res.moveToNext();
         }
-
-        return sat;
+        return a;
     }
 }
 
