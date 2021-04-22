@@ -59,7 +59,6 @@ public class Databases extends SQLiteOpenHelper {/// Databases_quantity
         db.execSQL("CREATE TABLE resource(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_res TEXT,mobile INTEGER,phone INTEGER,address INTEGER)");
         db.execSQL("CREATE TABLE money_box(id INTEGER PRIMARY KEY AUTOINCREMENT ,money Real)");
 
-
     }
 
     @Override
@@ -823,7 +822,69 @@ public class Databases extends SQLiteOpenHelper {/// Databases_quantity
         return a;
     }
 
+    public boolean insert_resource(String name_res, int mobile,int phone,String address){
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+        contentValues.put("name_res",name_res);
+        contentValues.put("mobile",mobile);
+        contentValues.put("phone",phone);
+        contentValues.put("address",address);
 
+        long result=db.insert("resource",null,contentValues);
+        return result != -1;
+    }
 
+    public String[] get_one_resource(String name_res){////dri
+        int lenght=read_Tname();
+        SQLiteDatabase db=this.getReadableDatabase();
+        String[] sat=new String[2];
+
+        Cursor res  = db.rawQuery("select * from resource where  name_res like '"+name_res+"' ",null);
+        int i = 0;
+
+        res.moveToFirst();
+        while (res.isAfterLast() == false) {
+            String c;
+
+            c = res.getString(res.getColumnIndex("name_res"));
+            sat[i] = c;
+            i++;
+
+            c = res.getString(res.getColumnIndex("address"));
+            sat[i] = c;
+            i++;
+
+            res.moveToNext();
+
+        }
+
+        return sat;
+    }
+
+    public int[] get_one_resource_int(String name_res){
+        SQLiteDatabase db=this.getReadableDatabase();
+        int[] sat=new int[2];
+
+        Cursor res  = db.rawQuery("select * from resource where name_res like '"+name_res+"' ",null);
+
+        int i = 0;
+
+        res.moveToFirst();
+        while (res.isAfterLast() == false) {
+            int c;
+
+            c = res.getInt(res.getColumnIndex("mobile"));///////n
+            sat[i] = c;
+            i++;
+
+            c = res.getInt(res.getColumnIndex("phone"));///////n
+            sat[i] = c;
+            i++;
+
+            res.moveToNext();
+        }
+
+        return sat;
+    }
 }
 

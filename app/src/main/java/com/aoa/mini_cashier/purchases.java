@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +33,7 @@ public class purchases extends AppCompatActivity {
     private SimpleDateFormat date_format;
     private Calendar calendar;
     String date_viewe= "asdf";
-
+    TextView phone_resource_txt,mobile_resource_txt,address_resource,name_resource_txt;
 
     public static ArrayList<list_item_resource> q_list = new ArrayList<list_item_resource>();
 
@@ -49,6 +50,10 @@ public class purchases extends AppCompatActivity {
         ListAdupter ad = new ListAdupter(q_list);
         list_purchases.setAdapter(ad);
 
+         phone_resource_txt=findViewById(R.id.phone_resource_txt);
+         mobile_resource_txt=findViewById(R.id.mobile_resource_txt);
+         address_resource=findViewById(R.id.address_resource);
+         name_resource_txt=findViewById(R.id.name_resource_txt);
 
         /////////////////////////Date Picker///////////////////////////////////
         calendar = Calendar.getInstance();
@@ -67,6 +72,15 @@ public class purchases extends AppCompatActivity {
                 add_purchases_data();
             }
         });
+
+        /////Intent
+        Intent data =getIntent();///phone_resource_txt,mobile_resource_txt,address_resource,name_resource_txt;data.getExtras().getString("page");
+        phone_resource_txt.setText(data.getExtras().getString("phone_resource"));
+        mobile_resource_txt.setText(data.getExtras().getString("mobile_resource"));
+        address_resource.setText(data.getExtras().getString("address"));
+        name_resource_txt.setText(data.getExtras().getString("name"));
+
+
 
     }
 

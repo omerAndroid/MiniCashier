@@ -4,25 +4,36 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.aoa.mini_cashier.Class_Adupter.ListAdupter_quantity;
+import com.aoa.mini_cashier.DB.Databases;
+import com.aoa.mini_cashier.RED_QR.ScanCodeActivity;
+
+import java.text.MessageFormat;
 import java.util.ArrayList;
 
 public class resources extends AppCompatActivity {
     Dialog customer_data;
     Button add_resource;
-    ListView list_resource;
+   public static ListView list_resource;
+    public Databases databases = new Databases(this);
 
     public static ArrayList<list_item_resource> q_list = new ArrayList<list_item_resource>();
 
+    public static String address="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,17 +42,27 @@ public class resources extends AppCompatActivity {
 
         list_resource = findViewById(R.id.list_resource);
 
-        ListAdupter ad = new ListAdupter(q_list);
-        list_resource.setAdapter(ad);
+        listShow_qnuatitytype();
+
+        add_resource.setOnClickListener(v -> add_customer_data ());
+
+        list_resource.setOnItemClickListener((parent, view, position, id) -> {
+
+            final TextView name=view.findViewById(R.id.name_resouce);
+            final TextView mobile_resource=view.findViewById(R.id.mobile_resource);
+            final TextView phone_resource=view.findViewById(R.id.phone_resource);
 
 
-        add_resource.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                add_customer_data ();
-            }
+            Toast.makeText(getApplicationContext(), name.getText().toString(), Toast.LENGTH_SHORT).show();
+
+            Intent intent=new Intent(resources.this, purchases.class);
+            intent.putExtra("name",name.getText().toString());
+            intent.putExtra("mobile_resource",mobile_resource.getText().toString());
+            intent.putExtra("phone_resource",phone_resource.getText().toString());
+            intent.putExtra("address","address");//address
+
+            startActivity(intent);
         });
-
     }
 
     public void add_customer_data () {
@@ -62,21 +83,55 @@ public class resources extends AppCompatActivity {
         final Button data_save = (Button) customer_data.findViewById(R.id.save_customer_data);
 
 
-        data_save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //save Data of customer
+        data_save.setOnClickListener(v -> {
+            //save Data of customer
 
-                customer_data.dismiss();
-                customer_data.setTitle("بيانات العميل");
-                c_email.setVisibility(View.VISIBLE);
-                c_password.setVisibility(View.VISIBLE);
-            }
+            if (!TextUtils.isEmpty(name.getText().toString())||!TextUtils.isEmpty(c_address.getText().toString())||
+              !TextUtils.isEmpty(c_phone1.getText().toString())||!TextUtils.isEmpty(c_phone2.getText().toString())){
+
+                address=c_address.getText().toString();
+
+                boolean result = databases.insert_resource(name.getText().toString(),
+                        Integer.parseInt(c_phone2.getText().toString()),
+                        Integer.parseInt(c_phone1.getText().toString()),
+                        c_address.getText().toString());
+
+                if (result) {
+                    Toast.makeText(resources.this, "ok", Toast.LENGTH_SHORT).show();
+                }else Toast.makeText(resources.this, "bad", Toast.LENGTH_SHORT).show();
+            }else Toast.makeText(resources.this, "0000000000", Toast.LENGTH_SHORT).show();
+            customer_data.dismiss();
+            customer_data.setTitle("بيانات العميل");
+            c_email.setVisibility(View.VISIBLE);
+            c_password.setVisibility(View.VISIBLE);
         });
         customer_data.show();
     }
 
+    public void listShow_qnuatitytype(){
 
+
+        String[] resource=databases.get_one_resource("add");
+        int[] resource_int=databases.get_one_resource_int("add");
+
+        // makeText(this, String.valueOf(g.length), Toast.LENGTH_SHORT).show();
+        q_list.clear();
+        for (int j=0;j<1;j++){
+
+            q_list.add(new list_item_resource(resource[0],String.valueOf(resource_int[1]),String.valueOf(resource_int[0]),resource[1]));
+
+        }
+
+
+        //////////////////////////////Add List Item//////////////////////////////////////
+
+
+
+
+        ListAdupter ad = new ListAdupter(q_list);
+        list_resource.setAdapter(ad);
+
+    }
 
     class ListAdupter extends BaseAdapter {
         ArrayList<list_item_resource> list_item;
