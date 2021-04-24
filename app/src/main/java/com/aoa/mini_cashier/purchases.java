@@ -199,7 +199,21 @@ public class purchases extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //صرف
+                if (!TextUtils.isEmpty(resource_name.getText().toString())||!TextUtils.isEmpty(amount_policy.getText().toString())||
+                        !TextUtils.isEmpty(note_txt.getText().toString())){
 
+                    int id_resource=databases.get_id_resource(name_resource_txt.getText().toString());
+                    boolean result = databases.insert_policy(
+                            Double.parseDouble(amount_policy.getText().toString()),
+                            date_paid.getText().toString(),
+                            note_txt.getText().toString(),
+                            "صرف",id_resource,0);
+
+                    if (result) {
+                        Toast.makeText(purchases.this, "ok", Toast.LENGTH_SHORT).show();
+                    }else Toast.makeText(purchases.this, "no no no ", Toast.LENGTH_SHORT).show();
+
+                }
             }
         });
         purchase.show();
