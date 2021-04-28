@@ -79,8 +79,8 @@ public class purchases extends AppCompatActivity {
 
         /////Intent
         Intent data =getIntent();///phone_resource_txt,mobile_resource_txt,address_resource,name_resource_txt;data.getExtras().getString("page");
-        phone_resource_txt.setText(data.getExtras().getString("phone_resource"));
-        mobile_resource_txt.setText(data.getExtras().getString("mobile_resource"));
+        //phone_resource_txt.setText(data.getExtras().getString("phone_resource"));
+        //mobile_resource_txt.setText(data.getExtras().getString("mobile_resource"));
         address_resource.setText(data.getExtras().getString("address"));
         name_resource_txt.setText(data.getExtras().getString("name"));
 
@@ -248,16 +248,16 @@ public class purchases extends AppCompatActivity {
 
             TextView name_resouce = (TextView) view.findViewById(R.id.name_resouce);
 
-            TextView phone_resouce = (TextView) view.findViewById(R.id.phone_resource);
+            //TextView phone_resouce = (TextView) view.findViewById(R.id.phone_resource);
 
 
-            TextView mobile_resouce = (TextView) view.findViewById(R.id.mobile_resource);
+            //TextView mobile_resouce = (TextView) view.findViewById(R.id.mobile_resource);
 
 
 
             name_resouce.setText(list_item.get(i).name );
-            phone_resouce.setText(String.valueOf(list_item.get(i).phone));
-            mobile_resouce.setText(String.valueOf(list_item.get(i).mobile));
+            //phone_resouce.setText(String.valueOf(list_item.get(i).phone));
+            //mobile_resouce.setText(String.valueOf(list_item.get(i).mobile));
             return view;
         }
     }

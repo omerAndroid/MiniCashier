@@ -23,7 +23,7 @@ import java.io.File;
 public class MainActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
-    Button au_menu,buy_btn,purchases_btn, options;
+    Button au_menu,buy_btn,purchases_btn, options,bills;
     //public Databases databases = new Databases(this);
 
 
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
             seve_quantity_type_and_department_first();
         }
 
-
+        bills = (Button) findViewById(R.id.bills);
         options = (Button) findViewById(R.id.options);
         au_menu = (Button) findViewById(R.id.add_update_menu);
         buy_btn = (Button) findViewById(R.id.buy_btn);
@@ -71,6 +71,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         purchases_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this ,resources.class);
+                startActivity(intent);
+            }
+        });
+
+        bills.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this ,resources.class);

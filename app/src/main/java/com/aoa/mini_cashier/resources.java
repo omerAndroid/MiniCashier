@@ -146,31 +146,28 @@ public class resources extends AppCompatActivity {
 
             TextView name_resouce = (TextView) view.findViewById(R.id.name_resouce);
 
-            TextView phone_resouce = (TextView) view.findViewById(R.id.phone_resource);
+            TextView  accunt_bill= (TextView) view.findViewById(R.id.accunt_bill);
 
-
-            TextView mobile_resouce = (TextView) view.findViewById(R.id.mobile_resource);
 
 
 
             name_resouce.setText(list_item.get(i).name );
-            phone_resouce.setText(String.valueOf(list_item.get(i).phone));
-            mobile_resouce.setText(String.valueOf(list_item.get(i).mobile));
+            accunt_bill.setText("0");
+
+
 
             name_resouce.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
                     final TextView name=view.findViewById(R.id.name_resouce);
-                    final TextView mobile_resource=view.findViewById(R.id.mobile_resource);
-                    final TextView phone_resource=view.findViewById(R.id.phone_resource);
 
                     String[] address=databases.get_address_resource(name.getText().toString());
 
                     Intent intent=new Intent(resources.this, purchases.class);
                     intent.putExtra("name",name.getText().toString());
-                    intent.putExtra("mobile_resource",mobile_resource.getText().toString());
-                    intent.putExtra("phone_resource",phone_resource.getText().toString());
+                    //intent.putExtra("mobile_resource",mobile_resource.getText().toString());
+                    //intent.putExtra("phone_resource",phone_resource.getText().toString());
                     intent.putExtra("address",address[0]);//address
 
                     startActivity(intent);
