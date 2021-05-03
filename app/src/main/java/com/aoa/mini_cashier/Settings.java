@@ -16,7 +16,7 @@ import java.util.Calendar;
 
 public class Settings extends AppCompatActivity {
 
-    Button add_up_guantity , add_up_debart;
+    Button add_up_guantity , add_up_debart,add_market_Phone;
     private Dialog Date_Dialog;
     String dialog_name="";
 
@@ -27,6 +27,8 @@ public class Settings extends AppCompatActivity {
 
         add_up_guantity = findViewById(R.id.add_up_guantity);
         add_up_debart = findViewById(R.id.add_up_debart);
+        add_market_Phone = findViewById(R.id.market_phone);
+
 
         add_up_debart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,6 +42,14 @@ public class Settings extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog_name=add_up_guantity.getText().toString();
+                add_updaate_dailog();
+            }
+        });
+
+        add_market_Phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog_name=add_market_Phone.getText().toString();
                 add_updaate_dailog();
             }
         });

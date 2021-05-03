@@ -83,6 +83,12 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="العنوان" />
+
+        <Button
+            android:id="@+id/change_list_items"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="قائمة المشتريات" />
     </LinearLayout>
 
     <ListView

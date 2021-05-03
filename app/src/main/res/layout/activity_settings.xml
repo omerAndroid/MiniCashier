@@ -8,15 +8,24 @@
     tools:context=".Settings" >
 
     <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="الإعدادات"
+        android:textSize="30sp" />
+
+    <TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#97CEF1"
         android:text="إضافة وتعديل"
         android:textSize="20sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <Button
@@ -32,5 +41,123 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="كميات الأصناف" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#97CEF1"
+            android:text="بيانات المحل"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/market_photo"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:text="إضافة صورة" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/market_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="اسم المحل"
+                    android:inputType="textPersonName" />
+
+                <EditText
+                    android:id="@+id/market_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="عنوان المحل"
+                    android:inputType="textPersonName" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/market_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="phone"
+            android:text="رقم المحل" />
+
+        <EditText
+            android:id="@+id/market_Email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="إيميل"
+            android:inputType="textEmailAddress" />
+
+        <EditText
+            android:id="@+id/market_Email_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="كلمة المرور"
+            android:inputType="numberPassword" />
+
+        <Button
+            android:id="@+id/save_Market_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="حفظ" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#97CEF1"
+            android:text="الحد الأقصى"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/debts_max"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="الديون"
+                android:inputType="numberDecimal" />
+
+            <EditText
+                android:id="@+id/quintity_max"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="الكمية"
+                android:inputType="number" />
+
+        </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

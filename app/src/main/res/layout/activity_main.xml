@@ -33,14 +33,16 @@
             android:background="@drawable/ic_settings_black_24dp" />
 
         <Button
-            android:id="@+id/button6"
+            android:id="@+id/max_account_btn"
             android:layout_width="50dp"
-            android:layout_height="50dp" />
+            android:layout_height="50dp"
+            android:background="@drawable/ic_account_balance_black_24dp" />
 
         <Button
-            android:id="@+id/button5"
+            android:id="@+id/max_quintity_btn"
             android:layout_width="50dp"
-            android:layout_height="50dp" />
+            android:layout_height="50dp"
+            android:background="@drawable/ic_trending_down_black_24dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -71,7 +73,7 @@
                 android:textSize="30sp" />
 
             <Button
-                android:id="@+id/reports"
+                android:id="@+id/reports_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="تقارير"

@@ -23,7 +23,7 @@ import java.io.File;
 public class MainActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
-    Button au_menu,buy_btn,purchases_btn, options,bills;
+    Button au_menu,buy_btn,purchases_btn, options,bills,max_account_btn,max_quintity_btn,reports_btn;
     //public Databases databases = new Databases(this);
 
 
@@ -53,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
         au_menu = (Button) findViewById(R.id.add_update_menu);
         buy_btn = (Button) findViewById(R.id.buy_btn);
         purchases_btn = (Button) findViewById(R.id.purchases_btn);
+        max_quintity_btn = (Button) findViewById(R.id.max_quintity_btn);
+        max_account_btn = (Button) findViewById(R.id.max_account_btn);
+        reports_btn = (Button) findViewById(R.id.reports_btn);
 
         options.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,6 +122,30 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+            }
+        });
+
+        max_account_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this ,resources.class);
+                startActivity(intent);
+            }
+        });
+
+        max_quintity_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this ,update_goods_db.class);
+                startActivity(intent);
+            }
+        });
+
+        reports_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this ,Reports.class);
+                startActivity(intent);
             }
         });
 
