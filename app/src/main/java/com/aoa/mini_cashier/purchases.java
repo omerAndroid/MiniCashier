@@ -21,6 +21,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aoa.mini_cashier.DB.Databases;
+import com.aoa.mini_cashier.item_classes.policy_item_class;
+import com.aoa.mini_cashier.item_classes.purchases_item_class;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,7 +41,7 @@ public class purchases extends AppCompatActivity {
     String date_viewe= "asdf";
     TextView phone_resource_txt,mobile_resource_txt,address_resource,name_resource_txt;
 
-    public static ArrayList<list_item_resource> q_list = new ArrayList<list_item_resource>();
+    public static ArrayList<purchases_item_class> q_list = new ArrayList<purchases_item_class>();
 
 
     @Override
@@ -221,8 +223,8 @@ public class purchases extends AppCompatActivity {
 
 
     class ListAdupter extends BaseAdapter {
-        ArrayList<list_item_resource> list_item;
-        ListAdupter(ArrayList<list_item_resource> list_item){
+        ArrayList<purchases_item_class> list_item;
+        ListAdupter(ArrayList<purchases_item_class> list_item){
             this.list_item = list_item ;
         }
 
@@ -244,20 +246,75 @@ public class purchases extends AppCompatActivity {
         @Override
         public View getView(int i, View convertView, ViewGroup parent) {
             LayoutInflater inflater = getLayoutInflater();
-            @SuppressLint({"ViewHolder", "InflateParams"}) View view =inflater.inflate(R.layout.resource_list_item,null);
+            @SuppressLint({"ViewHolder", "InflateParams"}) View view =inflater.inflate(R.layout.purchases_item,null);
 
-            TextView name_resouce = (TextView) view.findViewById(R.id.name_resouce);
+            TextView purchases_item_barcode = (TextView) view.findViewById(R.id.purchases_item_barcode);
 
-            //TextView phone_resouce = (TextView) view.findViewById(R.id.phone_resource);
-
-
-            //TextView mobile_resouce = (TextView) view.findViewById(R.id.mobile_resource);
+            TextView purchases_item_name = (TextView) view.findViewById(R.id.purchases_item_name);
 
 
+            TextView purchases_item_sale = (TextView) view.findViewById(R.id.purchases_item_sale);
+            TextView purchases_item_quintity = (TextView) view.findViewById(R.id.purchases_item_quintity);
+            TextView purchases_item_total = (TextView) view.findViewById(R.id.purchases_item_total);
+            TextView purchases_item_free_guintity = (TextView) view.findViewById(R.id.purchases_item_free_guintity);
+            TextView purchases_item_date_purchase = (TextView) view.findViewById(R.id.purchases_item_date_purchase);
+            TextView purchases_item_date_expare = (TextView) view.findViewById(R.id.purchases_item_date_expare);
 
-            name_resouce.setText(list_item.get(i).name );
-            //phone_resouce.setText(String.valueOf(list_item.get(i).phone));
-            //mobile_resouce.setText(String.valueOf(list_item.get(i).mobile));
+
+
+            purchases_item_barcode.setText(list_item.get(i).barcode );
+            purchases_item_name.setText(String.valueOf(list_item.get(i).name));
+            purchases_item_sale.setText(String.valueOf(list_item.get(i).buy_price));
+            purchases_item_quintity.setText(String.valueOf(list_item.get(i).quintity));
+            purchases_item_total.setText(String.valueOf(list_item.get(i).total));
+            purchases_item_free_guintity.setText(String.valueOf(list_item.get(i).free_quintity));
+            purchases_item_date_purchase.setText(String.valueOf(list_item.get(i).date_purchase));
+            purchases_item_date_expare.setText(String.valueOf(list_item.get(i).date_expare));
+
+            return view;
+        }
+    }
+
+    class ListAdupter2 extends BaseAdapter {
+        ArrayList<policy_item_class> list_item;
+        ListAdupter2(ArrayList<policy_item_class> list_item){
+            this.list_item = list_item ;
+        }
+
+        @Override
+        public int getCount() {
+            return list_item.size();
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return list_item.get(position).sum;
+        }
+
+        @Override
+        public View getView(int i, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = getLayoutInflater();
+            @SuppressLint({"ViewHolder", "InflateParams"}) View view =inflater.inflate(R.layout.policy_item,null);
+
+            TextView policy_sum = (TextView) view.findViewById(R.id.policy_sum);
+
+            TextView policy_date = (TextView) view.findViewById(R.id.policy_date);
+
+
+            TextView policy_note = (TextView) view.findViewById(R.id.policy_note);
+            TextView policy_type = (TextView) view.findViewById(R.id.policy_type);
+
+
+
+            policy_sum.setText(list_item.get(i).sum );
+            policy_date.setText(String.valueOf(list_item.get(i).date));
+            policy_note.setText(String.valueOf(list_item.get(i).note));
+            policy_type.setText(String.valueOf(list_item.get(i).type));
             return view;
         }
     }
