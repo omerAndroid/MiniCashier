@@ -125,7 +125,7 @@ public class purchases extends AppCompatActivity {
 
         //Dialog Customer Data viewer
         purchase = new Dialog(this);
-        purchase.setContentView(R.layout.activity_add_goods_db);
+        purchase.setContentView(R.layout.purchases_dialog);
         purchase.setTitle("إضافة مشتريات ");
         final AutoCompleteTextView add_barcode_txt=(AutoCompleteTextView) purchase.findViewById(R.id.add_barcode_txt);
         final EditText add_name_goods=(EditText) purchase.findViewById(R.id.add_name_goods);
