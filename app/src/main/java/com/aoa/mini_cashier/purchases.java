@@ -24,6 +24,7 @@ import com.aoa.mini_cashier.DB.Databases;
 import com.aoa.mini_cashier.item_classes.policy_item_class;
 import com.aoa.mini_cashier.item_classes.purchases_item_class;
 
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,13 +36,15 @@ public class purchases extends AppCompatActivity {
     public Databases databases = new Databases(this);
     Dialog purchase,Date_Dialog;
     ListView list_purchases;
-    Button add_purchases,add_policy;
+    Button add_purchases,add_policy,change_list_items;
     private SimpleDateFormat date_format;
     private Calendar calendar;
     String date_viewe= "asdf";
     TextView phone_resource_txt,mobile_resource_txt,address_resource,name_resource_txt;
 
     public static ArrayList<purchases_item_class> q_list = new ArrayList<purchases_item_class>();
+
+    public static ArrayList<policy_item_class> policy_list = new ArrayList<policy_item_class>();
 
 
     @Override
@@ -53,8 +56,8 @@ public class purchases extends AppCompatActivity {
         add_policy =(Button) findViewById(R.id.add_policy);
         add_purchases =(Button) findViewById(R.id.add_purchases);
 
-        ListAdupter ad = new ListAdupter(q_list);
-        list_purchases.setAdapter(ad);
+//        ListAdupter ad = new ListAdupter(q_list);
+//        list_purchases.setAdapter(ad);
 
          phone_resource_txt=findViewById(R.id.phone_resource_txt);
          mobile_resource_txt=findViewById(R.id.mobile_resource_txt);
@@ -86,8 +89,23 @@ public class purchases extends AppCompatActivity {
         address_resource.setText(data.getExtras().getString("address"));
         name_resource_txt.setText(data.getExtras().getString("name"));
 
+        change_list_items=findViewById(R.id.change_list_items);
+        findViewById(R.id.change_list_items).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (change_list_items.getText().toString().equals("قائمة المشتريات")){
+                    change_list_items.setText("قائمة السندات");
+                    listShow_policy();
+                }else {
+                    change_list_items.setText("قائمة المشتريات");
 
+                    policy_list = new ArrayList<>();
+                    purchases.ListAdupter2 ad = new purchases.ListAdupter2(policy_list);
+                    list_purchases.setAdapter(ad);
 
+                }
+            }
+        });
     }
 
 
@@ -175,52 +193,68 @@ public class purchases extends AppCompatActivity {
             }
         });
 
-        catch_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //قبض
-                if (!TextUtils.isEmpty(resource_name.getText().toString())||!TextUtils.isEmpty(amount_policy.getText().toString())||
-                        !TextUtils.isEmpty(note_txt.getText().toString())){
+        catch_btn.setOnClickListener(v -> {
+            //قبض
+            if (!TextUtils.isEmpty(resource_name.getText().toString())&&!TextUtils.isEmpty(amount_policy.getText().toString())&&
+                    !TextUtils.isEmpty(note_txt.getText().toString())){
 
-                    int id_resource=databases.get_id_resource(name_resource_txt.getText().toString());
-                    boolean result = databases.insert_policy(
-                            Double.parseDouble(amount_policy.getText().toString()),
-                            date_paid.getText().toString(),
-                            note_txt.getText().toString(),
-                            "قبض",id_resource,0);
+                int id_resource=databases.get_id_resource(name_resource_txt.getText().toString());
+                double money = databases.get_money_box();
+                boolean result = databases.insert_policy(
+                        Double.parseDouble(amount_policy.getText().toString()),
+                        date_paid.getText().toString(),
+                        note_txt.getText().toString(),
+                        "قبض",id_resource,0);
+                databases.get_insert_money_box(money+Double.parseDouble(amount_policy.getText().toString()));
 
-                    if (result) {
-                        Toast.makeText(purchases.this, "ok", Toast.LENGTH_SHORT).show();
-                    }else Toast.makeText(purchases.this, "no no no ", Toast.LENGTH_SHORT).show();
-
-                }
+                if (result) {
+                    Toast.makeText(purchases.this, "ok", Toast.LENGTH_SHORT).show();
+                }else Toast.makeText(purchases.this, "no no no ", Toast.LENGTH_SHORT).show();
 
             }
+
         });
-        pure_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //صرف
-                if (!TextUtils.isEmpty(resource_name.getText().toString())||!TextUtils.isEmpty(amount_policy.getText().toString())||
-                        !TextUtils.isEmpty(note_txt.getText().toString())){
+        pure_btn.setOnClickListener(v -> {
+            //صرف
+            if (!TextUtils.isEmpty(resource_name.getText().toString())&&!TextUtils.isEmpty(amount_policy.getText().toString())&&
+                    !TextUtils.isEmpty(note_txt.getText().toString())){
+                double money = databases.get_money_box();
+                int id_resource=databases.get_id_resource(name_resource_txt.getText().toString());
+                boolean result = databases.insert_policy(
+                        Double.parseDouble(amount_policy.getText().toString()),
+                        date_paid.getText().toString(),
+                        note_txt.getText().toString(),
+                        "صرف",id_resource,0);
+                databases.get_insert_money_box(money-Double.parseDouble(amount_policy.getText().toString()));
+                if (result) {
+                    Toast.makeText(purchases.this, "ok", Toast.LENGTH_SHORT).show();
+                }else Toast.makeText(purchases.this, "no no no ", Toast.LENGTH_SHORT).show();
 
-                    int id_resource=databases.get_id_resource(name_resource_txt.getText().toString());
-                    boolean result = databases.insert_policy(
-                            Double.parseDouble(amount_policy.getText().toString()),
-                            date_paid.getText().toString(),
-                            note_txt.getText().toString(),
-                            "صرف",id_resource,0);
-
-                    if (result) {
-                        Toast.makeText(purchases.this, "ok", Toast.LENGTH_SHORT).show();
-                    }else Toast.makeText(purchases.this, "no no no ", Toast.LENGTH_SHORT).show();
-
-                }
             }
         });
         purchase.show();
     }
 
+    public void listShow_policy(){
+
+        String[] policy=databases.get_All_policy();
+
+        double[] policy_double =databases.get_All_policy_double();
+
+        policy_list.clear();
+        int i=0,g=0;
+        for (int j=0;j<databases.get_number_policy();j++){
+
+            policy_list.add(new policy_item_class(MessageFormat.format("{0}", policy_double[g]),policy[i],policy[i+1],policy[i+2]));
+            i+=3;
+            g+=1;
+        }
+        //////////////////////////////Add List Item//////////////////////////////////////
+        purchases.ListAdupter2 ad = new purchases.ListAdupter2(policy_list);
+        list_purchases.setAdapter(ad);
+
+
+    }
 
     class ListAdupter extends BaseAdapter {
         ArrayList<purchases_item_class> list_item;

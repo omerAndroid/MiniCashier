@@ -166,5 +166,7 @@ public class MainActivity extends AppCompatActivity {
 
         //////  department
         databases.insert_new_department("عام");
+
+        databases.insert_new_money_box(0);/// id->1
     }
 }

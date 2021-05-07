@@ -98,23 +98,33 @@ public class Databases extends SQLiteOpenHelper {/// Databases_quantity
         }
     }
      ////////////////n        عملية اضافة نوع كمية جديدة
-    public boolean insert_new_quantity_type(String add) {
+    public void insert_new_quantity_type(String add) {
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
         contentValues.put("name_type",add);
 
         long result=db.insert("quantity_type",null,contentValues);
-        return result != -1;
+        //return result != -1;
 
     }
 
-    public boolean insert_new_department(String add) {
+    public void insert_new_department(String add) {
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
         contentValues.put("name_dep",add);
 
         long result=db.insert("department",null,contentValues);
-        return result != -1;
+        //return result != -1;
+
+    }
+
+    public void insert_new_money_box(double money) {
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+        contentValues.put("money",money);
+
+        long result=db.insert("money_box",null,contentValues);
+        //return result != -1;
 
     }
 
@@ -933,7 +943,85 @@ public class Databases extends SQLiteOpenHelper {/// Databases_quantity
             res.moveToNext();
         }
         return i ;
+    }
 
+
+    public double get_money_box(){
+        SQLiteDatabase db=this.getReadableDatabase();
+            Cursor res  = db.rawQuery("select * from money_box where  id = "+1+"",null);
+            double c=0;
+            res.moveToFirst();
+            while (!res.isAfterLast()) {
+                c = res.getDouble(res.getColumnIndex("money"));///////n
+                res.moveToNext();
+            }
+        return c;
+    }
+
+    public void get_insert_money_box(double money){
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+        contentValues.put("money",money);
+
+        db.update("money_box",contentValues,"id= ?",new String[]{String.valueOf(1)});
+
+    }
+
+    public int get_number_policy(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        int a=0;
+        @SuppressLint("Recycle") Cursor res=db.rawQuery("select * from policy",null);
+        res.moveToFirst();
+        while (!res.isAfterLast()){
+            a++;
+            res.moveToNext();
+        }
+        return a;
+    }
+
+    public String[] get_All_policy(){////dri
+
+        SQLiteDatabase db=this.getReadableDatabase();
+        String[] sat=new String[3*get_number_policy()];
+
+        int i = 0;
+        Cursor res  = db.rawQuery("select * from policy",null);
+        res.moveToFirst();
+        while (res.isAfterLast() == false) {
+            String c;
+
+            c = res.getString(res.getColumnIndex("date_policy"));
+            sat[i] = c;
+            i++;
+
+            c = res.getString(res.getColumnIndex("note_policy"));
+            sat[i] = c;
+            i++;
+
+            c = res.getString(res.getColumnIndex("type_policy"));///////n
+            sat[i] = c;
+            i++;
+
+            res.moveToNext();
+        }
+        return sat;
+    }
+
+    public double[] get_All_policy_double(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        double[] sat=new double[get_number_policy()];
+
+        int i = 0;
+        Cursor res  = db.rawQuery("select * from policy",null);
+        res.moveToFirst();
+        while (res.isAfterLast() == false) {
+            double c;
+            c = res.getDouble(res.getColumnIndex("amount"));
+            sat[i] = c;
+            i++;
+            res.moveToNext();
+        }
+        return sat;
     }
 }
 
