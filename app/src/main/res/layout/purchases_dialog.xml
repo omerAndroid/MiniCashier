@@ -43,7 +43,7 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/add_barcode"
+                    android:id="@+id/add_barcode2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ic_camera_alt_black_24dp"

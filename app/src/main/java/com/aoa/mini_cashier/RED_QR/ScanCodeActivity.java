@@ -94,7 +94,8 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
                 setResult(RESULT_OK,intent);
             }
 
-        }else if (hasOnClick.equals("add_goods_db")){
+        }
+        else if (hasOnClick.equals("add_goods_db")){
 
             add_goods_db.Text_barcode.setText(result.getText());
 
@@ -120,7 +121,16 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
             }
 
         }
+        else if (hasOnClick.equals("purchases")){
 
+            if (databases.check_baracod(result.getText()) > 0) {
+
+                Intent intent=getIntent();
+                intent.putExtra("key","true");
+                intent.putExtra("valu",result.getText());
+                setResult(RESULT_OK,intent);
+            }
+        }
         //vewes.button.setVisibility(View.VISIBLE);
         onBackPressed();
     }

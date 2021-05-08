@@ -257,9 +257,10 @@ public class add_goods_db extends AppCompatActivity {
                 //save Data of customer
 
                 quantity_stored_2= Double.parseDouble(add_extra_quantity_2.getText().toString() +"d");
+                if (add_quantity_2.getText().toString().length()<0){
+                    add_quantity_2.setText("0");
+                }
                 quantity_stored_2+= Double.parseDouble(add_quantity_2.getText().toString() +"d");
-
-
 
                 customer_data.dismiss();
             }

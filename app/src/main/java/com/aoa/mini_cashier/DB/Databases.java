@@ -64,6 +64,8 @@ public class Databases extends SQLiteOpenHelper {/// Databases_quantity
                 "FOREIGN KEY(id_resource) REFERENCES resource(id) ON UPDATE CASCADE ON DELETE CASCADE," +
                 "FOREIGN KEY(id_agent) REFERENCES agent(id) ON UPDATE CASCADE ON DELETE CASCADE)");////n   سند
 
+        db.execSQL("CREATE TABLE purchases(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_purch TEXT unique,bracode TEXT unique,purchase_price REAL,total REAL," +
+                "quantity INTEGER,quantity_free INTEGER,id_q INTEGER,expiration_date TEXT ,date_purchase TEXT ,id_resource INTEGER)");//////n  المشتريات
     }
 
     @Override
@@ -78,6 +80,8 @@ public class Databases extends SQLiteOpenHelper {/// Databases_quantity
         db.execSQL("DROP TABLE IF EXISTS paid_type");
         db.execSQL("DROP TABLE IF EXISTS resource");
         db.execSQL("DROP TABLE IF EXISTS money_box");
+        db.execSQL("DROP TABLE IF EXISTS policy");
+        db.execSQL("DROP TABLE IF EXISTS purchases");
 
         onCreate(db);
     }
