@@ -129,6 +129,11 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
                 intent.putExtra("key","true");
                 intent.putExtra("valu",result.getText());
                 setResult(RESULT_OK,intent);
+            }else {
+                Intent intent=getIntent();
+                intent.putExtra("key","flas");
+                intent.putExtra("valu",result.getText());
+                setResult(RESULT_OK,intent);
             }
         }
         //vewes.button.setVisibility(View.VISIBLE);

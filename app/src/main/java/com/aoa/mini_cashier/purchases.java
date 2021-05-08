@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,6 +39,8 @@ import java.util.Date;
 import java.util.Locale;
 
 public class purchases extends AppCompatActivity {
+
+    add_goods_db.dialog_view_addtypes dva = new add_goods_db.dialog_view_addtypes();
 
     public Databases databases = new Databases(this);
     Dialog purchase,Date_Dialog;
@@ -310,6 +313,24 @@ public class purchases extends AppCompatActivity {
 
     }
 
+    public void alter(String s){
+        final AutoCompleteTextView add_barcode_txt=(AutoCompleteTextView) purchase.findViewById(R.id.add_barcode_txt);
+        add_barcode_txt.setText(s);
+
+        AlertDialog.Builder builder =new AlertDialog.Builder(purchases.this);/////////////////////////n        يوجد خطا هنا تاكد لا تنسسسسسس
+        builder.setMessage("هل تريد إضافة المنتج جديد");
+        //builder.setTitle("إضافة المنتج جديد");
+        builder.setPositiveButton("نعم", (dialog, which) -> {
+
+            startActivity(new Intent(this,add_goods_db.class));
+
+        });
+        builder.setNegativeButton("لا", (dialog, which) -> {
+            //////////////////b يتم فتح كلاس لاضافة لكي يقوم بعملية التعديل
+
+        }).show();
+    }
+
     /////////////////n     خوارزمية تساعد لعملية عرض وادخال الارقام
     public String theack_aggen(@NonNull String s){
         StringBuilder ss= new StringBuilder();
@@ -384,6 +405,8 @@ public class purchases extends AppCompatActivity {
                     Text_date=retern;
                     Packing_for_goods(retern);
 
+                }else {
+                    alter(retern);
                 }
             }
         }
