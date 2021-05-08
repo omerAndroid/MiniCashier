@@ -84,18 +84,20 @@
                 <EditText
                     android:id="@+id/add_extra_quantity"
                     android:layout_width="wrap_content"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:ems="10"
+                    android:enabled="false"
                     android:hint="كمية بالكرتون"
                     android:inputType="number" />
 
                 <EditText
                     android:id="@+id/add_quantity"
                     android:layout_width="wrap_content"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:ems="10"
+                    android:enabled="false"
                     android:hint="الكمية بالحبة"
                     android:inputType="number" />
 
