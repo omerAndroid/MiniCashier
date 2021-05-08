@@ -89,7 +89,7 @@ public class purchases extends AppCompatActivity {
         address_resource.setText(data.getExtras().getString("address"));
         name_resource_txt.setText(data.getExtras().getString("name"));
 
-        change_list_items=findViewById(R.id.change_list_items);
+        change_list_items=findViewById(R.id.change_list_items);///
         findViewById(R.id.change_list_items).setOnClickListener(v -> {
             if (change_list_items.getText().toString().equals("قائمة المشتريات")){
                 change_list_items.setText("قائمة السندات");
