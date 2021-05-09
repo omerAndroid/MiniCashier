@@ -10,7 +10,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,11 +17,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.aoa.mini_cashier.Class_Adupter.ListAdupter_quantity;
 import com.aoa.mini_cashier.DB.Databases;
-import com.aoa.mini_cashier.RED_QR.ScanCodeActivity;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 
 public class resources extends AppCompatActivity {
@@ -32,7 +28,7 @@ public class resources extends AppCompatActivity {
    public static ListView list_resource;
     public Databases databases = new Databases(this);
 
-    public static ArrayList<list_item_resource> q_list = new ArrayList<list_item_resource>();
+    public static ArrayList<list_item_resource> q_list = new ArrayList<>();
 
     public static String address="";
     @Override
@@ -81,6 +77,8 @@ public class resources extends AppCompatActivity {
 
                 address=c_address.getText().toString();
 
+                if (Integer.parseInt(c_phone2.getText().toString())<99999999&&Integer.parseInt(c_phone1.getText().toString())<999999999){
+
                 boolean result = databases.insert_resource(name.getText().toString(),
                         Integer.parseInt(c_phone2.getText().toString()),
                         Integer.parseInt(c_phone1.getText().toString()),
@@ -90,6 +88,7 @@ public class resources extends AppCompatActivity {
                     Toast.makeText(resources.this, "ok", Toast.LENGTH_SHORT).show();
                     listShow_qnuatitytype();
                 }else Toast.makeText(resources.this, "bad", Toast.LENGTH_SHORT).show();
+                }
             }else Toast.makeText(resources.this, "0000000000", Toast.LENGTH_SHORT).show();
             customer_data.dismiss();
             customer_data.setTitle("بيانات العميل");
@@ -156,23 +155,20 @@ public class resources extends AppCompatActivity {
 
 
 
-            name_resouce.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            name_resouce.setOnClickListener(v -> {
 
-                    final TextView name=view.findViewById(R.id.name_resouce);
+                @SuppressLint("CutPasteId") final TextView name=view.findViewById(R.id.name_resouce);
 
-                    String[] address=databases.get_address_resource(name.getText().toString());
+                String[] address=databases.get_address_resource(name.getText().toString());
 
-                    Intent intent=new Intent(resources.this, purchases.class);
-                    intent.putExtra("name",name.getText().toString());
-                    //intent.putExtra("mobile_resource",mobile_resource.getText().toString());
-                    //intent.putExtra("phone_resource",phone_resource.getText().toString());
-                    intent.putExtra("address",address[0]);//address
+                Intent intent=new Intent(resources.this, purchases.class);
+                intent.putExtra("name",name.getText().toString());
+                //intent.putExtra("mobile_resource",mobile_resource.getText().toString());
+                //intent.putExtra("phone_resource",phone_resource.getText().toString());
+                intent.putExtra("address",address[0]);//address
 
-                    startActivity(intent);
+                startActivity(intent);
 
-                }
             });
 
 

@@ -3,12 +3,14 @@ package com.aoa.mini_cashier;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDialogFragment;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.MultiAutoCompleteTextView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,25 +41,26 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 public class purchases extends AppCompatActivity {
 
-    add_goods_db.dialog_view_addtypes dva = new add_goods_db.dialog_view_addtypes();
+    purchases.dialog_view_addtypes dva = new purchases.dialog_view_addtypes();
 
     public Databases databases = new Databases(this);
-    Dialog purchase,Date_Dialog;
+   public static Dialog purchase,Date_Dialog;
     ListView list_purchases;
     Button add_purchases,add_policy,change_list_items;
     private SimpleDateFormat date_format;
     private Calendar calendar;
     //String date_viewe= "asdf";
     TextView phone_resource_txt,mobile_resource_txt,address_resource,name_resource_txt;
-    String data_type,Text_date="0";
+   public static String data_type,Text_date="0",Text_date_2="0",cheack_11="",cheack_2="";
     int date_place = 0;
     public static ArrayList<purchases_item_class> q_list = new ArrayList<>();
 
     public static ArrayList<policy_item_class> policy_list = new ArrayList<>();
-
+    public static Button add_tg_btn;
     public static double quantity_stored=1.0,quantity_stored_2=1.0;
 
     @Override
@@ -66,11 +71,6 @@ public class purchases extends AppCompatActivity {
         list_purchases= (ListView) findViewById(R.id.list_purchases);
         add_policy =(Button) findViewById(R.id.add_policy);
         add_purchases =(Button) findViewById(R.id.add_purchases);
-
-//        ListAdupter ad = new ListAdupter(q_list);
-//        list_purchases.setAdapter(ad);
-
-
 
          phone_resource_txt=findViewById(R.id.phone_resource_txt);
          mobile_resource_txt=findViewById(R.id.mobile_resource_txt);
@@ -107,8 +107,6 @@ public class purchases extends AppCompatActivity {
             }
         });
     }
-
-
 
     public void date_picker () {
         //Dialog Date viewer
@@ -175,32 +173,25 @@ public class purchases extends AppCompatActivity {
         purchase = new Dialog(this);
         purchase.setContentView(R.layout.purchases_dialog);
         purchase.setTitle("إضافة مشتريات ");
-        final AutoCompleteTextView add_barcode_txt=(AutoCompleteTextView) purchase.findViewById(R.id.add_barcode_txt);
+        final AutoCompleteTextView add_barcode_txt=(AutoCompleteTextView) purchase.findViewById(R.id.add_barcode_txt);//add_tg_btn
         final EditText add_name_goods=(EditText) purchase.findViewById(R.id.add_name_goods);
         final EditText add_quantity=(EditText) purchase.findViewById(R.id.add_quantity);
         final EditText add_extra_quantity=(EditText) purchase.findViewById(R.id.add_extra_quantity);
         final EditText add_date_sale=(EditText) purchase.findViewById(R.id.add_date_sale);
         final EditText add_date_ex=(EditText) purchase.findViewById(R.id.add_date_ex);
+        final EditText editText=(EditText) purchase.findViewById(R.id.editText);////n      -سعر الشراء-بأعلى قيمة
         get_ALL_baracode();
         final Button add_barcode = (Button) purchase.findViewById(R.id.add_barcode2);
-        final Button save_add_goods = (Button) purchase.findViewById(R.id.save_add_goods);//dileg_q
+        final Button save_add_goods = (Button) purchase.findViewById(R.id.save_add_goods);//editText
         final Button dileg_q = (Button) purchase.findViewById(R.id.dileg_q);
-
+          add_tg_btn = (Button) purchase.findViewById(R.id.add_tg_btn);
         final Button date_sale_btn = purchase.findViewById(R.id.date_show_sale);
         final Button date_ex_btn = purchase.findViewById(R.id.date_show_ex);
 
-        add_barcode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                red_qr();
-            }
-        });
+        add_barcode.setOnClickListener(v -> red_qr());
 
-        save_add_goods.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //save Data of customer
-            }
+        save_add_goods.setOnClickListener(v -> {
+            //save Data of customer
         });
 
         date_sale_btn.setOnClickListener(v -> {
@@ -217,14 +208,24 @@ public class purchases extends AppCompatActivity {
 
         });
 
-        dileg_q.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                get_dileg_q();
+        dileg_q.setOnClickListener(v -> get_dileg_q());
+
+        purchases.counter counter=new purchases.counter(3800,120);
+        add_tg_btn.setOnClickListener(v -> {//cheack_1="1";
+
+            if (add_barcode_txt.getText().toString().length()>0&&editText.getText().toString().length()>0){
+                if (add_tg_btn.isEnabled()){
+                    add_tg_btn.setEnabled(false);
+                    counter.start();
+                }
+                dva.show(getSupportFragmentManager(), "إضافة نوع");
             }
+
         });
+
         purchase.show();
     }
+
 
     private void get_dileg_q() {
 
@@ -302,11 +303,13 @@ public class purchases extends AppCompatActivity {
 
         if (!Text_date.equals("0")){
             add_barcode_txt.setText(Text_date);
+            Text_date_2=Text_date;
             Text_date="0";
         }
+        Text_date_2=item;
 
         add_name_goods.setText(All_goods[0]);
-        add_quantity.setText(theack_aggen(new DecimalFormat("#.00#").format( All_goods_double[0])));//MaterialSpinner
+        //add_quantity.setText(theack_aggen(new DecimalFormat("#.00#").format( All_goods_double[0])));//MaterialSpinner
         add_date_ex.setText(All_goods[1]);
         add_date_sale.setText(All_goods[2]);
         spinner.setText(All_goods[3]);
@@ -596,6 +599,290 @@ public class purchases extends AppCompatActivity {
             policy_note.setText(String.valueOf(list_item.get(i).note));
             policy_type.setText(String.valueOf(list_item.get(i).type));
             return view;
+        }
+    }
+
+    ////////n     dialog_view_addtypes
+    public static class dialog_view_addtypes extends AppCompatDialogFragment {
+
+        @SuppressLint("StaticFieldLeak")
+        public  EditText Text_q_type, Text_q_buy_price, Text_q_sale_price,Text_q_type_2,
+                Text_q_quantity_2,Text_q_buy_price_2,Text_q_sale_price_2,Text_q_type_3,Text_q_quantity_3,
+                Text_q_buy_price_3,Text_q_sale_price_3,Text_q_type_4,Text_q_quantity_4,Text_q_buy_price_4,Text_q_sale_price_4;
+        //public  String name_type,quantity,buy_price,sale_price;
+        RadioGroup radioGroup;
+        public  boolean check_work=false,check_insert_Data=false,isChecked_1=false,isChecked_2=false,isChecked_3=false,isChecked_4=false;
+        Button  save,clear_1,clear_2,clear_3,clear_4;
+        // int id_quantity;
+        //  public  String old_q_type,add_q_type;
+        RadioButton primary_type,primary_type_2,primary_type_3,primary_type_4;
+        androidx.appcompat.app.AlertDialog.Builder builder;
+        boolean check_impot;
+
+        RadioButton radioButton;
+
+        int sum_q;
+
+        int size_impout;
+
+        @SuppressLint({"NonConstantResourceId", "SetTextI18n"})
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+            builder = new androidx.appcompat.app.AlertDialog.Builder(Objects.requireNonNull(getActivity()));
+            Databases databases = new Databases(getActivity());
+            LayoutInflater inflater = getActivity().getLayoutInflater();
+            View view = inflater.inflate(R.layout.types_goods, null);
+            /////////////////////////////////////////////////////////////////quantity -> dialog
+            save = view.findViewById(R.id.save_tg_add);
+            clear_1 = view.findViewById(R.id.clear_1);
+            clear_2 = view.findViewById(R.id.clear_2);
+            clear_3 = view.findViewById(R.id.clear_3);
+            clear_4 = view.findViewById(R.id.clear_4);
+
+
+            primary_type=view.findViewById(R.id.primary_type);///////raduo
+            Text_q_type=view.findViewById(R.id.q_type);
+            Text_q_buy_price=view.findViewById(R.id.q_buy_price);
+            Text_q_sale_price=view.findViewById(R.id.q_sale_price);
+
+            primary_type_2=view.findViewById(R.id.primary_type_2);
+            Text_q_type_2=view.findViewById(R.id.q_type_2);
+            Text_q_quantity_2=view.findViewById(R.id.q_quantity_2);
+            Text_q_buy_price_2=view.findViewById(R.id.q_buy_price_2);
+            Text_q_sale_price_2=view.findViewById(R.id.q_sale_price_2);
+
+            primary_type_3=view.findViewById(R.id.primary_type_3);
+            Text_q_type_3=view.findViewById(R.id.q_type_3);
+            Text_q_quantity_3=view.findViewById(R.id.q_quantity_3);
+            Text_q_buy_price_3=view.findViewById(R.id.q_buy_price_3);
+            Text_q_sale_price_3=view.findViewById(R.id.q_sale_price_3);
+
+            primary_type_4=view.findViewById(R.id.primary_type_4);
+            Text_q_type_4=view.findViewById(R.id.q_type_4);
+            Text_q_quantity_4=view.findViewById(R.id.q_quantity_4);
+            Text_q_buy_price_4=view.findViewById(R.id.q_buy_price_4);
+            Text_q_sale_price_4=view.findViewById(R.id.q_sale_price_4);
+
+            //////////////////////////n   عملية الضغط على الرايديو بوتن  ////////////////////////////////////////////////////
+            radioGroup=view.findViewById(R.id.radioGroup);
+
+            ///////////////////////////////////////////////////////////////////////////////////////////////
+
+            insert_into_qnuatity();
+
+            //save Button on clicked
+            save.setOnClickListener(v -> {
+
+                if (check_impot_quantity()) {
+
+                }
+
+            });
+
+
+            builder.setView(view).setTitle("إضافة نوع");
+
+            return builder.create();
+        }
+
+
+        ////////////n للتحقق من المدخلات
+        private boolean check_impot_quantity() {
+            size_impout=0;
+            sum_q=0;
+            if (!TextUtils.isEmpty(Text_q_type.getEditableText().toString())) {
+
+                if (TextUtils.isEmpty(Text_q_buy_price.getEditableText().toString())||TextUtils.isEmpty(Text_q_sale_price.getEditableText().toString())){
+                    Toast.makeText(getActivity(), "أكمل البيانات", Toast.LENGTH_SHORT).show();
+                    check_impot = false;
+                }else{
+                    check_impot = true;
+                }
+            }
+            if (!TextUtils.isEmpty(Text_q_type_2.getEditableText().toString())){
+                if (TextUtils.isEmpty(Text_q_quantity_2.getEditableText().toString())||TextUtils.isEmpty(Text_q_buy_price_2.getEditableText().toString())||
+                        TextUtils.isEmpty(Text_q_sale_price_2.getEditableText().toString())){
+
+                    Toast.makeText(getActivity(), "أكمل البيانات", Toast.LENGTH_SHORT).show();
+                    check_impot = false;
+                }else {
+                    check_impot = true;
+                }
+            }
+            if (!TextUtils.isEmpty(Text_q_type_3.getEditableText().toString())){
+                if (TextUtils.isEmpty(Text_q_quantity_3.getEditableText().toString())||TextUtils.isEmpty(Text_q_buy_price_3.getEditableText().toString())||
+                        TextUtils.isEmpty(Text_q_sale_price_3.getEditableText().toString())){
+
+                    Toast.makeText(getActivity(), "أكمل البيانات", Toast.LENGTH_SHORT).show();
+                    check_impot = false;
+
+                    }else {
+                    check_impot = true;}
+            }
+            if (!TextUtils.isEmpty(Text_q_type_4.getEditableText().toString())){
+                if (TextUtils.isEmpty(Text_q_quantity_4.getEditableText().toString())||TextUtils.isEmpty(Text_q_buy_price_4.getEditableText().toString())||
+                        TextUtils.isEmpty(Text_q_sale_price_4.getEditableText().toString())){
+
+                    Toast.makeText(getActivity(), "أكمل البيانات", Toast.LENGTH_SHORT).show();
+                    check_impot = false;
+                }else {
+                    check_impot = true;
+                }
+            }
+
+            else if(TextUtils.isEmpty(Text_q_type.getEditableText().toString())&&TextUtils.isEmpty(Text_q_type_2.getEditableText().toString())&&
+                    TextUtils.isEmpty(Text_q_type_3.getEditableText().toString())&&TextUtils.isEmpty(Text_q_type_4.getEditableText().toString())) {
+                Toast.makeText(getActivity(), "أكمل البيانات", Toast.LENGTH_SHORT).show();
+                check_impot = false;
+            }
+
+            return check_impot;
+        }
+
+        /////////////////n     التعبئة في حقول الكمية
+        private void insert_into_qnuatity() {
+
+            Databases databases = new Databases(getActivity());
+            int id = databases.get_id_goods(Text_date_2);
+            int a=databases.read_Tname_q_type(id);
+            String[] quantity=databases.get_ALLq_qnuatity(id);
+            double[] quantity_Double=databases.get_ALLq_qnuatity_Double(id);////MessageFormat.format("{0}", quantity_Double[g]
+
+            ////new DecimalFormat("#.000#").format(9999999999.123)
+
+            int i=1;
+            for (int j=0;j<a;j++){////   String.format("%.3f", quantity_Double[2])
+                if (i==1){
+                    Text_q_type.setText(quantity[0]);
+                    Text_q_buy_price.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[1])));
+                    Text_q_sale_price.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[2])));
+                    set_rideou_cheack(1,quantity[0]);
+                    i+=1;
+                }else if (i==2){
+                    Text_q_type_2.setText(quantity[1]);
+                    Text_q_quantity_2.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[3])));
+                    Text_q_buy_price_2.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[4])));
+                    Text_q_sale_price_2.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[5])));
+                    set_rideou_cheack(2,quantity[1]);
+                    i+=1;
+                }else if (i==3){
+                    Text_q_type_3.setText(quantity[2]);
+                    Text_q_quantity_3.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[6])));
+                    Text_q_buy_price_3.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[7])));
+                    Text_q_sale_price_3.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[8])));
+                    set_rideou_cheack(3,quantity[2]);
+                    i+=1;
+                }else if (i==4){
+                    Text_q_type_4.setText(quantity[3]);
+                    Text_q_quantity_4.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[9])));
+                    Text_q_buy_price_4.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[10])));
+                    Text_q_sale_price_4.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[11])));
+                    set_rideou_cheack(4,quantity[3]);
+                }
+
+            }
+        }
+
+        public void set_rideou_cheack(int i,String number_q){
+            Databases databases = new Databases(getActivity());
+            int id = databases.get_id_goods(Text_date_2);
+
+            int treu=databases.get_retern_cheack(id,number_q);
+
+            if (i==1&&treu==1){
+                primary_type.setChecked(true);
+                isChecked_1=true;
+            }else if (i==2&&treu==1){
+                primary_type_2.setChecked(true);
+                isChecked_2=true;
+            }else if (i==3&&treu==1){
+                primary_type_3.setChecked(true);
+                isChecked_3=true;
+            }else if (i==4&&treu==1){
+                primary_type_4.setChecked(true);
+                isChecked_4=true;
+            }
+
+        }
+
+        public String theack_aggen(String s){
+            StringBuilder ss= new StringBuilder();
+
+            boolean b=false;
+            for (int i = 0; i<= s.length()-1; i++){
+                if (String.valueOf(s.charAt(i)).equals("٠")){
+                    ss.append("0");
+                    b=true;
+                }else if(String.valueOf(s.charAt(i)).equals("٩")){
+                    ss.append("9");
+                    b=true;
+                }else if(String.valueOf(s.charAt(i)).equals("١")){
+                    ss.append("1");
+                    b=true;
+                }else if(String.valueOf(s.charAt(i)).equals("٢")){
+                    ss.append("2");
+                    b=true;
+                }else if(String.valueOf(s.charAt(i)).equals("٣")){
+                    ss.append("3");
+                    b=true;
+                }else if(String.valueOf(s.charAt(i)).equals("٤")){
+                    ss.append("4");
+                    b=true;
+                }else if(String.valueOf(s.charAt(i)).equals("٥")){
+                    ss.append("5");
+                    b=true;
+                }else if(String.valueOf(s.charAt(i)).equals("٦")){///١٢٣٤٥٦٧٨٩٫٠٠٠
+                    ss.append("6");
+                    b=true;
+                }else if(String.valueOf(s.charAt(i)).equals("٧")){
+                    ss.append("7");
+                    b=true;
+                }else if(String.valueOf(s.charAt(i)).equals("٨")){
+                    ss.append("8");
+                    b=true;
+                }else if(String.valueOf(s.charAt(i)).equals("٫")){
+                    ss.append(".");
+                    b=true;
+                }
+            }
+
+            if (b){
+                return ss.toString();
+            }else {
+                return s;
+            }
+
+        }
+
+    }
+
+    //////////////n        كلاس مهمتة اعطى فترة معينة بين كل ضغطة
+    public static class counter extends CountDownTimer {
+
+
+        /**
+         * @param millisInFuture    The number of millis in the future from the call
+         *                          to {@link #start()} until the countdown is done and {@link #onFinish()}
+         *                          is called.
+         * @param countDownInterval The interval along the way to receive
+         *                          {@link #onTick(long)} callbacks.
+         */
+        public counter(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+
+        }
+
+        @Override
+        public void onFinish() {
+           // add_tg_btn = (Button) purchase.findViewById(R.id.add_tg_btn);
+            purchases.add_tg_btn.setEnabled(true);
+            System.out.println("11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
         }
     }
 }
