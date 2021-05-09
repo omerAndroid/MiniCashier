@@ -256,6 +256,9 @@ public class add_goods_db extends AppCompatActivity {
             public void onClick(View v) {
                 //save Data of customer
 
+                if (add_extra_quantity_2.getText().toString().length()<0){
+                    add_extra_quantity_2.setText("0");
+                }
                 quantity_stored_2= Double.parseDouble(add_extra_quantity_2.getText().toString() +"d");
                 if (add_quantity_2.getText().toString().length()<0){
                     add_quantity_2.setText("0");

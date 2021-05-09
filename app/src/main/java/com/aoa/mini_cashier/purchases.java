@@ -47,6 +47,7 @@ public class purchases extends AppCompatActivity {
 
     purchases.dialog_view_addtypes dva = new purchases.dialog_view_addtypes();
 
+  public static   String[] arr_slery;
     public Databases databases = new Databases(this);
    public static Dialog purchase,Date_Dialog;
     ListView list_purchases;
@@ -55,7 +56,7 @@ public class purchases extends AppCompatActivity {
     private Calendar calendar;
     //String date_viewe= "asdf";
     TextView phone_resource_txt,mobile_resource_txt,address_resource,name_resource_txt;
-   public static String data_type,Text_date="0",Text_date_2="0",cheack_11="",cheack_2="";
+   public static String data_type,Text_date="0",Text_date_2="0",set_mony="",cheack_2="";
     int date_place = 0;
     public static ArrayList<purchases_item_class> q_list = new ArrayList<>();
 
@@ -217,6 +218,7 @@ public class purchases extends AppCompatActivity {
                 if (add_tg_btn.isEnabled()){
                     add_tg_btn.setEnabled(false);
                     counter.start();
+                    set_mony=editText.getText().toString();
                 }
                 dva.show(getSupportFragmentManager(), "إضافة نوع");
             }
@@ -636,38 +638,53 @@ public class purchases extends AppCompatActivity {
             View view = inflater.inflate(R.layout.types_goods, null);
             /////////////////////////////////////////////////////////////////quantity -> dialog
             save = view.findViewById(R.id.save_tg_add);
-            clear_1 = view.findViewById(R.id.clear_1);
-            clear_2 = view.findViewById(R.id.clear_2);
-            clear_3 = view.findViewById(R.id.clear_3);
-            clear_4 = view.findViewById(R.id.clear_4);
 
 
             primary_type=view.findViewById(R.id.primary_type);///////raduo
             Text_q_type=view.findViewById(R.id.q_type);
             Text_q_buy_price=view.findViewById(R.id.q_buy_price);
             Text_q_sale_price=view.findViewById(R.id.q_sale_price);
+            primary_type.setEnabled(false);
+            Text_q_type.setEnabled(false);
+            Text_q_buy_price.setEnabled(false);
+            Text_q_sale_price.setEnabled(false);
 
             primary_type_2=view.findViewById(R.id.primary_type_2);
             Text_q_type_2=view.findViewById(R.id.q_type_2);
             Text_q_quantity_2=view.findViewById(R.id.q_quantity_2);
             Text_q_buy_price_2=view.findViewById(R.id.q_buy_price_2);
             Text_q_sale_price_2=view.findViewById(R.id.q_sale_price_2);
+            primary_type_2.setEnabled(false);
+            Text_q_type_2.setEnabled(false);
+            Text_q_quantity_2.setEnabled(false);
+            Text_q_buy_price_2.setEnabled(false);
+            Text_q_sale_price_2.setEnabled(false);
 
             primary_type_3=view.findViewById(R.id.primary_type_3);
             Text_q_type_3=view.findViewById(R.id.q_type_3);
             Text_q_quantity_3=view.findViewById(R.id.q_quantity_3);
             Text_q_buy_price_3=view.findViewById(R.id.q_buy_price_3);
             Text_q_sale_price_3=view.findViewById(R.id.q_sale_price_3);
+            primary_type_3.setEnabled(false);
+            Text_q_type_3.setEnabled(false);
+            Text_q_quantity_3.setEnabled(false);
+            Text_q_buy_price_3.setEnabled(false);
+            Text_q_sale_price_3.setEnabled(false);
 
             primary_type_4=view.findViewById(R.id.primary_type_4);
             Text_q_type_4=view.findViewById(R.id.q_type_4);
             Text_q_quantity_4=view.findViewById(R.id.q_quantity_4);
             Text_q_buy_price_4=view.findViewById(R.id.q_buy_price_4);
             Text_q_sale_price_4=view.findViewById(R.id.q_sale_price_4);
+            primary_type_4.setEnabled(false);
+            Text_q_type_4.setEnabled(false);
+            Text_q_quantity_4.setEnabled(false);
+            Text_q_buy_price_4.setEnabled(false);
+            Text_q_sale_price_4.setEnabled(false);
 
             //////////////////////////n   عملية الضغط على الرايديو بوتن  ////////////////////////////////////////////////////
             radioGroup=view.findViewById(R.id.radioGroup);
-
+            radioGroup.setEnabled(false);
             ///////////////////////////////////////////////////////////////////////////////////////////////
 
             insert_into_qnuatity();
@@ -690,6 +707,7 @@ public class purchases extends AppCompatActivity {
 
         ////////////n للتحقق من المدخلات
         private boolean check_impot_quantity() {
+            arr_slery =new String[4];
             size_impout=0;
             sum_q=0;
             if (!TextUtils.isEmpty(Text_q_type.getEditableText().toString())) {
@@ -699,6 +717,7 @@ public class purchases extends AppCompatActivity {
                     check_impot = false;
                 }else{
                     check_impot = true;
+                    arr_slery[0]=Text_q_sale_price.getText().toString();
                 }
             }
             if (!TextUtils.isEmpty(Text_q_type_2.getEditableText().toString())){
@@ -709,6 +728,7 @@ public class purchases extends AppCompatActivity {
                     check_impot = false;
                 }else {
                     check_impot = true;
+                    arr_slery[1]=Text_q_sale_price_2.getText().toString();
                 }
             }
             if (!TextUtils.isEmpty(Text_q_type_3.getEditableText().toString())){
@@ -719,7 +739,9 @@ public class purchases extends AppCompatActivity {
                     check_impot = false;
 
                     }else {
-                    check_impot = true;}
+                    check_impot = true;
+                    arr_slery[2]=Text_q_sale_price_3.getText().toString();
+                }
             }
             if (!TextUtils.isEmpty(Text_q_type_4.getEditableText().toString())){
                 if (TextUtils.isEmpty(Text_q_quantity_4.getEditableText().toString())||TextUtils.isEmpty(Text_q_buy_price_4.getEditableText().toString())||
@@ -729,6 +751,7 @@ public class purchases extends AppCompatActivity {
                     check_impot = false;
                 }else {
                     check_impot = true;
+                    arr_slery[3]=Text_q_sale_price_3.getText().toString();
                 }
             }
 
@@ -751,35 +774,44 @@ public class purchases extends AppCompatActivity {
             double[] quantity_Double=databases.get_ALLq_qnuatity_Double(id);////MessageFormat.format("{0}", quantity_Double[g]
 
             ////new DecimalFormat("#.000#").format(9999999999.123)
-
+            double v=0.0;
             int i=1;
+
             for (int j=0;j<a;j++){////   String.format("%.3f", quantity_Double[2])
                 if (i==1){
                     Text_q_type.setText(quantity[0]);
-                    Text_q_buy_price.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[1])));
+                    Text_q_buy_price.setText(String.valueOf(set_mony));///set_mony
                     Text_q_sale_price.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[2])));
                     set_rideou_cheack(1,quantity[0]);
+                    Text_q_sale_price.setEnabled(true);
+
                     i+=1;
                 }else if (i==2){
                     Text_q_type_2.setText(quantity[1]);
+                    v=Double.valueOf(set_mony)/Double.valueOf(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[3])));
                     Text_q_quantity_2.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[3])));
-                    Text_q_buy_price_2.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[4])));
+                    Text_q_buy_price_2.setText(theack_aggen(new DecimalFormat("#.00#").format( v)));
                     Text_q_sale_price_2.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[5])));
                     set_rideou_cheack(2,quantity[1]);
+                    Text_q_sale_price_2.setEnabled(true);
                     i+=1;
                 }else if (i==3){
                     Text_q_type_3.setText(quantity[2]);
+                    v=Double.valueOf(v)/Double.valueOf(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[6])));
                     Text_q_quantity_3.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[6])));
-                    Text_q_buy_price_3.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[7])));
+                    Text_q_buy_price_3.setText(theack_aggen(new DecimalFormat("#.00#").format(v)));
                     Text_q_sale_price_3.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[8])));
                     set_rideou_cheack(3,quantity[2]);
+                    Text_q_sale_price_3.setEnabled(true);
                     i+=1;
                 }else if (i==4){
                     Text_q_type_4.setText(quantity[3]);
+                    v=Double.valueOf(v)/Double.valueOf(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[9])));
                     Text_q_quantity_4.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[9])));
-                    Text_q_buy_price_4.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[10])));
+                    Text_q_buy_price_4.setText(theack_aggen(new DecimalFormat("#.00#").format( v)));
                     Text_q_sale_price_4.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[11])));
                     set_rideou_cheack(4,quantity[3]);
+                    Text_q_sale_price_3.setEnabled(true);
                 }
 
             }
