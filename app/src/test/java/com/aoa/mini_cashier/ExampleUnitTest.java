@@ -85,8 +85,8 @@ public class ExampleUnitTest {
 
         System.out.println(" int : " + To_int("12.0"));
 
-        int gg=999999999;
-
+        int gg=6000;
+        System.out.println(To_int("6000.00"));
     }
 
 

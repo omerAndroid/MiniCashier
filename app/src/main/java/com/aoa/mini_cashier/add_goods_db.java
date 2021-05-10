@@ -249,6 +249,8 @@ public class add_goods_db extends AppCompatActivity {
         customer_data.setTitle("بيانات الكمية");
         final EditText add_extra_quantity_2 =customer_data.findViewById(R.id.add_extra_quantity_2);
         final EditText add_quantity_2 =customer_data.findViewById(R.id.add_quantity_2);
+        add_quantity_2.setText("0");
+        add_extra_quantity_2.setText("0");
         final Button save_quantity_2 =customer_data.findViewById(R.id.save_quantity_2);
 
         save_quantity_2.setOnClickListener(new View.OnClickListener() {
@@ -256,14 +258,16 @@ public class add_goods_db extends AppCompatActivity {
             public void onClick(View v) {
                 //save Data of customer
 
-                if (add_extra_quantity_2.getText().toString().length()<0){
+                if (add_extra_quantity_2.getText().toString().length()<1){
                     add_extra_quantity_2.setText("0");
                 }
                 quantity_stored_2= Double.parseDouble(add_extra_quantity_2.getText().toString() +"d");
-                if (add_quantity_2.getText().toString().length()<0){
+
+                if (add_quantity_2.getText().toString().length()<1){
                     add_quantity_2.setText("0");
                 }
                 quantity_stored_2+= Double.parseDouble(add_quantity_2.getText().toString() +"d");
+
 
                 customer_data.dismiss();
             }
@@ -411,8 +415,12 @@ public class add_goods_db extends AppCompatActivity {
     }
 
     public void seve_goods(View view) {
+        if (quantity_stored_2==0){
+            quantity_stored_2=1;
+        }
         Text_quantity.setText(theack_aggen(new DecimalFormat("#.00#").format(quantity_stored*quantity_stored_2)));
-        get_seve_goods(); }
+        get_seve_goods();
+    }
       //////////n        يقوم بحفظ التعديلات
     private boolean seve_ubdate_googs(String old_baracod) {
         boolean check=false;

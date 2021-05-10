@@ -65,7 +65,7 @@ public class Databases extends SQLiteOpenHelper {/// Databases_quantity
                 "FOREIGN KEY(id_agent) REFERENCES agent(id) ON UPDATE CASCADE ON DELETE CASCADE)");////n   سند
 
         db.execSQL("CREATE TABLE purchases(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_purch TEXT unique,bracode TEXT unique,purchase_price REAL,total REAL," +
-                "quantity INTEGER,quantity_free INTEGER,id_q INTEGER,expiration_date TEXT ,date_purchase TEXT ,id_resource INTEGER)");//////n  المشتريات
+                "quantity INTEGER,quantity_free INTEGER,expiration_date TEXT ,date_purchase TEXT ,id_resource INTEGER)");//////n  المشتريات
     }
 
     @Override
@@ -1026,6 +1026,104 @@ public class Databases extends SQLiteOpenHelper {/// Databases_quantity
             res.moveToNext();
         }
         return sat;
+    }
+
+    public void get_update_quantity(int id_g, int id_q, Double selling_price){
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+
+        contentValues.put("selling_price",selling_price);
+
+        db.update("quantity",contentValues,"id_g = ? AND " + "id_q = ?",new String[]{String.valueOf(id_g),String.valueOf(id_q)});
+    }
+
+    public void insert_purchases(String name_purch, String bracode,double purchase_price,double total,int quantity,int quantity_free,
+                                 String expiration_date,String date_purchase,int id_resource){
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+        contentValues.put("name_purch",name_purch);
+        contentValues.put("bracode",bracode);
+        contentValues.put("purchase_price",purchase_price);
+        contentValues.put("total",total);
+        contentValues.put("quantity",quantity);
+        contentValues.put("quantity_free",quantity_free);
+        contentValues.put("expiration_date",expiration_date);
+        contentValues.put("date_purchase",date_purchase);
+        contentValues.put("id_resource",id_resource);
+
+        db.insert("purchases",null,contentValues);
+    }
+
+    public String[] get_All_purchases(){////dri
+
+        SQLiteDatabase db=this.getReadableDatabase();
+        String[] sat=new String[6*get_number_purchases()];
+
+        int i = 0;
+        Cursor res  = db.rawQuery("select * from purchases",null);
+        res.moveToFirst();
+        while (res.isAfterLast() == false) {
+            String c;
+
+            c = res.getString(res.getColumnIndex("name_purch"));
+            sat[i] = c;
+            i++;
+
+            c = res.getString(res.getColumnIndex("bracode"));
+            sat[i] = c;
+            i++;
+
+            c = res.getString(res.getColumnIndex("quantity"));
+            sat[i] = c;
+            i++;
+
+            c = res.getString(res.getColumnIndex("quantity_free"));
+            sat[i] = c;
+            i++;
+
+            c = res.getString(res.getColumnIndex("expiration_date"));
+            sat[i] = c;
+            i++;
+
+            c = res.getString(res.getColumnIndex("date_purchase"));//5
+            sat[i] = c;
+            i++;
+
+            res.moveToNext();
+        }
+        return sat;
+    }
+
+    public double[] get_All_purchases_double(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        double[] sat=new double[2*get_number_purchases()];
+
+        int i = 0;
+        Cursor res  = db.rawQuery("select * from purchases",null);
+        res.moveToFirst();
+        while (res.isAfterLast() == false) {
+            double c;
+            c = res.getDouble(res.getColumnIndex("purchase_price"));
+            sat[i] = c;
+            i++;
+
+            c = res.getDouble(res.getColumnIndex("total"));
+            sat[i] = c;
+            i++;
+            res.moveToNext();
+        }
+        return sat;
+    }
+    public int get_number_purchases(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        int a=0;
+        @SuppressLint("Recycle") Cursor res=db.rawQuery("select * from purchases",null);
+        res.moveToFirst();
+        while (!res.isAfterLast()){
+            a++;
+            res.moveToNext();
+        }
+        return a;
     }
 }
 

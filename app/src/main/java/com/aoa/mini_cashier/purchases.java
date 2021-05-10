@@ -47,7 +47,7 @@ public class purchases extends AppCompatActivity {
 
     purchases.dialog_view_addtypes dva = new purchases.dialog_view_addtypes();
 
-  public static   String[] arr_slery;
+  public static   String[] arr_slery,arr_quantity_type;
     public Databases databases = new Databases(this);
    public static Dialog purchase,Date_Dialog;
     ListView list_purchases;
@@ -56,13 +56,15 @@ public class purchases extends AppCompatActivity {
     private Calendar calendar;
     //String date_viewe= "asdf";
     TextView phone_resource_txt,mobile_resource_txt,address_resource,name_resource_txt;
-   public static String data_type,Text_date="0",Text_date_2="0",set_mony="",cheack_2="";
+   public static String data_type,Text_date="0",Text_date_2="0",set_mony="";
     int date_place = 0;
     public static ArrayList<purchases_item_class> q_list = new ArrayList<>();
 
     public static ArrayList<policy_item_class> policy_list = new ArrayList<>();
+    @SuppressLint("StaticFieldLeak")
     public static Button add_tg_btn;
     public static double quantity_stored=1.0,quantity_stored_2=1.0;
+    public static boolean chaeck_seve=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,18 +95,23 @@ public class purchases extends AppCompatActivity {
         address_resource.setText(data.getExtras().getString("address"));
         name_resource_txt.setText(data.getExtras().getString("name"));
 
-        change_list_items=findViewById(R.id.change_list_items);///
+        change_list_items=findViewById(R.id.change_list_items);
+
+        listShow_policy_2();
+
         findViewById(R.id.change_list_items).setOnClickListener(v -> {
             if (change_list_items.getText().toString().equals("قائمة المشتريات")){
                 change_list_items.setText("قائمة السندات");
+                q_list = new ArrayList<>();
+                ListAdupter ad = new ListAdupter(q_list);
+                list_purchases.setAdapter(ad);
                 listShow_policy();
             }else {
                 change_list_items.setText("قائمة المشتريات");
-
                 policy_list = new ArrayList<>();
                 ListAdupter2 ad = new ListAdupter2(policy_list);
                 list_purchases.setAdapter(ad);
-
+                listShow_policy_2();
             }
         });
     }
@@ -177,10 +184,13 @@ public class purchases extends AppCompatActivity {
         final AutoCompleteTextView add_barcode_txt=(AutoCompleteTextView) purchase.findViewById(R.id.add_barcode_txt);//add_tg_btn
         final EditText add_name_goods=(EditText) purchase.findViewById(R.id.add_name_goods);
         final EditText add_quantity=(EditText) purchase.findViewById(R.id.add_quantity);
-        final EditText add_extra_quantity=(EditText) purchase.findViewById(R.id.add_extra_quantity);
+        //final EditText add_extra_quantity=(EditText) purchase.findViewById(R.id.add_extra_quantity);
         final EditText add_date_sale=(EditText) purchase.findViewById(R.id.add_date_sale);
         final EditText add_date_ex=(EditText) purchase.findViewById(R.id.add_date_ex);
         final EditText editText=(EditText) purchase.findViewById(R.id.editText);////n      -سعر الشراء-بأعلى قيمة
+        final EditText editText2=(EditText) purchase.findViewById(R.id.editText2);
+        final EditText editText3=(EditText) purchase.findViewById(R.id.editText3);
+
         get_ALL_baracode();
         final Button add_barcode = (Button) purchase.findViewById(R.id.add_barcode2);
         final Button save_add_goods = (Button) purchase.findViewById(R.id.save_add_goods);//editText
@@ -192,7 +202,34 @@ public class purchases extends AppCompatActivity {
         add_barcode.setOnClickListener(v -> red_qr());
 
         save_add_goods.setOnClickListener(v -> {
-            //save Data of customer
+            if (chaeck_seve) {
+                int id_resource=databases.get_id_resource(name_resource_txt.getText().toString());
+                if (quantity_stored_2==0){
+                    quantity_stored_2=1;
+                }
+                add_quantity.setText(theack_aggen(new DecimalFormat("#.00#").format(quantity_stored*quantity_stored_2)));
+
+                if ((editText2.getText().toString().length()<1&&editText3.getText().toString().length()>0)
+                        ||(editText2.getText().toString().length()>0&&editText3.getText().toString().length()<1)){
+                    if (editText2.getText().toString().length()<1){editText2.setError("أكمل ابيانات.");
+                    }else {editText3.setError("أكمل ابيانات.");}
+                }
+                else if(editText2.getText().toString().length()<1&&editText3.getText().toString().length()<1){
+                    editText2.setText("0");
+                    editText3.setText("0");
+                }
+                double total=Double.parseDouble(editText.getText().toString())*Double.parseDouble(add_quantity.getText().toString());
+                databases.insert_purchases(add_name_goods.getText().toString(),add_barcode_txt.getText().toString(),
+                        Double.parseDouble(editText.getText().toString()),
+                        total,
+                        Integer.parseInt(To_int(add_quantity.getText().toString())),
+                        Integer.parseInt(editText2.getText().toString()),
+                        add_date_ex.getText().toString(),
+                        add_date_sale.getText().toString(),
+                        id_resource);
+                insert_Data_quantity(add_barcode_txt.getText().toString());
+                purchase.dismiss();
+            }
         });
 
         date_sale_btn.setOnClickListener(v -> {
@@ -228,6 +265,47 @@ public class purchases extends AppCompatActivity {
         purchase.show();
     }
 
+    public String To_int(String s){
+        String[] parts = s.split("\\.");
+        String part1 ,v  ;
+        if (s.contains(".")) {
+
+            part1 = parts[0];
+            v=part1;
+        }else {
+            v=s;
+        }
+        return v;
+    }
+
+    private void insert_Data_quantity(String barcode) {
+
+        int id_g = databases.get_id_goods(barcode);
+        int t=0, id_q;
+
+        for (int i=0;i<=arr_slery.length-1;i++){
+            if (arr_slery[i]!=null){
+                t++;
+            }
+        }
+
+        for (int r=0;r<=t;r++){
+            if (r==1){
+                id_q=databases.get_id_quantity_type(arr_quantity_type[0]);
+                databases.get_update_quantity(id_g,id_q,Double.parseDouble(arr_slery[0]));
+            }else if (r==2){
+                id_q=databases.get_id_quantity_type(arr_quantity_type[1]);
+                databases.get_update_quantity(id_g,id_q,Double.parseDouble(arr_slery[1]));
+            }else if (r==3){
+                id_q=databases.get_id_quantity_type(arr_quantity_type[2]);
+                databases.get_update_quantity(id_g,id_q,Double.parseDouble(arr_slery[2]));
+            }else if (r==4){
+                id_q=databases.get_id_quantity_type(arr_quantity_type[3]);
+                databases.get_update_quantity(id_g,id_q,Double.parseDouble(arr_slery[3]));
+            }
+        }
+
+    }
 
     private void get_dileg_q() {
 
@@ -244,22 +322,19 @@ public class purchases extends AppCompatActivity {
         add_quantity_2.setText("0");
         add_extra_quantity_2.setText("0");
 
-        save_quantity_2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //save Data of customer
+        save_quantity_2.setOnClickListener(v -> {
+            //save Data of customer
 
-                if (add_extra_quantity_2.getText().toString().length()<1){
-                    add_extra_quantity_2.setText("0");
-                }
-                quantity_stored_2= Double.parseDouble(add_extra_quantity_2.getText().toString() +"d");
-                if (add_quantity_2.getText().toString().length()<1){
-                    add_quantity_2.setText("0");
-                }
-                quantity_stored_2+= Double.parseDouble(add_quantity_2.getText().toString() +"d");
-
-                customer_data.dismiss();
+            if (add_extra_quantity_2.getText().toString().length()<1){
+                add_extra_quantity_2.setText("0");
             }
+            quantity_stored_2= Double.parseDouble(add_extra_quantity_2.getText().toString() +"d");
+            if (add_quantity_2.getText().toString().length()<1){
+                add_quantity_2.setText("0");
+            }
+            quantity_stored_2+= Double.parseDouble(add_quantity_2.getText().toString() +"d");
+
+            customer_data.dismiss();
         });
         customer_data.show();
     }
@@ -293,12 +368,12 @@ public class purchases extends AppCompatActivity {
     private void Packing_for_goods(String item) {
 
         String[] All_goods=databases.get_All_goods_for_barcod(item);
-        double[] All_goods_double=databases.get_All_goods_for_barcod_Double(item);
+        //double[] All_goods_double=databases.get_All_goods_for_barcod_Double(item);
 
         final AutoCompleteTextView add_barcode_txt=(AutoCompleteTextView) purchase.findViewById(R.id.add_barcode_txt);
         final EditText add_name_goods=(EditText) purchase.findViewById(R.id.add_name_goods);
-        final EditText add_quantity=(EditText) purchase.findViewById(R.id.add_quantity);
-        final EditText add_extra_quantity=(EditText) purchase.findViewById(R.id.add_extra_quantity);
+        //final EditText add_quantity=(EditText) purchase.findViewById(R.id.add_quantity);
+       // final EditText add_extra_quantity=(EditText) purchase.findViewById(R.id.add_extra_quantity);
         final EditText add_date_sale=(EditText) purchase.findViewById(R.id.add_date_sale);
         final EditText add_date_ex=(EditText) purchase.findViewById(R.id.add_date_ex);
         final MaterialSpinner spinner=purchase.findViewById(R.id.spinner);
@@ -325,11 +400,7 @@ public class purchases extends AppCompatActivity {
         AlertDialog.Builder builder =new AlertDialog.Builder(purchases.this);/////////////////////////n        يوجد خطا هنا تاكد لا تنسسسسسس
         builder.setMessage("هل تريد إضافة المنتج جديد");
         //builder.setTitle("إضافة المنتج جديد");
-        builder.setPositiveButton("نعم", (dialog, which) -> {
-
-            startActivity(new Intent(this,add_goods_db.class));
-
-        });
+        builder.setPositiveButton("نعم", (dialog, which) -> startActivity(new Intent(this,add_goods_db.class)));
         builder.setNegativeButton("لا", (dialog, which) -> {
             //////////////////b يتم فتح كلاس لاضافة لكي يقوم بعملية التعديل
 
@@ -383,7 +454,6 @@ public class purchases extends AppCompatActivity {
         }else {
             return s;
         }
-
     }
 
     public void red_qr(){
@@ -437,12 +507,7 @@ public class purchases extends AppCompatActivity {
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy ");
         date_paid.setText(sdf.format(date));
 
-        date_paid.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                date_picker();
-            }
-        });
+        date_paid.setOnClickListener(v -> date_picker());
 
         catch_btn.setOnClickListener(v -> {
             //قبض
@@ -460,6 +525,7 @@ public class purchases extends AppCompatActivity {
 
                 if (result) {
                     Toast.makeText(purchases.this, "ok", Toast.LENGTH_SHORT).show();
+                    finish();
                 }else Toast.makeText(purchases.this, "no no no ", Toast.LENGTH_SHORT).show();
 
             }
@@ -479,6 +545,7 @@ public class purchases extends AppCompatActivity {
                 databases.get_insert_money_box(money-Double.parseDouble(amount_policy.getText().toString()));
                 if (result) {
                     Toast.makeText(purchases.this, "ok", Toast.LENGTH_SHORT).show();
+                    finish();
                 }else Toast.makeText(purchases.this, "no no no ", Toast.LENGTH_SHORT).show();
 
             }
@@ -502,6 +569,34 @@ public class purchases extends AppCompatActivity {
         }
         //////////////////////////////Add List Item//////////////////////////////////////
         purchases.ListAdupter2 ad = new purchases.ListAdupter2(policy_list);
+        list_purchases.setAdapter(ad);
+
+
+    }
+
+    public void listShow_policy_2(){
+
+        String[] purchases=databases.get_All_purchases();
+
+        double[] purchases_double =databases.get_All_purchases_double();
+
+        q_list.clear();
+        int i=0,g=0;
+        for (int j=0;j<databases.get_number_purchases();j++){
+
+            q_list.add(new purchases_item_class(purchases[i+1],purchases[i],MessageFormat.format("{0}",purchases_double[g]),
+                    purchases[i+2],MessageFormat.format("{0}",purchases_double[g+1]),
+                    purchases[i+3],purchases[i+5],purchases[i+4]));
+
+            System.out.println("000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+            System.out.println("purchases[i+1] "+purchases[i+1]+"\n purchases[i] "+purchases[i]+"\n purchases_double[g] "+MessageFormat.format("{0}",purchases_double[g])+
+                    "\n purchases[i+2] "+purchases[i+2]+"\n purchases_double[g+1] "+MessageFormat.format("{0}",purchases_double[g+1])+
+                    "\n purchases[i+3] "+purchases[i+3]+"\n purchases[i+5] "+purchases[i+5]+"\n purchases[i+4] "+purchases[i+4]);
+            i+=6;
+            g+=2;
+        }
+        //////////////////////////////Add List Item//////////////////////////////////////
+        purchases.ListAdupter ad = new purchases.ListAdupter(q_list);
         list_purchases.setAdapter(ad);
 
 
@@ -611,21 +706,13 @@ public class purchases extends AppCompatActivity {
         public  EditText Text_q_type, Text_q_buy_price, Text_q_sale_price,Text_q_type_2,
                 Text_q_quantity_2,Text_q_buy_price_2,Text_q_sale_price_2,Text_q_type_3,Text_q_quantity_3,
                 Text_q_buy_price_3,Text_q_sale_price_3,Text_q_type_4,Text_q_quantity_4,Text_q_buy_price_4,Text_q_sale_price_4;
-        //public  String name_type,quantity,buy_price,sale_price;
         RadioGroup radioGroup;
-        public  boolean check_work=false,check_insert_Data=false,isChecked_1=false,isChecked_2=false,isChecked_3=false,isChecked_4=false;
-        Button  save,clear_1,clear_2,clear_3,clear_4;
-        // int id_quantity;
-        //  public  String old_q_type,add_q_type;
+        Button  save;
         RadioButton primary_type,primary_type_2,primary_type_3,primary_type_4;
         androidx.appcompat.app.AlertDialog.Builder builder;
         boolean check_impot;
 
-        RadioButton radioButton;
 
-        int sum_q;
-
-        int size_impout;
 
         @SuppressLint({"NonConstantResourceId", "SetTextI18n"})
         @NonNull
@@ -633,7 +720,6 @@ public class purchases extends AppCompatActivity {
         public Dialog onCreateDialog(Bundle savedInstanceState) {
 
             builder = new androidx.appcompat.app.AlertDialog.Builder(Objects.requireNonNull(getActivity()));
-            Databases databases = new Databases(getActivity());
             LayoutInflater inflater = getActivity().getLayoutInflater();
             View view = inflater.inflate(R.layout.types_goods, null);
             /////////////////////////////////////////////////////////////////quantity -> dialog
@@ -693,11 +779,11 @@ public class purchases extends AppCompatActivity {
             save.setOnClickListener(v -> {
 
                 if (check_impot_quantity()) {
-
+                    chaeck_seve=true;
+                    dismiss();
                 }
 
             });
-
 
             builder.setView(view).setTitle("إضافة نوع");
 
@@ -708,8 +794,9 @@ public class purchases extends AppCompatActivity {
         ////////////n للتحقق من المدخلات
         private boolean check_impot_quantity() {
             arr_slery =new String[4];
-            size_impout=0;
-            sum_q=0;
+            arr_quantity_type =new String[4];
+            quantity_stored =1.0;
+
             if (!TextUtils.isEmpty(Text_q_type.getEditableText().toString())) {
 
                 if (TextUtils.isEmpty(Text_q_buy_price.getEditableText().toString())||TextUtils.isEmpty(Text_q_sale_price.getEditableText().toString())){
@@ -718,6 +805,8 @@ public class purchases extends AppCompatActivity {
                 }else{
                     check_impot = true;
                     arr_slery[0]=Text_q_sale_price.getText().toString();
+                    arr_quantity_type[0]=Text_q_type.getText().toString();
+                    quantity_stored *=1;
                 }
             }
             if (!TextUtils.isEmpty(Text_q_type_2.getEditableText().toString())){
@@ -729,6 +818,8 @@ public class purchases extends AppCompatActivity {
                 }else {
                     check_impot = true;
                     arr_slery[1]=Text_q_sale_price_2.getText().toString();
+                    arr_quantity_type[1]=Text_q_type_2.getText().toString();
+                    quantity_stored *=Double.parseDouble(Text_q_quantity_2.getText().toString());
                 }
             }
             if (!TextUtils.isEmpty(Text_q_type_3.getEditableText().toString())){
@@ -741,6 +832,8 @@ public class purchases extends AppCompatActivity {
                     }else {
                     check_impot = true;
                     arr_slery[2]=Text_q_sale_price_3.getText().toString();
+                    arr_quantity_type[2]=Text_q_type_3.getText().toString();
+                    quantity_stored *=Double.parseDouble(Text_q_quantity_3.getText().toString());
                 }
             }
             if (!TextUtils.isEmpty(Text_q_type_4.getEditableText().toString())){
@@ -751,7 +844,9 @@ public class purchases extends AppCompatActivity {
                     check_impot = false;
                 }else {
                     check_impot = true;
-                    arr_slery[3]=Text_q_sale_price_3.getText().toString();
+                    arr_slery[3]=Text_q_sale_price_4.getText().toString();
+                    arr_quantity_type[3]=Text_q_type_4.getText().toString();
+                    quantity_stored *=Double.parseDouble(Text_q_quantity_4.getText().toString());
                 }
             }
 
@@ -788,7 +883,7 @@ public class purchases extends AppCompatActivity {
                     i+=1;
                 }else if (i==2){
                     Text_q_type_2.setText(quantity[1]);
-                    v=Double.valueOf(set_mony)/Double.valueOf(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[3])));
+                    v=Double.parseDouble(set_mony)/Double.parseDouble(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[3])));
                     Text_q_quantity_2.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[3])));
                     Text_q_buy_price_2.setText(theack_aggen(new DecimalFormat("#.00#").format( v)));
                     Text_q_sale_price_2.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[5])));
@@ -797,7 +892,7 @@ public class purchases extends AppCompatActivity {
                     i+=1;
                 }else if (i==3){
                     Text_q_type_3.setText(quantity[2]);
-                    v=Double.valueOf(v)/Double.valueOf(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[6])));
+                    v= v /Double.parseDouble(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[6])));
                     Text_q_quantity_3.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[6])));
                     Text_q_buy_price_3.setText(theack_aggen(new DecimalFormat("#.00#").format(v)));
                     Text_q_sale_price_3.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[8])));
@@ -806,7 +901,7 @@ public class purchases extends AppCompatActivity {
                     i+=1;
                 }else if (i==4){
                     Text_q_type_4.setText(quantity[3]);
-                    v=Double.valueOf(v)/Double.valueOf(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[9])));
+                    v= v /Double.parseDouble(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[9])));
                     Text_q_quantity_4.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[9])));
                     Text_q_buy_price_4.setText(theack_aggen(new DecimalFormat("#.00#").format( v)));
                     Text_q_sale_price_4.setText(theack_aggen(new DecimalFormat("#.00#").format( quantity_Double[11])));
@@ -825,16 +920,12 @@ public class purchases extends AppCompatActivity {
 
             if (i==1&&treu==1){
                 primary_type.setChecked(true);
-                isChecked_1=true;
             }else if (i==2&&treu==1){
                 primary_type_2.setChecked(true);
-                isChecked_2=true;
             }else if (i==3&&treu==1){
                 primary_type_3.setChecked(true);
-                isChecked_3=true;
             }else if (i==4&&treu==1){
                 primary_type_4.setChecked(true);
-                isChecked_4=true;
             }
 
         }
@@ -912,9 +1003,7 @@ public class purchases extends AppCompatActivity {
 
         @Override
         public void onFinish() {
-           // add_tg_btn = (Button) purchase.findViewById(R.id.add_tg_btn);
             purchases.add_tg_btn.setEnabled(true);
-            System.out.println("11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
         }
     }
 }

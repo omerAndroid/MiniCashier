@@ -9,15 +9,16 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="الكمية"
-        android:inputType="textPersonName" />
+        android:inputType="number" />
 
     <EditText
         android:id="@+id/add_quantity_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+
         android:hint="كمية إضافية"
-        android:inputType="textPersonName" />
+        android:inputType="number" />
 
     <Button
         android:id="@+id/save_quantity_2"
