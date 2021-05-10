@@ -88,7 +88,6 @@ public class resources extends AppCompatActivity {
                     Toast.makeText(resources.this, "ok", Toast.LENGTH_SHORT).show();
                     listShow_qnuatitytype();
                   }else Toast.makeText(resources.this, "bad", Toast.LENGTH_SHORT).show();
-
                 }else {
                     if (Integer.parseInt(c_phone2.getText().toString())>99999999&&Integer.parseInt(c_phone1.getText().toString())<999999999){
                         c_phone2.setError("الرقم طويل جدا.");
