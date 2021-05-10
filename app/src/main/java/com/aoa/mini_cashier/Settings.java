@@ -2,23 +2,33 @@ package com.aoa.mini_cashier;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Calendar;
+import com.aoa.mini_cashier.DB.Databases;
+import com.aoa.mini_cashier.item_classes.Settings_item;
+
+import java.util.ArrayList;
+
 
 public class Settings extends AppCompatActivity {
 
+    public Databases databases = new Databases(this);
+    public static ArrayList<Settings_item> Settings_list = new ArrayList<>();
     Button add_up_guantity , add_up_debart,add_market_Phone;
     private Dialog Date_Dialog;
     String dialog_name="";
+    String[] Settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +45,7 @@ public class Settings extends AppCompatActivity {
             public void onClick(View v) {
                 dialog_name=add_up_debart.getText().toString();
                 add_updaate_dailog();
+                listShow_policy("أقسام الأصناف");
             }
         });
 
@@ -43,6 +54,7 @@ public class Settings extends AppCompatActivity {
             public void onClick(View v) {
                 dialog_name=add_up_guantity.getText().toString();
                 add_updaate_dailog();
+                listShow_policy("كميات الأصناف");
             }
         });
 
@@ -53,6 +65,42 @@ public class Settings extends AppCompatActivity {
                 add_updaate_dailog();
             }
         });
+
+    }
+
+    public void listShow_policy(String who){
+
+        int size=0;
+
+        switch (who) {
+            case "كميات الأصناف":
+                Settings = databases.get_ALLq_qnuatity_type();
+                size = databases.read_qnuatity_type();
+                break;
+            case "أقسام الأصناف":
+                Settings = databases.get_ALL_department();
+                size = databases.return_lenght_department();
+
+                break;
+            case "رقم المحل":
+
+                break;
+        }
+
+        Settings_list.clear();
+        int i=0;
+        for (int j=0;j<size;j++){
+
+            Settings_list.add(new Settings_item(Settings[i]));
+            i+=1;
+
+        }
+        //////////////////////////////Add List Item//////////////////////////////////////
+
+        ListView list_item= (ListView) Date_Dialog.findViewById(R.id.list__depart_quantity);
+        ListAdupter ad = new ListAdupter(Settings_list);
+        list_item.setAdapter(ad);
+
 
     }
 
@@ -70,15 +118,15 @@ public class Settings extends AppCompatActivity {
         //
 
         //call EditText in dialog
-        EditText text_edit= (EditText) Date_Dialog.findViewById(R.id.text_depart_quantity);
+        //EditText text_edit= (EditText) Date_Dialog.findViewById(R.id.text_depart_quantity);
         //
 
         //call listview in dialog
-        ListView list_item= (ListView) Date_Dialog.findViewById(R.id.list__depart_quantity);
+        //ListView list_item= (ListView) Date_Dialog.findViewById(R.id.list__depart_quantity);
         //
         ////////////////////////Buttons in click mode/////////////////////////
         add_item.setOnClickListener(v -> {
-            Toast.makeText(this, "إضافة "+dialog_name, Toast.LENGTH_SHORT).show();
+            Add(dialog_name);
         });
         update_item.setOnClickListener(v -> {
             Toast.makeText(this, "تعديل "+dialog_name, Toast.LENGTH_SHORT).show();
@@ -94,5 +142,74 @@ public class Settings extends AppCompatActivity {
 
 
         Date_Dialog.show();
+    }
+
+    public void Add(String who){
+        EditText text_edit= (EditText) Date_Dialog.findViewById(R.id.text_depart_quantity);
+        switch (who) {
+            case "كميات الأصناف":
+               if (text_edit.getText().toString().length()>0){
+                   boolean b = databases.insert_new_quantity_type(text_edit.getText().toString());
+                   if (b){
+                       Toast.makeText(this, "تمت الاضافة", Toast.LENGTH_SHORT).show();
+                       listShow_policy(who);
+                   }else {
+                       Toast.makeText(this, "موجود مسبقا", Toast.LENGTH_SHORT).show();
+                   }
+               }
+                break;
+            case "أقسام الأصناف":
+                if (text_edit.getText().toString().length()>0){
+                    boolean b = databases.insert_new_department(text_edit.getText().toString());
+                    if (b){
+                        Toast.makeText(this, "تمت الاضافة", Toast.LENGTH_SHORT).show();
+                        listShow_policy(who);
+                    }else {
+                        Toast.makeText(this, "موجود مسبقا", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                break;
+            case "رقم المحل":
+
+                break;
+        }
+    }
+
+    class ListAdupter extends BaseAdapter {
+        ArrayList<Settings_item> list_item;
+        ListAdupter(ArrayList<Settings_item> list_item){
+            this.list_item = list_item ;
+        }
+
+        @Override
+        public int getCount() {
+            return list_item.size();
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return list_item.get(position).name;
+        }
+
+        @Override
+        public View getView(int i, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = getLayoutInflater();
+            @SuppressLint({"ViewHolder", "InflateParams"}) View view =inflater.inflate(R.layout.settings_item,null);
+
+            TextView item_name = (TextView) view.findViewById(R.id.item_name);
+
+            item_name.setText(String.valueOf(list_item.get(i).name));
+
+            item_name.setOnClickListener((View.OnClickListener) v -> {
+                EditText text_edit= (EditText) Date_Dialog.findViewById(R.id.text_depart_quantity);
+                text_edit.setText(item_name.getText().toString());
+            });
+            return view;
+        }
     }
 }

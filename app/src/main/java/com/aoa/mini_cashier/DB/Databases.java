@@ -16,7 +16,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
-public class Databases extends SQLiteOpenHelper {/// Databases_quantity
+public class Databases extends SQLiteOpenHelper {
 
     static final String DBNAME="DB 0,1.db";///NOT NULL
     private final Context mContext;
@@ -102,23 +102,23 @@ public class Databases extends SQLiteOpenHelper {/// Databases_quantity
         }
     }
      ////////////////n        عملية اضافة نوع كمية جديدة
-    public void insert_new_quantity_type(String add) {
+    public boolean insert_new_quantity_type(String add) {
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
         contentValues.put("name_type",add);
 
         long result=db.insert("quantity_type",null,contentValues);
-        //return result != -1;
+        return result != -1;
 
     }
 
-    public void insert_new_department(String add) {
+    public boolean insert_new_department(String add) {
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
         contentValues.put("name_dep",add);
 
         long result=db.insert("department",null,contentValues);
-        //return result != -1;
+        return result != -1;
 
     }
 
@@ -529,7 +529,7 @@ public class Databases extends SQLiteOpenHelper {/// Databases_quantity
     public String[] get_ALLq_qnuatity(int id){
         int lenght=read_Tname_q_type(id);
         SQLiteDatabase db=this.getReadableDatabase();
-        String[] sat=new String[1*read_Tname_q_type(id)];
+        String[] sat=new String[read_Tname_q_type(id)];
 
         if (lenght>0) {
             int i = 0;
@@ -786,12 +786,12 @@ public class Databases extends SQLiteOpenHelper {/// Databases_quantity
 
         if (lenght>0) {
 
-            Cursor res  = db.rawQuery("select * from quantity where  id_g = "+id_g+" and default_q = "+1+" ",null);
+            @SuppressLint("Recycle") Cursor res  = db.rawQuery("select * from quantity where  id_g = "+id_g+" and default_q = "+1+" ",null);
 
             int i = 0;
 
             res.moveToFirst();
-            while (res.isAfterLast() == false) {
+            while (!res.isAfterLast()) {
                 double c;
                 c = res.getDouble(res.getColumnIndex("selling_price"));///////n     البيع
                 sat[0] = c;
@@ -806,24 +806,18 @@ public class Databases extends SQLiteOpenHelper {/// Databases_quantity
         return sat;
     }
 
-    public boolean get_delete_goods(String code){
+    public void get_delete_goods(String code){
         SQLiteDatabase db=this.getWritableDatabase();
 
         long result=db.delete("goods","bracode = ?",new String[]{code});
-        if (result==-1)
-            return false;
-        else
-            return true;
+
     }
 
-    public boolean get_delete_quantity(String id){
+    public void get_delete_quantity(String id){
         SQLiteDatabase db=this.getWritableDatabase();
 
-        long result=db.delete("quantity","id_g = ?",new String[]{id});
-        if (result==-1)
-            return false;
-        else
-            return true;
+        db.delete("quantity","id_g = ?",new String[]{id});
+
     }
 
     public int get_retern_cheack(int id_g,String number_q){
@@ -920,7 +914,6 @@ public class Databases extends SQLiteOpenHelper {/// Databases_quantity
         return sat;
     }
 
-
     public boolean insert_policy(double amount, String date_policy,String note_policy,String type_policy,int id_resource,int id_agent){
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
@@ -948,7 +941,6 @@ public class Databases extends SQLiteOpenHelper {/// Databases_quantity
         }
         return i ;
     }
-
 
     public double get_money_box(){
         SQLiteDatabase db=this.getReadableDatabase();
@@ -1114,6 +1106,7 @@ public class Databases extends SQLiteOpenHelper {/// Databases_quantity
         }
         return sat;
     }
+
     public int get_number_purchases(){
         SQLiteDatabase db=this.getReadableDatabase();
         int a=0;
@@ -1134,6 +1127,43 @@ public class Databases extends SQLiteOpenHelper {/// Databases_quantity
 
         db.update("goods",contentValues,"bracode = ?",new String[]{bracode});
 
+    }
+
+    //////////////////////////////////// Settings ///////////////////////////////////
+
+    public String[] get_ALLq_qnuatity_type(){
+        int lenght=read_qnuatity_type();
+        SQLiteDatabase db=this.getReadableDatabase();
+        String[] sat=new String[read_qnuatity_type()];
+
+        if (lenght>0) {
+            int i = 0;
+
+            @SuppressLint("Recycle") Cursor res = db.rawQuery("select * from quantity_type ", null);
+            res.moveToFirst();
+            while (!res.isAfterLast()) {
+                String c;
+                c =res.getString(res.getColumnIndex("name_type"));
+                sat[i] = c;
+                i++;
+                res.moveToNext();
+            }
+        }else{
+            sat=new String[1];
+            sat[0]=" ";}
+        return sat;
+    }
+
+    public int read_qnuatity_type(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        int a=0;
+        @SuppressLint("Recycle") Cursor res=db.rawQuery("select * from quantity_type",null);
+        res.moveToFirst();
+        while (!res.isAfterLast()){
+            a++;
+            res.moveToNext();
+        }
+        return a;
     }
 }
 
