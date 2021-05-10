@@ -64,7 +64,7 @@ public class Databases extends SQLiteOpenHelper {/// Databases_quantity
                 "FOREIGN KEY(id_resource) REFERENCES resource(id) ON UPDATE CASCADE ON DELETE CASCADE," +
                 "FOREIGN KEY(id_agent) REFERENCES agent(id) ON UPDATE CASCADE ON DELETE CASCADE)");////n   سند
 
-        db.execSQL("CREATE TABLE purchases(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_purch TEXT unique,bracode TEXT unique,purchase_price REAL,total REAL," +
+        db.execSQL("CREATE TABLE purchases(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_purch TEXT ,bracode TEXT ,purchase_price REAL,total REAL," +
                 "quantity INTEGER,quantity_free INTEGER,expiration_date TEXT ,date_purchase TEXT ,id_resource INTEGER)");//////n  المشتريات
     }
 
@@ -1124,6 +1124,16 @@ public class Databases extends SQLiteOpenHelper {/// Databases_quantity
             res.moveToNext();
         }
         return a;
+    }
+
+    public void get_update_quantity_in_goods(String bracode ,double quantity_stored){
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+
+        contentValues.put("quantity_stored",quantity_stored);
+
+        db.update("goods",contentValues,"bracode = ?",new String[]{bracode});
+
     }
 }
 

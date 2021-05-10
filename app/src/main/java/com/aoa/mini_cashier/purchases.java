@@ -218,17 +218,27 @@ public class purchases extends AppCompatActivity {
                     editText2.setText("0");
                     editText3.setText("0");
                 }
-                double total=Double.parseDouble(editText.getText().toString())*Double.parseDouble(add_quantity.getText().toString());
-                databases.insert_purchases(add_name_goods.getText().toString(),add_barcode_txt.getText().toString(),
-                        Double.parseDouble(editText.getText().toString()),
-                        total,
-                        Integer.parseInt(To_int(add_quantity.getText().toString())),
-                        Integer.parseInt(editText2.getText().toString()),
-                        add_date_ex.getText().toString(),
-                        add_date_sale.getText().toString(),
-                        id_resource);
-                insert_Data_quantity(add_barcode_txt.getText().toString());
-                purchase.dismiss();
+
+                if(editText2.getText().toString().length()>=1&&editText3.getText().toString().length()>=1) {
+                    double total = Double.parseDouble(editText.getText().toString()) * Double.parseDouble(add_quantity.getText().toString());
+                    double[] All_goods_double=databases.get_All_goods_for_barcod_Double(add_barcode_txt.getText().toString());
+                    double q = All_goods_double[0];
+                    q +=Double.parseDouble(add_quantity.getText().toString());
+                    databases.get_update_quantity_in_goods(add_barcode_txt.getText().toString(),q);
+                    databases.insert_purchases(
+                            add_name_goods.getText().toString(),
+                            add_barcode_txt.getText().toString(),
+                            Double.parseDouble(editText.getText().toString()),
+                            total,
+                            Integer.parseInt(To_int(add_quantity.getText().toString())),
+                            Integer.parseInt(editText2.getText().toString()),
+                            add_date_ex.getText().toString(),
+                            add_date_sale.getText().toString(),
+                            id_resource);
+                    insert_Data_quantity(add_barcode_txt.getText().toString());
+                    chaeck_seve=false;
+                    purchase.dismiss();
+                }
             }
         });
 
