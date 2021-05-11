@@ -1165,5 +1165,27 @@ public class Databases extends SQLiteOpenHelper {
         }
         return a;
     }
+
+    public boolean get_update_qnuatity_type(String old ,String new_name){
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+
+        contentValues.put("name_type",new_name);
+
+        long result=db.update("quantity_type",contentValues,"name_type = ?",new String[]{old});
+
+        return result != -1;
+    }
+
+    public boolean get_update_department(String old ,String new_name){
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+
+        contentValues.put("name_dep",new_name);
+
+        long result=db.update("department",contentValues,"name_dep = ?",new String[]{old});
+
+        return result != -1;
+    }
 }
 

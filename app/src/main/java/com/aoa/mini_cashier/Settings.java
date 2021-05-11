@@ -27,7 +27,7 @@ public class Settings extends AppCompatActivity {
     public static ArrayList<Settings_item> Settings_list = new ArrayList<>();
     Button add_up_guantity , add_up_debart,add_market_Phone;
     private Dialog Date_Dialog;
-    String dialog_name="";
+    String dialog_name="",name_new,name_old;
     String[] Settings;
 
     @Override
@@ -129,7 +129,10 @@ public class Settings extends AppCompatActivity {
             Add(dialog_name);
         });
         update_item.setOnClickListener(v -> {
-            Toast.makeText(this, "تعديل "+dialog_name, Toast.LENGTH_SHORT).show();
+            EditText text_edit= (EditText) Date_Dialog.findViewById(R.id.text_depart_quantity);
+            if (text_edit.getText().toString().length()>0) {
+                get_dileg(text_edit.getText().toString());
+            }
         });
         delete_item.setOnClickListener(v -> {
             Toast.makeText(this, "حذف "+dialog_name, Toast.LENGTH_SHORT).show();
@@ -144,8 +147,34 @@ public class Settings extends AppCompatActivity {
         Date_Dialog.show();
     }
 
-    public void Add(String who){
+    private void update(String who) {
         EditText text_edit= (EditText) Date_Dialog.findViewById(R.id.text_depart_quantity);
+        get_dileg(text_edit.getText().toString());
+        if (text_edit.getText().toString().length()>0) {
+
+            switch (who) {
+                case "كميات الأصناف":
+                    boolean b = databases.get_update_qnuatity_type(name_old,name_new);
+                    if (b){
+                        Toast.makeText(this, "تم التعديل", Toast.LENGTH_SHORT).show();
+                        listShow_policy(who);
+                    }else {
+                        Toast.makeText(this, "غير موجود ", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                case "أقسام الأصناف":
+
+
+                    break;
+                case "رقم المحل":
+
+                    break;
+            }
+        }
+    }
+
+    public void Add(String who){
+        EditText text_edit= Date_Dialog.findViewById(R.id.text_depart_quantity);
         switch (who) {
             case "كميات الأصناف":
                if (text_edit.getText().toString().length()>0){
@@ -173,6 +202,69 @@ public class Settings extends AppCompatActivity {
 
                 break;
         }
+    }
+
+    private void get_dileg(String s) {
+
+        Dialog customer_data;
+
+        //Dialog Customer Data viewer
+        customer_data = new Dialog(this);
+        customer_data.setContentView(R.layout.agent_dialog);
+        customer_data.setTitle(dialog_name);
+        final EditText add_extra_quantity_2 =customer_data.findViewById(R.id.add_extra_quantity_2);//1
+        final EditText add_quantity_2 =customer_data.findViewById(R.id.add_quantity_2);//2
+        final Button save_quantity_2 =customer_data.findViewById(R.id.save_quantity_2);
+
+        add_quantity_2.setHint("الاسم الجديد");
+        add_quantity_2.setInputType(1);
+        add_extra_quantity_2.setHint("الاسم القديم");
+        add_extra_quantity_2.setInputType(1);
+        add_extra_quantity_2.setText(s);
+
+        save_quantity_2.setOnClickListener(v -> {
+            //save Data of customer
+            EditText text_edit= (EditText) Date_Dialog.findViewById(R.id.text_depart_quantity);
+            if (add_extra_quantity_2.getText().toString().length()<1){
+                add_extra_quantity_2.setText("0");
+            }
+            name_old=add_extra_quantity_2.getText().toString();
+            if (add_quantity_2.getText().toString().length()<1){
+                add_quantity_2.setText("0");
+            }
+            name_new=add_quantity_2.getText().toString();
+            customer_data.dismiss();
+            boolean b;
+            if (name_old.length()>0&&name_new.length()>0) {
+
+                switch (dialog_name) {
+                    case "كميات الأصناف":
+                         b = databases.get_update_qnuatity_type(name_old,name_new);
+                        if (b){
+                            Toast.makeText(this, "تم التعديل", Toast.LENGTH_SHORT).show();
+                            listShow_policy(dialog_name);
+                        }else {
+                            Toast.makeText(this, "غير موجود ", Toast.LENGTH_SHORT).show();
+                        }
+                        break;
+                    case "أقسام الأصناف":
+                         b = databases.get_update_department(name_old,name_new);
+                        if (b){
+                            Toast.makeText(this, "تم التعديل", Toast.LENGTH_SHORT).show();
+                            listShow_policy(dialog_name);
+                        }else {
+                            Toast.makeText(this, "غير موجود ", Toast.LENGTH_SHORT).show();
+                        }
+                        break;
+                    case "رقم المحل":
+
+                        break;
+                }
+                text_edit.setText("");
+            }
+
+        });
+        customer_data.show();
     }
 
     class ListAdupter extends BaseAdapter {
