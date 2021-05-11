@@ -1,16 +1,22 @@
 package com.aoa.mini_cashier;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +35,10 @@ public class Settings extends AppCompatActivity {
     private Dialog Date_Dialog;
     String dialog_name="",name_new,name_old;
     String[] Settings;
+    private static final int PICK_IMAGE_REQUEST=100;
+    private Uri imageFilePath;
+    private Bitmap imageTOstore;
+    private ImageView objectImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,32 +48,23 @@ public class Settings extends AppCompatActivity {
         add_up_guantity = findViewById(R.id.add_up_guantity);
         add_up_debart = findViewById(R.id.add_up_debart);
         add_market_Phone = findViewById(R.id.market_phone);
+        objectImageView = findViewById(R.id.market_photo);
 
-
-        add_up_debart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog_name=add_up_debart.getText().toString();
-                add_updaate_dailog();
-                listShow_policy("أقسام الأصناف");
-            }
+        add_up_debart.setOnClickListener(v -> {
+            dialog_name=add_up_debart.getText().toString();
+            add_updaate_dailog();
+            listShow_policy("أقسام الأصناف");
         });
 
-        add_up_guantity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog_name=add_up_guantity.getText().toString();
-                add_updaate_dailog();
-                listShow_policy("كميات الأصناف");
-            }
+        add_up_guantity.setOnClickListener(v -> {
+            dialog_name=add_up_guantity.getText().toString();
+            add_updaate_dailog();
+            listShow_policy("كميات الأصناف");
         });
 
-        add_market_Phone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog_name=add_market_Phone.getText().toString();
-                add_updaate_dailog();
-            }
+        add_market_Phone.setOnClickListener(v -> {
+            dialog_name=add_market_Phone.getText().toString();
+            add_updaate_dailog();
         });
 
     }
@@ -83,7 +84,8 @@ public class Settings extends AppCompatActivity {
 
                 break;
             case "رقم المحل":
-
+                Settings = databases.get_ALLq_store_number();
+                size = databases.read_store_number();
                 break;
         }
 
@@ -125,9 +127,9 @@ public class Settings extends AppCompatActivity {
         //ListView list_item= (ListView) Date_Dialog.findViewById(R.id.list__depart_quantity);
         //
         ////////////////////////Buttons in click mode/////////////////////////
-        add_item.setOnClickListener(v -> {
-            Add(dialog_name);
-        });
+
+        add_item.setOnClickListener(v -> Add(dialog_name));
+
         update_item.setOnClickListener(v -> {
             EditText text_edit= (EditText) Date_Dialog.findViewById(R.id.text_depart_quantity);
             if (text_edit.getText().toString().length()>0) {
@@ -138,40 +140,13 @@ public class Settings extends AppCompatActivity {
             Toast.makeText(this, "حذف "+dialog_name, Toast.LENGTH_SHORT).show();
         });
 
-        close_dialog.setOnClickListener(v -> {
-            Date_Dialog.dismiss();
-        });
+        close_dialog.setOnClickListener(v -> Date_Dialog.dismiss());
         ////////////////////////////////////////////////////////////
 
 
         Date_Dialog.show();
     }
 
-    private void update(String who) {
-        EditText text_edit= (EditText) Date_Dialog.findViewById(R.id.text_depart_quantity);
-        get_dileg(text_edit.getText().toString());
-        if (text_edit.getText().toString().length()>0) {
-
-            switch (who) {
-                case "كميات الأصناف":
-                    boolean b = databases.get_update_qnuatity_type(name_old,name_new);
-                    if (b){
-                        Toast.makeText(this, "تم التعديل", Toast.LENGTH_SHORT).show();
-                        listShow_policy(who);
-                    }else {
-                        Toast.makeText(this, "غير موجود ", Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-                case "أقسام الأصناف":
-
-
-                    break;
-                case "رقم المحل":
-
-                    break;
-            }
-        }
-    }
 
     public void Add(String who){
         EditText text_edit= Date_Dialog.findViewById(R.id.text_depart_quantity);
@@ -199,7 +174,15 @@ public class Settings extends AppCompatActivity {
                 }
                 break;
             case "رقم المحل":
-
+                if (text_edit.getText().toString().length()>0){
+                    boolean b = databases.insert_new_store_number(text_edit.getText().toString());
+                    if (b){
+                        Toast.makeText(this, "تمت الاضافة", Toast.LENGTH_SHORT).show();
+                        listShow_policy(who);
+                    }else {
+                        Toast.makeText(this, "موجود مسبقا", Toast.LENGTH_SHORT).show();
+                    }
+                }
                 break;
         }
     }
@@ -257,7 +240,13 @@ public class Settings extends AppCompatActivity {
                         }
                         break;
                     case "رقم المحل":
-
+                        b = databases.get_update_store_number(name_old,name_new);
+                        if (b){
+                            Toast.makeText(this, "تم التعديل", Toast.LENGTH_SHORT).show();
+                            listShow_policy(dialog_name);
+                        }else {
+                            Toast.makeText(this, "غير موجود ", Toast.LENGTH_SHORT).show();
+                        }
                         break;
                 }
                 text_edit.setText("");
@@ -266,6 +255,40 @@ public class Settings extends AppCompatActivity {
         });
         customer_data.show();
     }
+
+    public void chooseImage(View view) {
+
+        try {
+            Intent objectIntent=new Intent();
+            objectIntent.setType("image/*");
+            objectIntent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(objectIntent,PICK_IMAGE_REQUEST);
+        }catch (Exception e){
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        try {
+            super.onActivityResult(requestCode, resultCode, data);
+            if (requestCode==PICK_IMAGE_REQUEST && resultCode==RESULT_OK&&data!=null&&data.getData()!=null){
+
+                imageFilePath=data.getData();
+                imageTOstore= MediaStore.Images.Media.getBitmap(getContentResolver(),imageFilePath);
+                objectImageView.setImageBitmap(imageTOstore);
+
+            }
+
+        }catch (Exception e){
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            System.out.println("********************************************************");
+            System.out.println( e.getMessage());
+            System.out.println("********************************************************");
+        }
+    }
+
 
     class ListAdupter extends BaseAdapter {
         ArrayList<Settings_item> list_item;

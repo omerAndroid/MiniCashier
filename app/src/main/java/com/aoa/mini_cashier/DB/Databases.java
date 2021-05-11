@@ -66,10 +66,12 @@ public class Databases extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE purchases(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_purch TEXT ,bracode TEXT ,purchase_price REAL,total REAL," +
                 "quantity INTEGER,quantity_free INTEGER,expiration_date TEXT ,date_purchase TEXT ,id_resource INTEGER)");//////n  المشتريات
+
+        db.execSQL("CREATE TABLE store_number(id INTEGER PRIMARY KEY AUTOINCREMENT ,mobile INTEGER unique,key_store NUMERIC)");
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {////store_number
         db.execSQL("DROP TABLE IF EXISTS goods");
         db.execSQL("DROP TABLE IF EXISTS quantity");
         db.execSQL("DROP TABLE IF EXISTS agent");
@@ -1186,6 +1188,62 @@ public class Databases extends SQLiteOpenHelper {
         long result=db.update("department",contentValues,"name_dep = ?",new String[]{old});
 
         return result != -1;
+    }
+
+    public int read_store_number(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        int a=0;
+        @SuppressLint("Recycle") Cursor res=db.rawQuery("select * from store_number",null);
+        res.moveToFirst();
+        while (!res.isAfterLast()){
+            a++;
+            res.moveToNext();
+        }
+        return a;
+    }
+
+    public String[] get_ALLq_store_number(){
+        int lenght=read_qnuatity_type();
+        SQLiteDatabase db=this.getReadableDatabase();
+        String[] sat=new String[read_qnuatity_type()];
+
+        if (lenght>0) {
+            int i = 0;
+
+            @SuppressLint("Recycle") Cursor res = db.rawQuery("select * from store_number ", null);
+            res.moveToFirst();
+            while (!res.isAfterLast()) {
+                String c;
+                c =res.getString(res.getColumnIndex("mobile"));
+                sat[i] = c;
+                i++;
+                res.moveToNext();
+            }
+        }else{
+            sat=new String[1];
+            sat[0]=" ";}
+        return sat;
+    }
+
+    public boolean get_update_store_number(String old ,String new_name){
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+
+        contentValues.put("mobile",new_name);
+
+        long result=db.update("store_number",contentValues,"mobile = ?",new String[]{old});
+
+        return result != -1;
+    }
+
+    public boolean insert_new_store_number(String add) {
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+        contentValues.put("mobile",add);
+
+        long result=db.insert("store_number",null,contentValues);
+        return result != -1;
+
     }
 }
 

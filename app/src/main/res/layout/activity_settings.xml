@@ -61,11 +61,16 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <Button
+            <ImageView
                 android:id="@+id/market_photo"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:text="إضافة صورة" />
+                android:onClick="chooseImage"
+                android:scaleType="centerCrop"
+                android:layout_margin="10dp"
+                app:srcCompat="@drawable/ic_baseline_photo_24"
+                android:text="إضافة صورة"
+                tools:ignore="ContentDescription,VectorDrawableCompat" />
 
             <LinearLayout
                 android:layout_width="match_parent"
