@@ -185,6 +185,7 @@ public class Settings extends AppCompatActivity {
                        Toast.makeText(this, "تمت الاضافة", Toast.LENGTH_SHORT).show();
                        listShow_policy(who);
                    }else {
+
                        Toast.makeText(this, "موجود مسبقا", Toast.LENGTH_SHORT).show();
                    }
                }
