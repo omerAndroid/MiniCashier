@@ -1,5 +1,6 @@
 package com.aoa.mini_cashier;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +11,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,15 @@ import android.widget.Toast;
 
 import com.aoa.mini_cashier.DB.Databases;
 import com.aoa.mini_cashier.item_classes.Settings_item;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+
 
 import java.util.ArrayList;
 
@@ -39,12 +50,22 @@ public class Settings extends AppCompatActivity {
     private Uri imageFilePath;
     private Bitmap imageTOstore;
     private ImageView objectImageView;
-
+    GoogleSignInClient mGoogleSignInClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        SignInButton signInButton = findViewById(R.id.sign_in_button);
+        signInButton.setSize(SignInButton.SIZE_STANDARD);
+
+        signInButton.setOnClickListener(v -> signIn());
         add_up_guantity = findViewById(R.id.add_up_guantity);
         add_up_debart = findViewById(R.id.add_up_debart);
         add_market_Phone = findViewById(R.id.market_phone);
@@ -65,8 +86,15 @@ public class Settings extends AppCompatActivity {
         add_market_Phone.setOnClickListener(v -> {
             dialog_name=add_market_Phone.getText().toString();
             add_updaate_dailog();
+            listShow_policy("رقم المحل");
         });
 
+    }
+
+    int RC_SIGN_IN=10;
+    private void signIn() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     public void listShow_policy(String who){
@@ -146,7 +174,6 @@ public class Settings extends AppCompatActivity {
 
         Date_Dialog.show();
     }
-
 
     public void Add(String who){
         EditText text_edit= Date_Dialog.findViewById(R.id.text_depart_quantity);
@@ -271,6 +298,14 @@ public class Settings extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+
         try {
             super.onActivityResult(requestCode, resultCode, data);
             if (requestCode==PICK_IMAGE_REQUEST && resultCode==RESULT_OK&&data!=null&&data.getData()!=null){
@@ -280,15 +315,54 @@ public class Settings extends AppCompatActivity {
                 objectImageView.setImageBitmap(imageTOstore);
 
             }
-
         }catch (Exception e){
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             System.out.println("********************************************************");
             System.out.println( e.getMessage());
             System.out.println("********************************************************");
         }
+
+
     }
 
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+
+            assert account != null;
+            Toast.makeText(this, "Name : "+account.getDisplayName(), Toast.LENGTH_SHORT).show();
+          TextView  text_gmail= findViewById(R.id.text_gmail);
+            text_gmail.setText(account.getEmail());
+            // Signed in successfully, show authenticated UI.
+            //updateUI(account);
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w("TAG", "signInResult:failed code=" + e.getStatusCode());
+            //updateUI(null);
+        }
+    }
+
+    public void signOut(View view) {
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        revokeAccess();
+                    }
+                });
+    }
+
+    private void revokeAccess() {
+        mGoogleSignInClient.revokeAccess()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        TextView  text_gmail= findViewById(R.id.text_gmail);
+                        text_gmail.setText("");
+                    }
+                });
+    }
 
     class ListAdupter extends BaseAdapter {
         ArrayList<Settings_item> list_item;
