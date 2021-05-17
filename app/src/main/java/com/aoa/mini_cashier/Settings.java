@@ -51,6 +51,7 @@ public class Settings extends AppCompatActivity {
     private Bitmap imageTOstore;
     private ImageView objectImageView;
     GoogleSignInClient mGoogleSignInClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
