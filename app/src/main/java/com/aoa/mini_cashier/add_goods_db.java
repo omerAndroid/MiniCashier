@@ -759,9 +759,9 @@ public class add_goods_db extends AppCompatActivity {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-                builder = new androidx.appcompat.app.AlertDialog.Builder(Objects.requireNonNull(getActivity()));
+                builder = new androidx.appcompat.app.AlertDialog.Builder(requireActivity());
                 Databases databases = new Databases(getActivity());
-                LayoutInflater inflater = getActivity().getLayoutInflater();
+                LayoutInflater inflater = requireActivity().getLayoutInflater();
                 View view = inflater.inflate(R.layout.types_goods, null);
                 /////////////////////////////////////////////////////////////////quantity -> dialog
                 save = view.findViewById(R.id.save_tg_add);
@@ -1037,7 +1037,7 @@ public class add_goods_db extends AppCompatActivity {
         public boolean AlertDialog_show(String new_type){
             b=false;
             Databases databases = new Databases(getActivity());
-            androidx.appcompat.app.AlertDialog.Builder bu = new androidx.appcompat.app.AlertDialog.Builder(Objects.requireNonNull(getActivity()));
+            androidx.appcompat.app.AlertDialog.Builder bu = new androidx.appcompat.app.AlertDialog.Builder(requireActivity());
             bu.setMessage("هل تريد حفظ اسم الكمية الجديدة"+new_type)
                     .setTitle(R.string.eree)
                     .setPositiveButton("نعم", (dialog, id) -> {

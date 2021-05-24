@@ -41,7 +41,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Objects;
 
 public class purchases extends AppCompatActivity {
 
@@ -56,7 +55,7 @@ public class purchases extends AppCompatActivity {
     private Calendar calendar;
     //String date_viewe= "asdf";
     TextView phone_resource_txt,mobile_resource_txt,address_resource,name_resource_txt;
-   public static String data_type,Text_date="0",Text_date_2="0",set_mony="";
+   public static String data_type,Text_date="0",Text_date_2="0",set_mony="",string_1,string_2;
     int date_place = 0;
     public static ArrayList<purchases_item_class> q_list = new ArrayList<>();
 
@@ -64,7 +63,7 @@ public class purchases extends AppCompatActivity {
     @SuppressLint("StaticFieldLeak")
     public static Button add_tg_btn;
     public static double quantity_stored=1.0,quantity_stored_2=1.0;
-    public static boolean chaeck_seve=false;
+    public static boolean chaeck_seve=false,chaeck_seve_2=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -202,7 +201,8 @@ public class purchases extends AppCompatActivity {
         add_barcode.setOnClickListener(v -> red_qr());
 
         save_add_goods.setOnClickListener(v -> {
-            if (chaeck_seve) {
+           // chaeck_seve_2 = chaeck_seve2_2();||chaeck_seve_2
+            if ((chaeck_seve)&&quantity_stored_2>=1) {
                 int id_resource=databases.get_id_resource(name_resource_txt.getText().toString());
                 if (quantity_stored_2==0){
                     quantity_stored_2=1;
@@ -237,7 +237,9 @@ public class purchases extends AppCompatActivity {
                             id_resource);
                     insert_Data_quantity(add_barcode_txt.getText().toString());
                     chaeck_seve=false;
+                    chaeck_seve_2=false;
                     purchase.dismiss();
+                    listShow_policy_2();
                 }
             }
         });
@@ -273,6 +275,20 @@ public class purchases extends AppCompatActivity {
         });
 
         purchase.show();
+    }
+
+    private boolean chaeck_seve2_2() {
+        boolean b;
+        EditText editText=(EditText) purchase.findViewById(R.id.editText);////n      -سعر الشراء-بأعلى قيمة
+        AutoCompleteTextView add_barcode_txt=(AutoCompleteTextView) purchase.findViewById(R.id.add_barcode_txt);
+         int a=databases.check_baracod(add_barcode_txt.getText().toString());
+
+         if (add_barcode_txt.getText().toString().length()>0&&editText.getText().toString().length()>0&&
+                 string_1.length()>0&&string_2.length()>0&&quantity_stored_2>=1) {
+             b= a >= 1;
+         }else b=false;
+
+        return  b;
     }
 
     public String To_int(String s){
@@ -401,6 +417,11 @@ public class purchases extends AppCompatActivity {
         add_date_sale.setText(All_goods[2]);
         spinner.setText(All_goods[3]);
 
+
+        string_1=All_goods[0];
+        string_2=All_goods[3];
+
+
     }
 
     public void alter(String s){
@@ -471,6 +492,7 @@ public class purchases extends AppCompatActivity {
         intent.putExtra("page","purchases");
         //startActivity(intent);
         startActivityForResult(intent,3);
+
     }
 
     ///////n      يقوم بارسال تاكيد بانة تمت القراء باستخدام الكمايراء لكي يتم مل الليستة
@@ -729,8 +751,8 @@ public class purchases extends AppCompatActivity {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-            builder = new androidx.appcompat.app.AlertDialog.Builder(Objects.requireNonNull(getActivity()));
-            LayoutInflater inflater = getActivity().getLayoutInflater();
+            builder = new androidx.appcompat.app.AlertDialog.Builder(requireActivity());
+            LayoutInflater inflater = requireActivity().getLayoutInflater();
             View view = inflater.inflate(R.layout.types_goods, null);
             /////////////////////////////////////////////////////////////////quantity -> dialog
             save = view.findViewById(R.id.save_tg_add);
