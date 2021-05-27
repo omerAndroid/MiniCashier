@@ -59,6 +59,7 @@ public class purchases extends AppCompatActivity {
     int date_place = 0 ;
     public static ArrayList<purchases_item_class> q_list = new ArrayList<>();
 
+
     public static ArrayList<policy_item_class> policy_list = new ArrayList<>();
     @SuppressLint("StaticFieldLeak")
     public static Button add_tg_btn;
