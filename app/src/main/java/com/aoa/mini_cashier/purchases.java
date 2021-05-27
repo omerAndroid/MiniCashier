@@ -56,7 +56,8 @@ public class purchases extends AppCompatActivity {
     //String date_viewe= "asdf";
     TextView phone_resource_txt,mobile_resource_txt,address_resource,name_resource_txt;
    public static String data_type,Text_date="0",Text_date_2="0",set_mony="",string_1,string_2;
-    int date_place = 0;
+    int date_place = 0 ;
+
     public static ArrayList<purchases_item_class> q_list = new ArrayList<>();
 
     public static ArrayList<policy_item_class> policy_list = new ArrayList<>();
