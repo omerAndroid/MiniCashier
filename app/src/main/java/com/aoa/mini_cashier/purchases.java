@@ -717,11 +717,8 @@ public class purchases extends AppCompatActivity {
 
             TextView policy_date = (TextView) view.findViewById(R.id.policy_date);
 
-
             TextView policy_note = (TextView) view.findViewById(R.id.policy_note);
             TextView policy_type = (TextView) view.findViewById(R.id.policy_type);
-
-
 
             policy_sum.setText(list_item.get(i).sum );
             policy_date.setText(String.valueOf(list_item.get(i).date));
@@ -821,7 +818,6 @@ public class purchases extends AppCompatActivity {
 
             return builder.create();
         }
-
 
         ////////////n للتحقق من المدخلات
         private boolean check_impot_quantity() {
@@ -1012,7 +1008,6 @@ public class purchases extends AppCompatActivity {
         }
 
     }
-
     //////////////n        كلاس مهمتة اعطى فترة معينة بين كل ضغطة
     public static class counter extends CountDownTimer {
 
