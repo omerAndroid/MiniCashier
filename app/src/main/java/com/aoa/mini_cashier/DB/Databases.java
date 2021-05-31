@@ -6,10 +6,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -68,6 +71,8 @@ public class Databases extends SQLiteOpenHelper {
                 "quantity INTEGER,quantity_free INTEGER,expiration_date TEXT ,date_purchase TEXT ,id_resource INTEGER)");//////n  المشتريات
 
         db.execSQL("CREATE TABLE store_number(id INTEGER PRIMARY KEY AUTOINCREMENT ,mobile INTEGER unique,key_store NUMERIC)");
+
+        db.execSQL("CREATE TABLE store_save_Market(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_Market TEXT ,adders TEXT ,gmail TEXT,password INTEGER,photo BLOB)");
     }
 
     @Override
@@ -84,6 +89,8 @@ public class Databases extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS money_box");
         db.execSQL("DROP TABLE IF EXISTS policy");
         db.execSQL("DROP TABLE IF EXISTS purchases");
+        db.execSQL("DROP TABLE IF EXISTS store_number");
+        db.execSQL("DROP TABLE IF EXISTS store_save_Market");
 
         onCreate(db);
     }
@@ -1243,7 +1250,117 @@ public class Databases extends SQLiteOpenHelper {
 
         long result=db.insert("store_number",null,contentValues);
         return result != -1;
+    }
 
+    public void store_save_Market(String name_Market,String adders,String gmail,int password,Bitmap photo){
+        try {
+         ByteArrayOutputStream objctbyteArrayOutputStream;
+         byte[] imageInByte;
+
+        SQLiteDatabase objectsqLiteDatabase=this.getWritableDatabase();
+        Bitmap imageTostoreBitmap=photo;
+
+        objctbyteArrayOutputStream=new ByteArrayOutputStream();
+        imageTostoreBitmap.compress(Bitmap.CompressFormat.JPEG,100,objctbyteArrayOutputStream);
+
+        imageInByte=objctbyteArrayOutputStream.toByteArray();
+        ContentValues objectcontentValues=new ContentValues();
+        objectcontentValues.put("id",1);
+        objectcontentValues.put("name_Market",name_Market);
+        objectcontentValues.put("adders",adders);
+        objectcontentValues.put("gmail",gmail);
+        objectcontentValues.put("password",password);
+        objectcontentValues.put("photo",imageInByte);
+
+            objectsqLiteDatabase.insert("store_save_Market",null,objectcontentValues);
+
+        }catch (Exception e){
+
+        }
+    }
+
+    public int read_save_Market(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        int a=0;
+        @SuppressLint("Recycle") Cursor res=db.rawQuery("select * from store_save_Market",null);
+        res.moveToFirst();
+        while (!res.isAfterLast()){
+            a++;
+            res.moveToNext();
+        }
+        return a;
+    }
+
+    public void store_update_Market(String name_Market,String adders,String gmail,int password,Bitmap photo){
+        try {
+            ByteArrayOutputStream objctbyteArrayOutputStream;
+            byte[] imageInByte;
+            SQLiteDatabase db=this.getWritableDatabase();
+
+            Bitmap imageTostoreBitmap=photo;
+
+            objctbyteArrayOutputStream=new ByteArrayOutputStream();
+            imageTostoreBitmap.compress(Bitmap.CompressFormat.JPEG,100,objctbyteArrayOutputStream);
+
+            imageInByte=objctbyteArrayOutputStream.toByteArray();
+            ContentValues objectcontentValues=new ContentValues();
+            objectcontentValues.put("id",1);
+            objectcontentValues.put("name_Market",name_Market);
+            objectcontentValues.put("adders",adders);
+            objectcontentValues.put("gmail",gmail);
+            objectcontentValues.put("password",password);
+            objectcontentValues.put("photo",imageInByte);
+
+
+            db.update("store_save_Market",objectcontentValues,"id= ?",new String[]{String.valueOf(1)});
+        }catch (Exception e){
+
+        }
+    }
+
+    public String[] get_ALL_store_save_Market(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        String[] sat=new String[4];
+            int i = 0;
+
+            @SuppressLint("Recycle") Cursor res = db.rawQuery("select * from store_save_Market ", null);
+            res.moveToFirst();
+            while (!res.isAfterLast()) {
+                String c;
+                c =res.getString(res.getColumnIndex("name_Market"));
+                sat[i] = c;
+                i++;
+                c =res.getString(res.getColumnIndex("adders"));
+                sat[i] = c;
+                i++;
+                c =res.getString(res.getColumnIndex("gmail"));
+                sat[i] = c;
+                i++;
+                c =res.getString(res.getColumnIndex("password"));
+                sat[i] = c;
+                i++;
+//                c =res.getBlob(res.getColumnIndex("mobile"));
+//                sat[i] = c;
+//                i++;
+                res.moveToNext();
+
+        }
+        return sat;
+    }
+
+    public Bitmap[] get_ALLq_store_Blob_Market(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        Bitmap[] sat=new Bitmap[1];
+
+        @SuppressLint("Recycle") Cursor res = db.rawQuery("select * from store_save_Market ", null);
+        res.moveToFirst();
+        while (!res.isAfterLast()) {
+            byte [] imageBytes=res.getBlob(res.getColumnIndex("photo"));
+            Bitmap objectBitmap= BitmapFactory.decodeByteArray(imageBytes,0,imageBytes.length);
+            sat[0] = objectBitmap;
+            res.moveToNext();
+        }
+        return sat;
     }
 }
 

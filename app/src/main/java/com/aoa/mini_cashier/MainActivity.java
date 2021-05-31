@@ -42,9 +42,9 @@ public class MainActivity extends AppCompatActivity {
 
         //////////////////////n        حفظ لمرة واحده
         sharedPreferences= this.getPreferences(Context.MODE_PRIVATE);
-        String tecack=sharedPreferences.getString("key","");
+        String tecack_1=sharedPreferences.getString("key","");
 
-        if (!tecack.equals("true")){
+        if (!tecack_1.equals("true")){
             seve_quantity_type_and_department_first();
         }
 

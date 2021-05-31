@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -39,7 +41,7 @@ import java.util.ArrayList;
 
 
 public class Settings extends AppCompatActivity {
-
+    SharedPreferences sharedPreferences;
     public Databases databases = new Databases(this);
     public static ArrayList<Settings_item> Settings_list = new ArrayList<>();
     Button add_up_guantity , add_up_debart,add_market_Phone;
@@ -51,7 +53,8 @@ public class Settings extends AppCompatActivity {
     private Bitmap imageTOstore;
     private ImageView objectImageView;
     GoogleSignInClient mGoogleSignInClient;
-
+    EditText market_name,market_address,market_Email_password,quintity_max,debts_max;
+    TextView text_gmail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +74,13 @@ public class Settings extends AppCompatActivity {
         add_up_debart = findViewById(R.id.add_up_debart);
         add_market_Phone = findViewById(R.id.market_phone);
         objectImageView = findViewById(R.id.market_photo);
+        quintity_max = findViewById(R.id.quintity_max);
+        debts_max = findViewById(R.id.debts_max);
+        market_name= findViewById(R.id.market_name);
+        market_address= findViewById(R.id.market_address);
+        text_gmail= findViewById(R.id.text_gmail);
+
+        market_Email_password= findViewById(R.id.market_Email_password);
 
         add_up_debart.setOnClickListener(v -> {
             dialog_name=add_up_debart.getText().toString();
@@ -90,6 +100,79 @@ public class Settings extends AppCompatActivity {
             listShow_policy("رقم المحل");
         });
 
+        findViewById(R.id.save_Market_data).setOnClickListener(v -> {
+            try {
+                if (!market_name.getText().toString().isEmpty() &&! market_address.getText().toString().isEmpty()
+                        &&!text_gmail.getText().toString().isEmpty() &&! market_Email_password.getText().toString().isEmpty()
+                        && objectImageView.getDrawable()!=null && imageTOstore!=null){
+                    market_Email_password.setError(null);
+                    if (market_Email_password.getText().toString().length()<=9){
+
+                        if ((databases.read_save_Market())>=1) {
+                            databases.store_update_Market(market_name.getText().toString(),market_address.getText().toString(),text_gmail.getText().toString(),
+                                    Integer.parseInt(market_Email_password.getText().toString()),imageTOstore);
+                        }else {
+                            databases.store_save_Market(market_name.getText().toString(),market_address.getText().toString(),text_gmail.getText().toString(),
+                                    Integer.parseInt(market_Email_password.getText().toString()),imageTOstore);
+                        }
+                    }else {market_Email_password.setError("الرقم طويل جدا.");}
+                }
+                else {
+                    Toast.makeText(getApplication(), "أكمل البيانات", Toast.LENGTH_SHORT).show();
+                }
+                //market_Email_password.setError(null);
+            }catch (Exception e){
+                Toast.makeText(getApplication(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        if ((databases.read_save_Market())>=1) {
+            Show_info();
+        }
+
+        sharedPreferences= this.getPreferences(Context.MODE_PRIVATE);
+        String tecack_1=sharedPreferences.getString("key_1"," ");
+        String tecack_2=sharedPreferences.getString("key_2"," ");
+        quintity_max.setText(tecack_1);
+        debts_max.setText(tecack_2);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("key_1",quintity_max.getText().toString());
+        editor.putString("key_2",debts_max.getText().toString());
+        editor.apply();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("key_1",quintity_max.getText().toString());
+        editor.putString("key_2",debts_max.getText().toString());
+        editor.apply();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        sharedPreferences= this.getPreferences(Context.MODE_PRIVATE);
+        String tecack_1=sharedPreferences.getString("key_1"," ");
+        String tecack_2=sharedPreferences.getString("key_2"," ");
+        quintity_max.setText(tecack_1);
+        debts_max.setText(tecack_2);
+    }
+
+    private void Show_info() {
+        String[] all_text=databases.get_ALL_store_save_Market();
+        Bitmap[] all_Bitmap=databases.get_ALLq_store_Blob_Market();
+        market_name.setText(all_text[0]);
+        market_address.setText(all_text[1]);
+        text_gmail.setText(all_text[2]);
+        market_Email_password.setText(all_text[3]);
+        objectImageView.setImageBitmap(all_Bitmap[0]);
     }
 
     int RC_SIGN_IN=10;
@@ -333,7 +416,7 @@ public class Settings extends AppCompatActivity {
 
             assert account != null;
             Toast.makeText(this, "Name : "+account.getDisplayName(), Toast.LENGTH_SHORT).show();
-          TextView  text_gmail= findViewById(R.id.text_gmail);
+            TextView  text_gmail= findViewById(R.id.text_gmail);
             text_gmail.setText(account.getEmail());
             // Signed in successfully, show authenticated UI.
             //updateUI(account);
