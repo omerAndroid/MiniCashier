@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.BaseAdapter;
@@ -19,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,12 +34,14 @@ import java.util.ArrayList;
 public class buy_restore_goods extends AppCompatActivity {
 
     public Databases databases = new Databases(this);
-    Dialog customer_data;
+    Dialog customer_data,edit_item;
     Button list_options,save_btn,add_item_list;
     EditText c_name,name_sender,discount_bill_items,total_price;
     public static boolean  check_impot;
     SwitchMaterial buy_or_restore,money_or_debt;
     ArrayList<list_buy_restore> list_item= new ArrayList<>();
+    ArrayList<String> item_Array= new ArrayList<String>();
+
 
     double aDouble=0;
 
@@ -74,6 +78,28 @@ public class buy_restore_goods extends AppCompatActivity {
         ArrayList<list_buy_restore> q_list = new ArrayList<list_buy_restore>();
         ListAdupter ad =new ListAdupter(q_list);
         list.setAdapter(ad);
+
+        ///////////////////////////////////////////////////////////////////////////////////////
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                TextView goods_name = (TextView)view.findViewById(R.id.goods_name);
+                TextView goods_q_type = (TextView)view.findViewById(R.id.goods_q_type);
+                TextView goods_quanitity = (TextView)view.findViewById(R.id.goods_quanitity);
+                TextView goods_buy = (TextView)view.findViewById(R.id.goods_buy);
+                TextView goods_sale = (TextView)view.findViewById(R.id.goods_sale);
+
+                item_Array.clear();
+
+                item_Array.add(goods_name.getText().toString());
+                item_Array.add(goods_q_type.getText().toString());
+                item_Array.add(goods_quanitity.getText().toString());
+                item_Array.add(goods_buy.getText().toString());
+                item_Array.add(goods_sale.getText().toString());
+
+                edit_item_dialog();
+            }
+        });
         ////////////////////////show list Options of bills/////////////////////////////////////
         list_options.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -439,6 +465,7 @@ public class buy_restore_goods extends AppCompatActivity {
             quantity_type.setText(String.valueOf(list_item.get(i).quantity_type));
             goods_quanitity.setText(String.valueOf(list_item.get(i).goods_quanitity));
             sale_price.setText(String.valueOf(list_item.get(i).sale_price));
+            buy_price.setText(String.valueOf(list_item.get(i).buy_price));
             return view;
         }
     }
@@ -471,6 +498,43 @@ public class buy_restore_goods extends AppCompatActivity {
             }
         });
         customer_data.show();
+    }
+
+    public void edit_item_dialog () {
+
+        //Dialog Customer Data viewer
+        edit_item = new Dialog(this);
+        edit_item.setContentView(R.layout.item_idet_dialog);
+        edit_item.setTitle("بيانات المنتج");
+        final EditText barcode_item_buy=(EditText) edit_item.findViewById(R.id.barcode_item_buy);
+        final EditText name_item_buy=(EditText) edit_item.findViewById(R.id.name_item_buy);
+        final EditText quantity_item_buy=(EditText) edit_item.findViewById(R.id.quantity_item_buy);
+        final EditText buy_item_buy=(EditText) edit_item.findViewById(R.id.buy_item_buy);
+        final EditText sale_item_buy=(EditText) edit_item.findViewById(R.id.sale_item_buy);
+
+        final Spinner quantitytype_item_buy=(Spinner) edit_item.findViewById(R.id.quantitytype_item_buy);
+
+        final Button delete_item_buy=(Button) edit_item.findViewById(R.id.delete_item_buy);
+        final Button save_item_buy = (Button) edit_item.findViewById(R.id.save_item_buy);
+
+        ////////////////////////////////////////////////////////////////
+        name_item_buy.setText(item_Array.get(0));
+        quantity_item_buy.setText(item_Array.get(2));
+        buy_item_buy.setText(item_Array.get(3));
+        sale_item_buy.setText(item_Array.get(4));
+        //quantitytype_item_buy.setText(item_Array.get(1));
+
+
+        save_item_buy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //save edit item buy
+
+
+                edit_item.dismiss();
+            }
+        });
+        edit_item.show();
     }
 
 }

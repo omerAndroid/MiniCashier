@@ -128,7 +128,7 @@ public class resources extends AppCompatActivity {
 
                 address=c_address.getText().toString();
 
-                if (c_phone2.getText().toString().length()<=9&&(c_phone1.getText().toString().length())<=9){
+                if (Integer.parseInt(c_phone2.getText().toString())<99999999&&Integer.parseInt(c_phone1.getText().toString())<999999999){
 
                 boolean result = databases.insert_resource(name.getText().toString(),
                         Integer.parseInt(c_phone2.getText().toString()),
@@ -140,9 +140,9 @@ public class resources extends AppCompatActivity {
                     listShow_qnuatitytype();
                   }else Toast.makeText(resources.this, "bad", Toast.LENGTH_SHORT).show();
                 }else {
-                    if (c_phone2.getText().toString().length()>9&&c_phone1.getText().toString().length()<=9){
+                    if (Integer.parseInt(c_phone2.getText().toString())>99999999&&Integer.parseInt(c_phone1.getText().toString())<999999999){
                         c_phone2.setError("الرقم طويل جدا.");
-                    }else if (c_phone2.getText().toString().length()<=9&&c_phone1.getText().toString().length()>9){
+                    }else if (Integer.parseInt(c_phone2.getText().toString())<99999999&&Integer.parseInt(c_phone1.getText().toString())>999999999){
                         c_phone1.setError("الرقم طويل جدا.");
                     }
                 }

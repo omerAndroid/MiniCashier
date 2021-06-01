@@ -19,18 +19,13 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/buy_or_restore"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                android:layout_height="match_parent">
 
-                    android:text="نقد"/>
                 <com.jaredrummler.materialspinner.MaterialSpinner
                     android:id="@+id/spinner"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:enabled="false"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -40,6 +35,12 @@
                     app:ms_hide_arrow="false"
                     app:ms_hint="الاقسام"
                     tools:ignore="MissingConstraints" />
+
+                <Switch
+                    android:id="@+id/purchases_dept_cash"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="نقد" />
             </LinearLayout>
 
             <LinearLayout

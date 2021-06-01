@@ -25,6 +25,7 @@ import android.widget.ListView;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -232,6 +233,7 @@ public class purchases extends AppCompatActivity {
         final EditText editText3=(EditText) purchase.findViewById(R.id.editText3);
         SwitchMaterial buy_or_restore= purchase.findViewById(R.id.buy_or_restore);
 
+        final Switch purchases_dept_cash = (Switch) purchase.findViewById(R.id.purchases_dept_cash);
         get_ALL_baracode();
         final Button add_barcode = (Button) purchase.findViewById(R.id.add_barcode2);
         final Button save_add_goods = (Button) purchase.findViewById(R.id.save_add_goods);//editText
@@ -241,6 +243,20 @@ public class purchases extends AppCompatActivity {
         final Button date_ex_btn = purchase.findViewById(R.id.date_show_ex);
 
         add_barcode.setOnClickListener(v -> red_qr());
+
+        purchases_dept_cash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(purchases_dept_cash.isChecked())
+                {
+                    purchases_dept_cash.setText("آجل");
+                }
+                else
+                {
+                    purchases_dept_cash.setText("نقد");
+                }
+            }
+        });
 
         save_add_goods.setOnClickListener(v -> {
            // chaeck_seve_2 = chaeck_seve2_2();||chaeck_seve_2
@@ -318,7 +334,7 @@ public class purchases extends AppCompatActivity {
 
         });
 
-        buy_or_restore.setOnClickListener(v -> {
+        /*buy_or_restore.setOnClickListener(v -> {
             if(buy_or_restore.isChecked())
             {
                 buy_or_restore.setText("آجل");
@@ -327,7 +343,7 @@ public class purchases extends AppCompatActivity {
                 buy_or_restore.setText("نقد");
             }
 
-        });
+        });*/
         purchase.show();
     }
 
