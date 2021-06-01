@@ -36,6 +36,8 @@ import com.aoa.mini_cashier.item_classes.purchases_item_class;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 
+import com.google.android.material.switchmaterial.SwitchMaterial;
+
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -233,7 +235,7 @@ public class purchases extends AppCompatActivity {
         final EditText editText3=(EditText) purchase.findViewById(R.id.editText3);
         SwitchMaterial buy_or_restore= purchase.findViewById(R.id.buy_or_restore);
 
-        final Switch purchases_dept_cash = (Switch) purchase.findViewById(R.id.purchases_dept_cash);
+        final SwitchMaterial purchases_dept_cash = (SwitchMaterial) purchase.findViewById(R.id.purchases_dept_cash);
         get_ALL_baracode();
         final Button add_barcode = (Button) purchase.findViewById(R.id.add_barcode2);
         final Button save_add_goods = (Button) purchase.findViewById(R.id.save_add_goods);//editText
