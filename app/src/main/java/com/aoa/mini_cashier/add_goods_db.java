@@ -281,10 +281,7 @@ public class add_goods_db extends AppCompatActivity {
 
         String[] ALL_department=databases.get_ALL_department();
 
-        for (int i=0;i<databases.return_lenght_department();i++){
-            add_goods_db.spinner.setItems(ALL_department[i]);
-        }
-
+        spinner.setItems(ALL_department);
     }
     ////////////n      عند الضغط على حفظ التغييرات ينتقل الى هنا
      public void get_seve_ubdat_goods_btn(){

@@ -32,6 +32,7 @@ import com.aoa.mini_cashier.DB.Databases;
 import com.aoa.mini_cashier.RED_QR.ScanCodeActivity;
 import com.aoa.mini_cashier.item_classes.policy_item_class;
 import com.aoa.mini_cashier.item_classes.purchases_item_class;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 
 import java.text.DecimalFormat;
@@ -54,7 +55,8 @@ public class purchases extends AppCompatActivity {
     private SimpleDateFormat date_format;
     private Calendar calendar;
     //String date_viewe= "asdf";
-    TextView phone_resource_txt,mobile_resource_txt,address_resource,name_resource_txt;
+    TextView phone_resource_txt,mobile_resource_txt,address_resource,name_resource_txt,
+            purchases_total,paid_total,pu_pa_total;
    public static String data_type,Text_date="0",Text_date_2="0",set_mony="",string_1,string_2;
     int date_place = 0 ;
     public static ArrayList<purchases_item_class> q_list = new ArrayList<>();
@@ -78,6 +80,10 @@ public class purchases extends AppCompatActivity {
          mobile_resource_txt=findViewById(R.id.mobile_resource_txt);
          address_resource=findViewById(R.id.address_resource);
          name_resource_txt=findViewById(R.id.name_resource_txt);
+
+        purchases_total = findViewById(R.id.purchases_total);
+        paid_total = findViewById(R.id.paid_total);
+        pu_pa_total = findViewById(R.id.pu_pa_total);
 
         /////////////////////////Date Picker///////////////////////////////////
         calendar = Calendar.getInstance();
@@ -113,8 +119,43 @@ public class purchases extends AppCompatActivity {
                 listShow_policy_2();
             }
         });
+
+        show();
     }
 
+    private void show() {
+        int id_resource=databases.get_id_resource(name_resource_txt.getText().toString());
+
+        double[] total=databases.get_ALL_total_purchases(id_resource),total2;
+
+        double v =0,vv=0,vvv=0;
+        for (int i=0;i<databases.get_number_purchases_2(id_resource);i++){
+            v +=total[i];
+        }
+        purchases_total.setText(MessageFormat.format("{0}",v));
+
+        ////////////////////////////////////
+        total=databases.get_ALL_paid_purchases(id_resource);
+        total2=databases.get_ALL_type_policy(id_resource);
+
+
+        for (int i=0;i<databases.get_number_purchases_2(id_resource);i++){
+            vvv +=total[i];
+        }
+        for (int i=0;i<databases.get_number_policy(id_resource);i++){
+            vv +=total2[i];
+        }
+
+        paid_total.setText(MessageFormat.format("{0}",vvv+vv));
+
+        pu_pa_total.setText(MessageFormat.format("{0}",(vvv+vv)-v));///n  الاجمالي
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        show();
+    }
     public void date_picker () {
         //Dialog Date viewer
         Date_Dialog = new Dialog(this);
@@ -189,6 +230,7 @@ public class purchases extends AppCompatActivity {
         final EditText editText=(EditText) purchase.findViewById(R.id.editText);////n      -سعر الشراء-بأعلى قيمة
         final EditText editText2=(EditText) purchase.findViewById(R.id.editText2);
         final EditText editText3=(EditText) purchase.findViewById(R.id.editText3);
+        SwitchMaterial buy_or_restore= purchase.findViewById(R.id.buy_or_restore);
 
         get_ALL_baracode();
         final Button add_barcode = (Button) purchase.findViewById(R.id.add_barcode2);
@@ -208,6 +250,8 @@ public class purchases extends AppCompatActivity {
                     quantity_stored_2=1;
                 }
                 add_quantity.setText(theack_aggen(new DecimalFormat("#.00#").format(quantity_stored*quantity_stored_2)));
+                double total4 = Double.parseDouble(editText.getText().toString()) * Double.parseDouble(add_quantity.getText().toString());
+                System.out.println("----------------------------------------------------"+total4+"++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
                 if ((editText2.getText().toString().length()<1&&editText3.getText().toString().length()>0)
                         ||(editText2.getText().toString().length()>0&&editText3.getText().toString().length()<1)){
@@ -234,7 +278,7 @@ public class purchases extends AppCompatActivity {
                             Integer.parseInt(editText2.getText().toString()),
                             add_date_ex.getText().toString(),
                             add_date_sale.getText().toString(),
-                            id_resource);
+                            id_resource,buy_or_restore.getText().toString());
                     insert_Data_quantity(add_barcode_txt.getText().toString());
                     chaeck_seve=false;
                     chaeck_seve_2=false;
@@ -274,6 +318,16 @@ public class purchases extends AppCompatActivity {
 
         });
 
+        buy_or_restore.setOnClickListener(v -> {
+            if(buy_or_restore.isChecked())
+            {
+                buy_or_restore.setText("آجل");
+            }
+            else {
+                buy_or_restore.setText("نقد");
+            }
+
+        });
         purchase.show();
     }
 
@@ -557,7 +611,7 @@ public class purchases extends AppCompatActivity {
 
                 if (result) {
                     Toast.makeText(purchases.this, "ok", Toast.LENGTH_SHORT).show();
-                    finish();
+                    purchase.dismiss();
                 }else Toast.makeText(purchases.this, "no no no ", Toast.LENGTH_SHORT).show();
 
             }
@@ -577,7 +631,7 @@ public class purchases extends AppCompatActivity {
                 databases.get_insert_money_box(money-Double.parseDouble(amount_policy.getText().toString()));
                 if (result) {
                     Toast.makeText(purchases.this, "ok", Toast.LENGTH_SHORT).show();
-                    finish();
+                    purchase.dismiss();
                 }else Toast.makeText(purchases.this, "no no no ", Toast.LENGTH_SHORT).show();
 
             }
@@ -586,52 +640,53 @@ public class purchases extends AppCompatActivity {
     }
 
     public void listShow_policy(){
+        int id_resource=databases.get_id_resource(name_resource_txt.getText().toString());
+        String[] policy=databases.get_All_policy(id_resource);
 
-        String[] policy=databases.get_All_policy();
+        double[] policy_double =databases.get_All_policy_double(id_resource);
+        if (databases.get_number_policy(id_resource)>=1) {
+            policy_list.clear();
+            int i = 0, g = 0;
+            for (int j = 0; j < databases.get_number_policy(id_resource); j++) {
 
-        double[] policy_double =databases.get_All_policy_double();
+                policy_list.add(new policy_item_class(MessageFormat.format("{0}", policy_double[g]), policy[i], policy[i + 1], policy[i + 2]));
+                i += 3;
+                g += 1;
+            }
+            //////////////////////////////Add List Item//////////////////////////////////////
+            purchases.ListAdupter2 ad = new purchases.ListAdupter2(policy_list);
+            list_purchases.setAdapter(ad);
 
-        policy_list.clear();
-        int i=0,g=0;
-        for (int j=0;j<databases.get_number_policy();j++){
-
-            policy_list.add(new policy_item_class(MessageFormat.format("{0}", policy_double[g]),policy[i],policy[i+1],policy[i+2]));
-            i+=3;
-            g+=1;
         }
-        //////////////////////////////Add List Item//////////////////////////////////////
-        purchases.ListAdupter2 ad = new purchases.ListAdupter2(policy_list);
-        list_purchases.setAdapter(ad);
-
-
     }
 
     public void listShow_policy_2(){
+        int id_resource=databases.get_id_resource(name_resource_txt.getText().toString());
+        String[] purchases=databases.get_All_purchases(id_resource);
 
-        String[] purchases=databases.get_All_purchases();
+        double[] purchases_double =databases.get_All_purchases_double(id_resource);
 
-        double[] purchases_double =databases.get_All_purchases_double();
+        if (databases.get_number_policy(id_resource)>=1) {
+            q_list.clear();
+            int i = 0, g = 0;
+            for (int j = 0; j < databases.get_number_purchases_2(id_resource); j++) {
 
-        q_list.clear();
-        int i=0,g=0;
-        for (int j=0;j<databases.get_number_purchases();j++){
+                q_list.add(new purchases_item_class(purchases[i + 1], purchases[i], MessageFormat.format("{0}", purchases_double[g]),
+                        purchases[i + 2], MessageFormat.format("{0}", purchases_double[g + 1]),
+                        purchases[i + 3], purchases[i + 5], purchases[i + 4]));
 
-            q_list.add(new purchases_item_class(purchases[i+1],purchases[i],MessageFormat.format("{0}",purchases_double[g]),
-                    purchases[i+2],MessageFormat.format("{0}",purchases_double[g+1]),
-                    purchases[i+3],purchases[i+5],purchases[i+4]));
+                System.out.println("000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+                System.out.println("purchases[i+1] " + purchases[i + 1] + "\n purchases[i] " + purchases[i] + "\n purchases_double[g] " + MessageFormat.format("{0}", purchases_double[g]) +
+                        "\n purchases[i+2] " + purchases[i + 2] + "\n purchases_double[g+1] " + MessageFormat.format("{0}", purchases_double[g + 1]) +
+                        "\n purchases[i+3] " + purchases[i + 3] + "\n purchases[i+5] " + purchases[i + 5] + "\n purchases[i+4] " + purchases[i + 4]);
+                i += 6;
+                g += 2;
+            }
+            //////////////////////////////Add List Item//////////////////////////////////////
+            purchases.ListAdupter ad = new purchases.ListAdupter(q_list);
+            list_purchases.setAdapter(ad);
 
-            System.out.println("000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
-            System.out.println("purchases[i+1] "+purchases[i+1]+"\n purchases[i] "+purchases[i]+"\n purchases_double[g] "+MessageFormat.format("{0}",purchases_double[g])+
-                    "\n purchases[i+2] "+purchases[i+2]+"\n purchases_double[g+1] "+MessageFormat.format("{0}",purchases_double[g+1])+
-                    "\n purchases[i+3] "+purchases[i+3]+"\n purchases[i+5] "+purchases[i+5]+"\n purchases[i+4] "+purchases[i+4]);
-            i+=6;
-            g+=2;
         }
-        //////////////////////////////Add List Item//////////////////////////////////////
-        purchases.ListAdupter ad = new purchases.ListAdupter(q_list);
-        list_purchases.setAdapter(ad);
-
-
     }
 
     class ListAdupter extends BaseAdapter {

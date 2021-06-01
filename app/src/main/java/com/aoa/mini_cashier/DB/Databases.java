@@ -68,7 +68,7 @@ public class Databases extends SQLiteOpenHelper {
                 "FOREIGN KEY(id_agent) REFERENCES agent(id) ON UPDATE CASCADE ON DELETE CASCADE)");////n   سند
 
         db.execSQL("CREATE TABLE purchases(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_purch TEXT ,bracode TEXT ,purchase_price REAL,total REAL," +
-                "quantity INTEGER,quantity_free INTEGER,expiration_date TEXT ,date_purchase TEXT ,id_resource INTEGER)");//////n  المشتريات
+                "quantity INTEGER,quantity_free INTEGER,expiration_date TEXT ,date_purchase TEXT ,id_resource INTEGER,purchases_type TEXT)");//////n  المشتريات
 
         db.execSQL("CREATE TABLE store_number(id INTEGER PRIMARY KEY AUTOINCREMENT ,mobile INTEGER unique,key_store NUMERIC)");
 
@@ -972,6 +972,17 @@ public class Databases extends SQLiteOpenHelper {
 
     }
 
+    public int get_number_policy(int id_resource){
+        SQLiteDatabase db=this.getReadableDatabase();
+        int a=0;
+        @SuppressLint("Recycle") Cursor res=db.rawQuery("select * from policy where  id_resource = "+id_resource+"",null);
+        res.moveToFirst();
+        while (!res.isAfterLast()){
+            a++;
+            res.moveToNext();
+        }
+        return a;
+    }
     public int get_number_policy(){
         SQLiteDatabase db=this.getReadableDatabase();
         int a=0;
@@ -984,13 +995,13 @@ public class Databases extends SQLiteOpenHelper {
         return a;
     }
 
-    public String[] get_All_policy(){////dri
+    public String[] get_All_policy(int id_resource){////dri
 
         SQLiteDatabase db=this.getReadableDatabase();
-        String[] sat=new String[3*get_number_policy()];
+        String[] sat=new String[3*get_number_policy(id_resource)];
 
         int i = 0;
-        Cursor res  = db.rawQuery("select * from policy",null);
+        Cursor res  = db.rawQuery("select * from policy where  id_resource = "+id_resource+"",null);
         res.moveToFirst();
         while (res.isAfterLast() == false) {
             String c;
@@ -1012,12 +1023,12 @@ public class Databases extends SQLiteOpenHelper {
         return sat;
     }
 
-    public double[] get_All_policy_double(){
+    public double[] get_All_policy_double(int id_resource){
         SQLiteDatabase db=this.getReadableDatabase();
-        double[] sat=new double[get_number_policy()];
+        double[] sat=new double[get_number_policy(id_resource)];
 
         int i = 0;
-        Cursor res  = db.rawQuery("select * from policy",null);
+        Cursor res  = db.rawQuery("select * from policy where  id_resource = "+id_resource+"",null);
         res.moveToFirst();
         while (res.isAfterLast() == false) {
             double c;
@@ -1039,7 +1050,7 @@ public class Databases extends SQLiteOpenHelper {
     }
 
     public void insert_purchases(String name_purch, String bracode,double purchase_price,double total,int quantity,int quantity_free,
-                                 String expiration_date,String date_purchase,int id_resource){
+                                 String expiration_date,String date_purchase,int id_resource,String purchases_type){
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
         contentValues.put("name_purch",name_purch);
@@ -1051,17 +1062,18 @@ public class Databases extends SQLiteOpenHelper {
         contentValues.put("expiration_date",expiration_date);
         contentValues.put("date_purchase",date_purchase);
         contentValues.put("id_resource",id_resource);
+        contentValues.put("purchases_type",purchases_type);
 
         db.insert("purchases",null,contentValues);
     }
 
-    public String[] get_All_purchases(){////dri
+    public String[] get_All_purchases(int id_resource){////dri
 
         SQLiteDatabase db=this.getReadableDatabase();
-        String[] sat=new String[6*get_number_purchases()];
+        String[] sat=new String[6*get_number_purchases_2(id_resource)];
 
         int i = 0;
-        Cursor res  = db.rawQuery("select * from purchases",null);
+        Cursor res  = db.rawQuery("select * from purchases where  id_resource = "+id_resource+" ",null);
         res.moveToFirst();
         while (res.isAfterLast() == false) {
             String c;
@@ -1095,12 +1107,12 @@ public class Databases extends SQLiteOpenHelper {
         return sat;
     }
 
-    public double[] get_All_purchases_double(){
+    public double[] get_All_purchases_double(int id_resource){
         SQLiteDatabase db=this.getReadableDatabase();
-        double[] sat=new double[2*get_number_purchases()];
+        double[] sat=new double[2*get_number_purchases_2(id_resource)];
 
         int i = 0;
-        Cursor res  = db.rawQuery("select * from purchases",null);
+        Cursor res  = db.rawQuery("select * from purchases where  id_resource = "+id_resource+" ",null);
         res.moveToFirst();
         while (res.isAfterLast() == false) {
             double c;
@@ -1120,6 +1132,18 @@ public class Databases extends SQLiteOpenHelper {
         SQLiteDatabase db=this.getReadableDatabase();
         int a=0;
         @SuppressLint("Recycle") Cursor res=db.rawQuery("select * from purchases",null);
+        res.moveToFirst();
+        while (!res.isAfterLast()){
+            a++;
+            res.moveToNext();
+        }
+        return a;
+    }
+
+    public int get_number_purchases_2(int id_resource){
+        SQLiteDatabase db=this.getReadableDatabase();
+        int a=0;
+        @SuppressLint("Recycle") Cursor res=db.rawQuery("select * from purchases where  id_resource = "+id_resource+" ",null);
         res.moveToFirst();
         while (!res.isAfterLast()){
             a++;
@@ -1358,6 +1382,108 @@ public class Databases extends SQLiteOpenHelper {
             byte [] imageBytes=res.getBlob(res.getColumnIndex("photo"));
             Bitmap objectBitmap= BitmapFactory.decodeByteArray(imageBytes,0,imageBytes.length);
             sat[0] = objectBitmap;
+            res.moveToNext();
+        }
+        return sat;
+    }
+
+    public double[] get_ALL_total_purchases(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        double[] sat=new double[get_number_purchases()];
+        int i = 0;
+
+        @SuppressLint("Recycle") Cursor res = db.rawQuery("select * from purchases ", null);
+        res.moveToFirst();
+        while (!res.isAfterLast()) {
+            double c;
+            c =res.getDouble(res.getColumnIndex("total"));
+            sat[i] = c;
+            i++;
+            res.moveToNext();
+        }
+        return sat;
+    }
+
+    public double[] get_ALL_total_purchases(int id_resource){
+        SQLiteDatabase db=this.getReadableDatabase();
+        double[] sat=new double[get_number_purchases_2(id_resource)];
+        int i = 0;
+
+        @SuppressLint("Recycle") Cursor res = db.rawQuery("select * from purchases where  id_resource = "+id_resource+" ", null);
+        res.moveToFirst();
+        while (!res.isAfterLast()) {
+            double c;
+            c =res.getDouble(res.getColumnIndex("total"));
+            sat[i] = c;
+            i++;
+            res.moveToNext();
+        }
+        return sat;
+    }
+
+    public double[] get_ALL_paid_purchases(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        double[] sat=new double[get_number_purchases()];
+        int i = 0;
+
+        @SuppressLint("Recycle") Cursor res = db.rawQuery("select * from purchases where purchases_type like '"+"نقد"+"'", null);
+        res.moveToFirst();
+        while (!res.isAfterLast()) {
+            double c;
+            c =res.getDouble(res.getColumnIndex("purchase_price"));
+            sat[i] = c;
+            i++;
+            res.moveToNext();
+        }
+        return sat;
+    }
+
+    public double[] get_ALL_paid_purchases(int id_resource){
+        SQLiteDatabase db=this.getReadableDatabase();
+        double[] sat=new double[get_number_purchases_2(id_resource)];
+        int i = 0;
+
+        @SuppressLint("Recycle") Cursor res = db.rawQuery("select * from purchases where purchases_type like '"+"نقد"+"' and id_resource = "+id_resource+" ", null);
+        res.moveToFirst();
+        while (!res.isAfterLast()) {
+            double c;
+            c =res.getDouble(res.getColumnIndex("purchase_price"));
+            sat[i] = c;
+            i++;
+            res.moveToNext();
+        }
+        return sat;
+    }
+
+    public double[] get_ALL_type_policy(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        double[] sat=new double[get_number_policy()];
+        int i = 0;
+
+        @SuppressLint("Recycle") Cursor res = db.rawQuery("select * from policy where type_policy like '"+"صرف"+"'", null);
+        res.moveToFirst();
+        while (!res.isAfterLast()) {
+            double c;
+            c =res.getDouble(res.getColumnIndex("amount"));
+            sat[i] = c;
+            i++;
+            res.moveToNext();
+        }
+        return sat;
+    }
+
+    public double[] get_ALL_type_policy(int id_resource){
+        SQLiteDatabase db=this.getReadableDatabase();
+        double[] sat=new double[get_number_policy(id_resource)];
+        int i = 0;
+
+        @SuppressLint("Recycle") Cursor res = db.rawQuery("select * from policy where type_policy like '"+"صرف"+"' and id_resource = "+id_resource+" ", null);
+        res.moveToFirst();
+        while (!res.isAfterLast()) {
+            double c;
+            c =res.getDouble(res.getColumnIndex("amount"));
+            sat[i] = c;
+            i++;
             res.moveToNext();
         }
         return sat;

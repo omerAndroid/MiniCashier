@@ -34,7 +34,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:ms_hint="الاقسام"
                     app:ms_hide_arrow="false"
-                    app:ms_dropdown_max_height="130dp"
+                    app:ms_dropdown_height="130dp"
                     tools:ignore="MissingConstraints" />
             </LinearLayout>
 

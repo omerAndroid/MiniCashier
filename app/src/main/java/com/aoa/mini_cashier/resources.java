@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import com.aoa.mini_cashier.DB.Databases;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 
 public class resources extends AppCompatActivity {
@@ -27,9 +29,9 @@ public class resources extends AppCompatActivity {
    @SuppressLint("StaticFieldLeak")
    public static ListView list_resource;
     public Databases databases = new Databases(this);
-
+    public String hasOnClick;
     public static ArrayList<list_item_resource> q_list = new ArrayList<>();
-
+    TextView  paid_pruchase,total_paid,total_pruchase;
     public static String address="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +41,26 @@ public class resources extends AppCompatActivity {
 
         list_resource = findViewById(R.id.list_resource);
 
-        listShow_qnuatitytype();
+        paid_pruchase = findViewById(R.id.paid_pruchase);
+        total_paid = findViewById(R.id.total_paid);
+        total_pruchase = findViewById(R.id.total_pruchase);
+
+        Intent data =getIntent();
+        hasOnClick = data.getExtras().getString("key");
+
+        switch (hasOnClick) {
+            case "purchases_btn":
+                listShow_qnuatitytype();
+                show();
+                break;
+            case "bills":
+
+                break;
+            case "max_account_btn":
+
+                break;
+        }
+
 
         add_resource.setOnClickListener(v -> add_customer_data ());
 
@@ -51,6 +72,36 @@ public class resources extends AppCompatActivity {
 //        });
     }
 
+    private void show() {
+        double[] total=databases.get_ALL_total_purchases(),total2;
+        double v =0,vv=0,vvv=0;
+        for (int i=0;i<databases.get_number_purchases();i++){
+            v +=total[i];
+        }
+        paid_pruchase.setText(MessageFormat.format("{0}",v));
+
+        ////////////////////////////////////
+         total=databases.get_ALL_paid_purchases();
+         total2=databases.get_ALL_type_policy();
+
+
+        for (int i=0;i<databases.get_number_purchases();i++){
+            vvv +=total[i];
+        }
+        for (int i=0;i<databases.get_number_policy();i++){
+            vv +=total2[i];
+        }
+
+        total_paid.setText(MessageFormat.format("{0}",vvv+vv));
+
+        total_pruchase.setText(MessageFormat.format("{0}",(vvv+vv)-v));
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        show();
+    }
     public void add_customer_data () {
 
         //Dialog Customer Data viewer

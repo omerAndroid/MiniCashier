@@ -57,97 +57,55 @@ public class MainActivity extends AppCompatActivity {
         max_account_btn = (Button) findViewById(R.id.max_account_btn);
         reports_btn = (Button) findViewById(R.id.reports_btn);
 
-        options.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this ,Settings.class);
-                startActivity(intent);
-            }
-        });
+        options.setOnClickListener(v -> startActivity(new Intent(this,Settings.class)));
 
-        buy_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this ,buy_restore_goods.class);
-                startActivity(intent);
-            }
-        });
+        buy_btn.setOnClickListener(v -> startActivity(new Intent(this,buy_restore_goods.class)));
 
-        purchases_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this ,resources.class);
-                startActivity(intent);
-            }
-        });
+        purchases_btn.setOnClickListener(v -> startActivity(new Intent(this,resources.class).
+                putExtra("key","purchases_btn")));////m مشتريات
 
-        bills.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this ,resources.class);
-                startActivity(intent);
-            }
-        });
+        bills.setOnClickListener(v -> startActivity(new Intent(this,resources.class).
+                putExtra("key","bills")));///////n  فواتير
 
-        au_menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        au_menu.setOnClickListener(v -> {
 
-                PopupMenu popupMenu = new PopupMenu(MainActivity.this,v);
-                MenuInflater inflater = popupMenu.getMenuInflater();
-                inflater.inflate(R.menu.add_update,popupMenu.getMenu());
+            PopupMenu popupMenu = new PopupMenu(MainActivity.this,v);
+            MenuInflater inflater = popupMenu.getMenuInflater();
+            inflater.inflate(R.menu.add_update,popupMenu.getMenu());
 
-                /*MenuPopupHelper popupHelper = new MenuPopupHelper(MainActivity.this, (MenuBuilder) popupMenu.getMenu(),v);
-                popupHelper.setForceShowIcon(true);*/
-                popupMenu.show();
+            /*MenuPopupHelper popupHelper = new MenuPopupHelper(MainActivity.this, (MenuBuilder) popupMenu.getMenu(),v);
+            popupHelper.setForceShowIcon(true);*/
+            popupMenu.show();
 
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        int id = item.getItemId();
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    int id = item.getItemId();
 
-                        if(id==R.id.add_goods_menu)
-                        {
-                            Intent intent = new Intent(MainActivity.this ,add_goods_db.class);
-                            startActivity(intent);
-                        }
-
-                        if(id==R.id.update_goods_menu)
-                        {
-                            Intent intent = new Intent(MainActivity.this ,update_goods_db.class);
-                            startActivity(intent);
-                        }
-                        return false;
-
+                    if(id==R.id.add_goods_menu)
+                    {
+                        Intent intent = new Intent(MainActivity.this ,add_goods_db.class);
+                        startActivity(intent);
                     }
-                });
 
-            }
+                    if(id==R.id.update_goods_menu)
+                    {
+                        Intent intent = new Intent(MainActivity.this ,update_goods_db.class);
+                        startActivity(intent);
+                    }
+                    return false;
+
+                }
+            });
+
         });
 
-        max_account_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this ,resources.class);
-                startActivity(intent);
-            }
-        });
+        max_account_btn.setOnClickListener(view -> startActivity(new Intent(this,resources.class).
+                putExtra("key","max_account_btn")));////n
 
-        max_quintity_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this ,update_goods_db.class);
-                startActivity(intent);
-            }
-        });
+        max_quintity_btn.setOnClickListener(view -> startActivity(new Intent(this,update_goods_db.class)));
 
-        reports_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this ,Reports.class);
-                startActivity(intent);
-            }
-        });
+        reports_btn.setOnClickListener(view -> startActivity(new Intent(this,Reports.class)));
 
     }
 
