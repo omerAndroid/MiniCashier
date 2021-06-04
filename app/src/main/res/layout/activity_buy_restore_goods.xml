@@ -31,15 +31,16 @@
                 android:inputType="textPersonName"
                 tools:ignore="Autofill,HardcodedText" />
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/customer_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:ems="10"
+                android:layout_weight="1"
                 android:hint="اسم العميل"
                 android:inputType="textPersonName"
-                tools:ignore="Autofill,HardcodedText" />
+                tools:ignore="Autofill,HardcodedText,NestedWeights" />
+
         </LinearLayout>
 
         <LinearLayout

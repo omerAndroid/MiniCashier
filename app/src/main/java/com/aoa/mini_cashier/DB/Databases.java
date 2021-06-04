@@ -1491,7 +1491,7 @@ public class Databases extends SQLiteOpenHelper {
         return sat;
     }
 
-    public void insert_bills(String date_bills, String paid_type,double total,double paid,double discount){
+    public void insert_bills(String date_bills, String paid_type,double total,double paid,double discount,int id_agent,String recipient){
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
         contentValues.put("date_bills",date_bills);
@@ -1499,13 +1499,25 @@ public class Databases extends SQLiteOpenHelper {
         contentValues.put("total",total);
         contentValues.put("paid",paid);
         contentValues.put("discount",discount);
-        //contentValues.put("id_agent",id_agent);
-        //contentValues.put("recipient",recipient);
+        contentValues.put("id_agent",id_agent);
+        contentValues.put("recipient",recipient);
 
         db.insert("bills",null,contentValues);
     }
 
-    public void insert_products_bills(String name_prod, int purchase_price,double selling_price,double quantity,int id_bills,
+    public int read_bills(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        int a=0;
+        @SuppressLint("Recycle") Cursor res=db.rawQuery("select * from bills",null);
+        res.moveToFirst();
+        while (!res.isAfterLast()){
+            a++;
+            res.moveToNext();
+        }
+        return a;
+    }
+
+    public void insert_products_bills(String name_prod, double purchase_price,double selling_price,double quantity,int id_bills,
                                       String quantity_type){
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
@@ -1515,9 +1527,20 @@ public class Databases extends SQLiteOpenHelper {
         contentValues.put("quantity",quantity);
         contentValues.put("id_bills",id_bills);
         contentValues.put("quantity_type",quantity_type);
-
-
         db.insert("products_bills",null,contentValues);
+    }
+
+    public void insert_agent(String name_agent, String address,int mobile,int telephone,String email,int password){
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+        contentValues.put("name_agent",name_agent);
+        contentValues.put("address",address);
+        contentValues.put("mobile",mobile);
+        contentValues.put("telephone",telephone);
+        contentValues.put("email",email);
+        contentValues.put("password",password);
+
+        db.insert("agent",null,contentValues);
     }
 }
 

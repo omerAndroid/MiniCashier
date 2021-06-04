@@ -39,18 +39,20 @@ public class buy_restore_goods extends AppCompatActivity {
     public Databases databases = new Databases(this);
     Dialog customer_data,edit_item;
     Button list_options,save_btn,add_item_list;
-    EditText c_name,name_sender,discount_bill_items,total_price;
+    EditText name_sender,discount_bill_items,total_price;
     public static boolean  check_impot;
     SwitchMaterial buy_or_restore,money_or_debt;
     ArrayList<list_buy_restore> list_item= new ArrayList<>();
     ArrayList<String> item_Array= new ArrayList<String>();
-
+    TextView goods_quanitity;
+    //
     ArrayList<String> name_prod= new ArrayList<>();
     ArrayList<String> purchase_price= new ArrayList<>();
     ArrayList<String> selling_price= new ArrayList<>();
     ArrayList<String> quantity= new ArrayList<>();
-    ArrayList<String> quantity_type= new ArrayList<>();
+    ArrayList<String> quantity_type= new ArrayList<>();//c_name
 
+    AutoCompleteTextView c_name;
     double aDouble=0;
 
     @SuppressLint("StaticFieldLeak")
@@ -93,11 +95,13 @@ public class buy_restore_goods extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 TextView goods_name = (TextView)view.findViewById(R.id.goods_name);
                 TextView goods_q_type = (TextView)view.findViewById(R.id.goods_q_type);
-                TextView goods_quanitity = (TextView)view.findViewById(R.id.goods_quanitity);
+                 goods_quanitity = (TextView)view.findViewById(R.id.goods_quanitity);
                 TextView goods_buy = (TextView)view.findViewById(R.id.goods_buy);
                 TextView goods_sale = (TextView)view.findViewById(R.id.goods_sale);
 
                 item_Array.clear();
+
+                Toast.makeText(buy_restore_goods.this, String.valueOf(i), Toast.LENGTH_SHORT).show();
 
                 item_Array.add(goods_name.getText().toString());
                 item_Array.add(goods_q_type.getText().toString());
@@ -190,13 +194,29 @@ public class buy_restore_goods extends AppCompatActivity {
                         Toast.makeText(buy_restore_goods.this, "ok", Toast.LENGTH_SHORT).show();
                         print ();
                         databases.insert_bills(timeAdded,"نقد",Double.parseDouble(total_price.getText().toString()),
-                                Double.parseDouble(total_price.getText().toString()),Double.parseDouble(discount_bill_items.getText().toString()));
+                                Double.parseDouble(total_price.getText().toString()),Double.parseDouble(discount_bill_items.getText().toString()),
+                        0,null);
+                        insert_products_bills();
+
                     }
-                }else {
+                }else if (money_or_debt.getText().toString().equals("آجل")&&buy_or_restore.getText().toString().equals("بيع")){
                     add_customer_data();
                 }
             }
         });
+
+    }
+
+    private void insert_products_bills() {
+        Object[] arr = new Object[name_prod.size()];
+        int a=databases.read_bills();
+        for(int i=0; i<arr.length; i++) {
+
+            databases.insert_products_bills(name_prod.get(i),Double.parseDouble(purchase_price.get(i)),Double.parseDouble(selling_price.get(i)),
+                    Double.parseDouble(quantity.get(i)),a,quantity_type.get(i));
+
+        }
+
     }
 
     private boolean check_impot_save_btn() {
@@ -415,7 +435,7 @@ public class buy_restore_goods extends AppCompatActivity {
             TextView quantity_type = (TextView) view.findViewById(R.id.goods_q_type);
 
 
-            TextView goods_quanitity = (TextView) view.findViewById(R.id.goods_quanitity);
+             goods_quanitity = (TextView) view.findViewById(R.id.goods_quanitity);
 
             TextView buy_price = (TextView) view.findViewById(R.id.goods_buy);
 
@@ -454,6 +474,9 @@ public class buy_restore_goods extends AppCompatActivity {
             public void onClick(View v) {
                 //save Data of customer
 
+                databases.insert_agent(name.getText().toString(),c_address.getText().toString(),Integer.parseInt(c_phone1.getText().toString()),
+                Integer.parseInt(c_phone2.getText().toString()),c_email.getText().toString(),Integer.parseInt(c_password.getText().toString()));
+
 
                 customer_data.dismiss();
             }
@@ -479,7 +502,13 @@ public class buy_restore_goods extends AppCompatActivity {
         final Button save_item_buy = (Button) edit_item.findViewById(R.id.save_item_buy);
 
         ////////////////////////////////////////////////////////////////
+        String[] x=new String[1];
+        x[0]=item_Array.get(1);
+        ArrayAdapter<String> Array= new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,x);
+        ///////////////////////////////////////
+
         name_item_buy.setText(item_Array.get(0));
+        quantitytype_item_buy.setAdapter(Array);
         quantity_item_buy.setText(item_Array.get(2));
         buy_item_buy.setText(item_Array.get(3));
         sale_item_buy.setText(item_Array.get(4));
@@ -490,7 +519,6 @@ public class buy_restore_goods extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //save edit item buy
-
 
                 edit_item.dismiss();
             }
