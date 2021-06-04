@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -30,6 +31,8 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class buy_restore_goods extends AppCompatActivity {
 
@@ -42,6 +45,11 @@ public class buy_restore_goods extends AppCompatActivity {
     ArrayList<list_buy_restore> list_item= new ArrayList<>();
     ArrayList<String> item_Array= new ArrayList<String>();
 
+    ArrayList<String> name_prod= new ArrayList<>();
+    ArrayList<String> purchase_price= new ArrayList<>();
+    ArrayList<String> selling_price= new ArrayList<>();
+    ArrayList<String> quantity= new ArrayList<>();
+    ArrayList<String> quantity_type= new ArrayList<>();
 
     double aDouble=0;
 
@@ -173,9 +181,16 @@ public class buy_restore_goods extends AppCompatActivity {
         save_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (money_or_debt.getText().toString().equals("نقد")){
+                Calendar calendar1=Calendar.getInstance(Locale.getDefault());
+                calendar1.setTimeInMillis(Long.parseLong(""+System.currentTimeMillis()));
+                String timeAdded=""+ DateFormat.format("dd/MM/yyyy",calendar1);
+
+                if (money_or_debt.getText().toString().equals("نقد")&&buy_or_restore.getText().toString().equals("بيع")){
                     if (check_impot_save_btn()){
                         Toast.makeText(buy_restore_goods.this, "ok", Toast.LENGTH_SHORT).show();
+                        print ();
+                        databases.insert_bills(timeAdded,"نقد",Double.parseDouble(total_price.getText().toString()),
+                                Double.parseDouble(total_price.getText().toString()),Double.parseDouble(discount_bill_items.getText().toString()));
                     }
                 }else {
                     add_customer_data();
@@ -232,7 +247,7 @@ public class buy_restore_goods extends AppCompatActivity {
             //////b تعبئة المدخلات بعد اختيار الباركود الموجود من قاعدة البيانات
 
             tcack_camera(item);
-
+            Text_add_name_item.setText("");
         });
     }
 
@@ -277,9 +292,18 @@ public class buy_restore_goods extends AppCompatActivity {
        // list_item = new ArrayList<>();
         for (int j=0;j<1;j++){
 
-            list_item.add(new list_buy_restore(g[1],q[0],"1"," ",
+            list_item.add(new list_buy_restore(g[1],q[0],"1",theack_aggen(new DecimalFormat("#.00#").format( q_Double[1])),
                     theack_aggen(new DecimalFormat("#.00#").format( q_Double[0]))));
         }
+
+        ///n      عملية اضافة المنتجات في المصفوفات
+        name_prod.add(g[1]);
+        purchase_price.add(theack_aggen(new DecimalFormat("#.00#").format( q_Double[1])));
+        selling_price.add(theack_aggen(new DecimalFormat("#.00#").format( q_Double[0])));
+        quantity.add("1");
+        quantity_type.add(q[0]);
+
+
 
         aDouble +=Double.parseDouble(theack_aggen(new DecimalFormat("#.00#").format( q_Double[0])));
         total_price.setText(theack_aggen(new DecimalFormat("#.00#").format( aDouble)));
@@ -290,90 +314,27 @@ public class buy_restore_goods extends AppCompatActivity {
         list.setAdapter(ad);
     }
 
-    /////////////////n     خوارزمية تساعد لعملية عرض وادخال الارقام
-    public String To_double(String s){
+    public void print (){
 
-        StringBuilder ss= new StringBuilder();
-        String nu=s;
-        for (int i=0;i<=nu.length()-1;i++){
-            if (String.valueOf(nu.charAt(i)).equals("٠")){
-                ss.append("0");
-            }else if(String.valueOf(nu.charAt(i)).equals("٩")){
-                ss.append("9");
-            }else if(String.valueOf(nu.charAt(i)).equals("١")){
-                ss.append("1");
-            }else if(String.valueOf(nu.charAt(i)).equals("٢")){
-                ss.append("2");
-            }else if(String.valueOf(nu.charAt(i)).equals("٣")){
-                ss.append("3");
-            }else if(String.valueOf(nu.charAt(i)).equals("٤")){
-                ss.append("4");
-            }else if(String.valueOf(nu.charAt(i)).equals("٥")){
-                ss.append("5");
-            }else if(String.valueOf(nu.charAt(i)).equals("٦")){///١٢٣٤٥٦٧٨٩٫٠٠٠
-                ss.append("6");
-            }else if(String.valueOf(nu.charAt(i)).equals("٧")){
-                ss.append("7");
-            }else if(String.valueOf(nu.charAt(i)).equals("٨")){
-                ss.append("8");
-            }else if(String.valueOf(nu.charAt(i)).equals("٫")){
-                ss.append(".");
-            }
+        Object[] arr = new Object[name_prod.size()];
+
+        for(int i=0; i<arr.length; i++) {
+            System.out.println(" = [ 1 ]الاسم" +name_prod.get(i));
+            System.out.println(" = [ 2 ] سعر البيع" +purchase_price.get(i));
+            System.out.println(" = [ 3 ]سعر الشراء" +selling_price.get(i));
+            System.out.println(" = [ 4 ]الكمية" +quantity.get(i));
+            System.out.println(" = [ 5 ]نوع الكمية" +quantity_type.get(i));
+            System.out.println("00000000000000000000000000000000000000000000000000000");
         }
-        s= ss.toString();
-        String[] parts = s.split("\\.");
-        String part1 ,v  ;   //
-        String part2 ;   //
-        StringBuilder text_1= new StringBuilder();
-        StringBuilder text_2= new StringBuilder(".");
-        double d1,d2;
-        DecimalFormat df ;
-        if (s.contains(".")) {
 
-            part1 = parts[0];
-            part2 = parts[1];
 
-            int size1=part1.length();
-            int size2=part2.length();
 
-            part2 ="0.";
-            part2 += parts[1];
 
-            for (int i=1;i<=size2;i++){
-                text_2.append("0");
-            }
 
-            for (int i=1;i<=size1;i++){
-                text_1.append("0");
-            }
-
-            String arr;
-            arr=parts[1];
-
-            if (String.valueOf(arr.charAt(0)).equals("0")&&String.valueOf(arr.charAt(1)).equals("0")){
-                text_2= new StringBuilder(".");
-                text_2.append("0");
-            }
-
-            d1=Double.parseDouble(part1);
-            d2=Double.parseDouble(part2);
-
-            d2=d1+d2;
-
-            String bb= text_1.toString() +text_2;
-
-            System.out.println("this is before formatting: "+d2);
-            df = new DecimalFormat(bb);
-
-            System.out.println("Value: " + df.format(d2));
-            v=df.format(d2);
-
-        }else {
-            String par=s+".0";
-            v= To_double(par);
-        }
-        return v ;
     }
+
+    /////////////////n     خوارزمية تساعد لعملية عرض وادخال الارقام
+
     public String theack_aggen(@NonNull String s){
         StringBuilder ss= new StringBuilder();
 

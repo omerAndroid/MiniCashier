@@ -33,6 +33,10 @@ public class resources extends AppCompatActivity {
     public static ArrayList<list_item_resource> q_list = new ArrayList<>();
     TextView  paid_pruchase,total_paid,total_pruchase;
     public static String address="";
+
+    TextView name_resouce;
+    ArrayList<list_item_resource> list_item;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +64,7 @@ public class resources extends AppCompatActivity {
 
                 break;
         }
+
 
 
         add_resource.setOnClickListener(v -> add_customer_data ());
@@ -128,7 +133,7 @@ public class resources extends AppCompatActivity {
 
                 address=c_address.getText().toString();
 
-                if (Integer.parseInt(c_phone2.getText().toString())<99999999&&Integer.parseInt(c_phone1.getText().toString())<999999999){
+                if (c_phone2.getText().toString().length()<=9&&(c_phone1.getText().toString().length())<=9){
 
                 boolean result = databases.insert_resource(name.getText().toString(),
                         Integer.parseInt(c_phone2.getText().toString()),
@@ -140,9 +145,9 @@ public class resources extends AppCompatActivity {
                     listShow_qnuatitytype();
                   }else Toast.makeText(resources.this, "bad", Toast.LENGTH_SHORT).show();
                 }else {
-                    if (Integer.parseInt(c_phone2.getText().toString())>99999999&&Integer.parseInt(c_phone1.getText().toString())<999999999){
+                    if (c_phone2.getText().toString().length()>9&&c_phone1.getText().toString().length()<=9){
                         c_phone2.setError("الرقم طويل جدا.");
-                    }else if (Integer.parseInt(c_phone2.getText().toString())<99999999&&Integer.parseInt(c_phone1.getText().toString())>999999999){
+                    }else if (c_phone2.getText().toString().length()<=9&&c_phone1.getText().toString().length()>9){
                         c_phone1.setError("الرقم طويل جدا.");
                     }
                 }
@@ -201,7 +206,7 @@ public class resources extends AppCompatActivity {
             LayoutInflater inflater = getLayoutInflater();
             @SuppressLint({"ViewHolder", "InflateParams"}) View view =inflater.inflate(R.layout.resource_list_item,null);
 
-            TextView name_resouce = (TextView) view.findViewById(R.id.name_resouce);
+             name_resouce = (TextView) view.findViewById(R.id.name_resouce);
 
             TextView  accunt_bill= (TextView) view.findViewById(R.id.accunt_bill);
 

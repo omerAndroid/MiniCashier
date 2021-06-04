@@ -300,6 +300,7 @@ public class purchases extends AppCompatActivity {
                     insert_Data_quantity(add_barcode_txt.getText().toString());
                     chaeck_seve=false;
                     chaeck_seve_2=false;
+                    show();
                     purchase.dismiss();
                     listShow_policy_2();
                 }
@@ -629,6 +630,7 @@ public class purchases extends AppCompatActivity {
 
                 if (result) {
                     Toast.makeText(purchases.this, "ok", Toast.LENGTH_SHORT).show();
+                    show();
                     purchase.dismiss();
                 }else Toast.makeText(purchases.this, "no no no ", Toast.LENGTH_SHORT).show();
 
@@ -649,6 +651,7 @@ public class purchases extends AppCompatActivity {
                 databases.get_insert_money_box(money-Double.parseDouble(amount_policy.getText().toString()));
                 if (result) {
                     Toast.makeText(purchases.this, "ok", Toast.LENGTH_SHORT).show();
+                    show();
                     purchase.dismiss();
                 }else Toast.makeText(purchases.this, "no no no ", Toast.LENGTH_SHORT).show();
 
@@ -694,7 +697,8 @@ public class purchases extends AppCompatActivity {
                         purchases[i + 3], purchases[i + 5], purchases[i + 4]));
 
                 System.out.println("000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
-                System.out.println("purchases[i+1] " + purchases[i + 1] + "\n purchases[i] " + purchases[i] + "\n purchases_double[g] " + MessageFormat.format("{0}", purchases_double[g]) +
+                System.out.println("purchases[i+1] " + purchases[i + 1] + "\n purchases[i] " + purchases[i] + "\n purchases_double[g] " +
+                        MessageFormat.format("{0}", purchases_double[g]) +
                         "\n purchases[i+2] " + purchases[i + 2] + "\n purchases_double[g+1] " + MessageFormat.format("{0}", purchases_double[g + 1]) +
                         "\n purchases[i+3] " + purchases[i + 3] + "\n purchases[i+5] " + purchases[i + 5] + "\n purchases[i+4] " + purchases[i + 4]);
                 i += 6;

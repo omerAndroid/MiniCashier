@@ -48,15 +48,14 @@ public class Databases extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE agent(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_agent TEXT unique,address TEXT,mobile INTEGER,telephone INTEGER,email TEXT," +
                 "password INTEGER)");
 
-        db.execSQL("CREATE TABLE paid_type(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_type TEXT)");
+        //db.execSQL("CREATE TABLE paid_type(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_type TEXT)");
 
-        db.execSQL("CREATE TABLE bills(id INTEGER PRIMARY KEY AUTOINCREMENT ,date_bills TEXT,id_p INTEGER,total REAL,paid REAL,discount REAL," +
+        db.execSQL("CREATE TABLE bills(id INTEGER PRIMARY KEY AUTOINCREMENT ,date_bills TEXT,paid_type TEXT,total REAL,paid REAL,discount REAL," +
                 "id_agent INTEGER,recipient TEXT," +
-                "FOREIGN KEY(id_agent) REFERENCES agent(id) ON UPDATE CASCADE ON DELETE CASCADE," +
-                "FOREIGN KEY(id_p) REFERENCES paid_type(id) ON UPDATE CASCADE ON DELETE CASCADE)");
+                "FOREIGN KEY(id_agent) REFERENCES agent(id) ON UPDATE CASCADE ON DELETE CASCADE)");
 
         db.execSQL("CREATE TABLE products_bills(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_prod TEXT,purchase_price REAL,selling_price REAL," +
-                "quantity REAL,id_bills INTEGER," +
+                "quantity REAL,id_bills INTEGER,quantity_type TEXT," +
                 "FOREIGN KEY(id_bills) REFERENCES bills(id) ON UPDATE CASCADE ON DELETE CASCADE)");
 
         db.execSQL("CREATE TABLE resource(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_res TEXT unique,mobile INTEGER,phone INTEGER,address INTEGER)");//////n  المورد
@@ -791,20 +790,21 @@ public class Databases extends SQLiteOpenHelper {
     public double[] get_one_quantity_double(int id_g ){
         int lenght=read_Tname();
         SQLiteDatabase db=this.getReadableDatabase();
-        double[] sat=new double[1];
+        double[] sat=new double[2];
 
         if (lenght>0) {
 
             @SuppressLint("Recycle") Cursor res  = db.rawQuery("select * from quantity where  id_g = "+id_g+" and default_q = "+1+" ",null);
 
-            int i = 0;
+
 
             res.moveToFirst();
             while (!res.isAfterLast()) {
                 double c;
                 c = res.getDouble(res.getColumnIndex("selling_price"));///////n     البيع
                 sat[0] = c;
-                i++;
+                c = res.getDouble(res.getColumnIndex("purchase_price"));///////n     الشراء
+                sat[1] = c;
 
                 res.moveToNext();
             }
@@ -1443,7 +1443,8 @@ public class Databases extends SQLiteOpenHelper {
         double[] sat=new double[get_number_purchases_2(id_resource)];
         int i = 0;
 
-        @SuppressLint("Recycle") Cursor res = db.rawQuery("select * from purchases where purchases_type like '"+"نقد"+"' and id_resource = "+id_resource+" ", null);
+        @SuppressLint("Recycle") Cursor res = db.rawQuery("select * from purchases where purchases_type like '"+"نقد"+"' and id_resource = "+id_resource+" ",
+                null);
         res.moveToFirst();
         while (!res.isAfterLast()) {
             double c;
@@ -1477,7 +1478,8 @@ public class Databases extends SQLiteOpenHelper {
         double[] sat=new double[get_number_policy(id_resource)];
         int i = 0;
 
-        @SuppressLint("Recycle") Cursor res = db.rawQuery("select * from policy where type_policy like '"+"صرف"+"' and id_resource = "+id_resource+" ", null);
+        @SuppressLint("Recycle") Cursor res = db.rawQuery("select * from policy where type_policy like '"+"صرف"+"' and id_resource = "+id_resource+" ",
+                null);
         res.moveToFirst();
         while (!res.isAfterLast()) {
             double c;
@@ -1487,6 +1489,35 @@ public class Databases extends SQLiteOpenHelper {
             res.moveToNext();
         }
         return sat;
+    }
+
+    public void insert_bills(String date_bills, String paid_type,double total,double paid,double discount){
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+        contentValues.put("date_bills",date_bills);
+        contentValues.put("paid_type",paid_type);
+        contentValues.put("total",total);
+        contentValues.put("paid",paid);
+        contentValues.put("discount",discount);
+        //contentValues.put("id_agent",id_agent);
+        //contentValues.put("recipient",recipient);
+
+        db.insert("bills",null,contentValues);
+    }
+
+    public void insert_products_bills(String name_prod, int purchase_price,double selling_price,double quantity,int id_bills,
+                                      String quantity_type){
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+        contentValues.put("name_prod",name_prod);
+        contentValues.put("purchase_price",purchase_price);
+        contentValues.put("selling_price",selling_price);
+        contentValues.put("quantity",quantity);
+        contentValues.put("id_bills",id_bills);
+        contentValues.put("quantity_type",quantity_type);
+
+
+        db.insert("products_bills",null,contentValues);
     }
 }
 
