@@ -45,8 +45,8 @@ public class Databases extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE department(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_dep TEXT unique)");
 
-        db.execSQL("CREATE TABLE agent(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_agent TEXT unique,address TEXT,mobile INTEGER,telephone INTEGER,email TEXT," +
-                "password INTEGER)");
+        db.execSQL("CREATE TABLE agent(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_agent TEXT unique,address TEXT,mobile TEXT,telephone TEXT,email TEXT," +
+                "password TEXT)");
 
         //db.execSQL("CREATE TABLE paid_type(id INTEGER PRIMARY KEY AUTOINCREMENT ,name_type TEXT)");
 
@@ -1530,7 +1530,7 @@ public class Databases extends SQLiteOpenHelper {
         db.insert("products_bills",null,contentValues);
     }
 
-    public void insert_agent(String name_agent, String address,int mobile,int telephone,String email,int password){
+    public void insert_agent(String name_agent, String address,String mobile,String telephone,String email,String password){
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
         contentValues.put("name_agent",name_agent);

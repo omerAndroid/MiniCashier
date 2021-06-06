@@ -76,12 +76,9 @@ public class buy_restore_goods extends AppCompatActivity {
         buy_or_restore = findViewById(R.id.buy_or_restore);
         money_or_debt = findViewById(R.id.cash_or_debt);
 
-
         /////////////////////////////////
         get_ALL_baracode_name_g();
         discount_bill_items.setText("0");
-
-
 
         ListView list = (ListView) findViewById(R.id.list_buy_restore);
         //////////////////////// Add goods in list //////////////////////////////////////////
@@ -178,7 +175,6 @@ public class buy_restore_goods extends AppCompatActivity {
                 else {
                     money_or_debt.setText("نقد");
                 }
-
             }
         });
 
@@ -194,13 +190,17 @@ public class buy_restore_goods extends AppCompatActivity {
                         Toast.makeText(buy_restore_goods.this, "ok", Toast.LENGTH_SHORT).show();
                         print ();
                         databases.insert_bills(timeAdded,"نقد",Double.parseDouble(total_price.getText().toString()),
-                                Double.parseDouble(total_price.getText().toString()),Double.parseDouble(discount_bill_items.getText().toString()),
+                         Double.parseDouble(total_price.getText().toString()),Double.parseDouble(discount_bill_items.getText().toString()),
                         0,null);
                         insert_products_bills();
 
                     }
                 }else if (money_or_debt.getText().toString().equals("آجل")&&buy_or_restore.getText().toString().equals("بيع")){
-                    add_customer_data();
+                    if (check_impot_save_btn()&&!TextUtils.isEmpty(c_name.getText().toString())&&!
+                            TextUtils.isEmpty(name_sender.getText().toString())){
+
+                    }
+                    //add_customer_data();
                 }
             }
         });
@@ -214,9 +214,7 @@ public class buy_restore_goods extends AppCompatActivity {
 
             databases.insert_products_bills(name_prod.get(i),Double.parseDouble(purchase_price.get(i)),Double.parseDouble(selling_price.get(i)),
                     Double.parseDouble(quantity.get(i)),a,quantity_type.get(i));
-
         }
-
     }
 
     private boolean check_impot_save_btn() {
@@ -346,11 +344,6 @@ public class buy_restore_goods extends AppCompatActivity {
             System.out.println(" = [ 5 ]نوع الكمية" +quantity_type.get(i));
             System.out.println("00000000000000000000000000000000000000000000000000000");
         }
-
-
-
-
-
     }
 
     /////////////////n     خوارزمية تساعد لعملية عرض وادخال الارقام
@@ -468,15 +461,13 @@ public class buy_restore_goods extends AppCompatActivity {
 
         name.setText(c_name.getText());
 
-
         data_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //save Data of customer
 
-                databases.insert_agent(name.getText().toString(),c_address.getText().toString(),Integer.parseInt(c_phone1.getText().toString()),
-                Integer.parseInt(c_phone2.getText().toString()),c_email.getText().toString(),Integer.parseInt(c_password.getText().toString()));
-
+                databases.insert_agent(name.getText().toString(),c_address.getText().toString(),c_phone1.getText().toString(),
+                        c_phone2.getText().toString(),c_email.getText().toString(),c_password.getText().toString());
 
                 customer_data.dismiss();
             }
