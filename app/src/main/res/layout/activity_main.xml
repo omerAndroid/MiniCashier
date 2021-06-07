@@ -67,6 +67,7 @@
 
             <Button
                 android:id="@+id/purchases_btn"
+                style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="مشتريات"
@@ -77,6 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="تقارير"
+                style="?attr/materialButtonOutlinedStyle"
                 android:textSize="30sp" />
         </LinearLayout>
 
@@ -91,6 +93,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="بيع"
+                style="?attr/materialButtonOutlinedStyle"
                 android:textSize="30sp" />
 
             <Button
@@ -98,7 +101,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="فواتير"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                style="?attr/materialButtonOutlinedStyle" />
+
         </LinearLayout>
     </LinearLayout>
 
