@@ -181,19 +181,16 @@ public class buy_restore_goods extends AppCompatActivity {
         save_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar calendar1=Calendar.getInstance(Locale.getDefault());
-                calendar1.setTimeInMillis(Long.parseLong(""+System.currentTimeMillis()));
-                String timeAdded=""+ DateFormat.format("dd/MM/yyyy",calendar1);
+
 
                 if (money_or_debt.getText().toString().equals("نقد")&&buy_or_restore.getText().toString().equals("بيع")){
                     if (check_impot_save_btn()){
                         Toast.makeText(buy_restore_goods.this, "ok", Toast.LENGTH_SHORT).show();
                         print ();
-                        databases.insert_bills(timeAdded,"نقد",Double.parseDouble(total_price.getText().toString()),
-                         Double.parseDouble(total_price.getText().toString()),Double.parseDouble(discount_bill_items.getText().toString()),
-                        0,null);
-                        insert_products_bills();
 
+                        insert_bills();
+                        insert_products_bills();
+                        quantity_stored9("بيع");
                     }
                 }else if (money_or_debt.getText().toString().equals("آجل")&&buy_or_restore.getText().toString().equals("بيع")){
                     if (check_impot_save_btn()&&!TextUtils.isEmpty(c_name.getText().toString())&&!
@@ -201,10 +198,43 @@ public class buy_restore_goods extends AppCompatActivity {
 
                     }
                     //add_customer_data();
+                }else if (money_or_debt.getText().toString().equals("نقد")&&buy_or_restore.getText().toString().equals("استرجاع")){
+                    quantity_stored9("استرجاع");
                 }
             }
         });
 
+    }
+
+    private void quantity_stored9(String text) {
+        double money = databases.get_money_box();
+        Object[] arr = new Object[name_prod.size()];
+
+        if (text.equals("بيع")){
+
+            for(int i=0; i<arr.length; i++) {
+
+                databases.get_update_quantity_stored(name_prod.get(i),databases.get_quantity_stored(name_prod.get(i))-1);
+
+            }
+            databases.get_insert_money_box(money+Double.parseDouble(total_price.getText().toString()));
+        }else {
+            for(int i=0; i<arr.length; i++) {
+
+                databases.get_update_quantity_stored(name_prod.get(i),databases.get_quantity_stored(name_prod.get(i))+1);
+            }
+            databases.get_insert_money_box(money-Double.parseDouble(total_price.getText().toString()));
+        }
+    }
+
+    private void insert_bills() {
+        Calendar calendar1=Calendar.getInstance(Locale.getDefault());
+        calendar1.setTimeInMillis(Long.parseLong(""+System.currentTimeMillis()));
+        String timeAdded=""+ DateFormat.format("dd/MM/yyyy",calendar1);
+
+        databases.insert_bills(timeAdded,"نقد",Double.parseDouble(total_price.getText().toString()),
+                Double.parseDouble(total_price.getText().toString()),Double.parseDouble(discount_bill_items.getText().toString()),
+                0,null);
     }
 
     private void insert_products_bills() {
@@ -333,7 +363,6 @@ public class buy_restore_goods extends AppCompatActivity {
     }
 
     public void print (){
-
         Object[] arr = new Object[name_prod.size()];
 
         for(int i=0; i<arr.length; i++) {
@@ -343,7 +372,11 @@ public class buy_restore_goods extends AppCompatActivity {
             System.out.println(" = [ 4 ]الكمية" +quantity.get(i));
             System.out.println(" = [ 5 ]نوع الكمية" +quantity_type.get(i));
             System.out.println("00000000000000000000000000000000000000000000000000000");
+
+            System.out.println( "quantity_stored : "+databases.get_quantity_stored(name_prod.get(i)));
+            System.out.println("00000000000000000000000000000000000000000000000000000");
         }
+
     }
 
     /////////////////n     خوارزمية تساعد لعملية عرض وادخال الارقام

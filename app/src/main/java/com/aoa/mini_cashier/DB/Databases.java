@@ -1542,5 +1542,60 @@ public class Databases extends SQLiteOpenHelper {
 
         db.insert("agent",null,contentValues);
     }
+
+    public double get_quantity_stored(String name_g){
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor res  = db.rawQuery("select * from goods where name_g like '"+name_g+"' ",null);
+        double c=0;
+        res.moveToFirst();
+        while (!res.isAfterLast()) {
+            c = res.getDouble(res.getColumnIndex("quantity_stored"));///////n
+            res.moveToNext();
+        }
+        return c;
+    }
+
+    public boolean get_update_quantity_stored(String name_g ,double quantity_stored){
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+
+        contentValues.put("quantity_stored",quantity_stored);
+
+        long result=db.update("goods",contentValues,"name_g = ?",new String[]{name_g});
+
+        return result != -1;
+    }
+    public String[] get_ALLagent(){
+        int lenght=read_Thname_agent();
+        SQLiteDatabase db=this.getReadableDatabase();
+        String[] sat=new String[read_Thname_agent()];
+
+        if (lenght>0) {
+            int i = 0;
+            Cursor res = db.rawQuery("select * from goods", null);
+            res.moveToFirst();
+            while (res.isAfterLast() == false) {
+                String c = res.getString(res.getColumnIndex("bracode"));
+                sat[i] = c;
+                i++;
+                res.moveToNext();
+            }
+        }else{
+            sat=new String[1];
+            sat[0]=" ";}
+
+        return sat;
+    }
+    public int read_Thname_agent(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        int a=0;
+        @SuppressLint("Recycle") Cursor res=db.rawQuery("select * from agent",null);
+        res.moveToFirst();
+        while (!res.isAfterLast()){
+            a++;
+            res.moveToNext();
+        }
+        return a;
+    }
 }
 
