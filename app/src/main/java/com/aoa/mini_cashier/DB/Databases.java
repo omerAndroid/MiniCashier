@@ -1572,10 +1572,10 @@ public class Databases extends SQLiteOpenHelper {
 
         if (lenght>0) {
             int i = 0;
-            Cursor res = db.rawQuery("select * from goods", null);
+            Cursor res = db.rawQuery("select * from agent", null);
             res.moveToFirst();
             while (res.isAfterLast() == false) {
-                String c = res.getString(res.getColumnIndex("bracode"));
+                String c = res.getString(res.getColumnIndex("name_agent"));
                 sat[i] = c;
                 i++;
                 res.moveToNext();
@@ -1597,5 +1597,19 @@ public class Databases extends SQLiteOpenHelper {
         }
         return a;
     }
+
+    public int check_agent(String name_agent){
+        SQLiteDatabase db=this.getReadableDatabase();
+        int a=0;
+        Cursor res=db.rawQuery("select * from agent where name_agent like '"+name_agent+"' ",null);
+        res.moveToFirst();
+        while (res.isAfterLast()==false){
+            a=res.getInt(res.getColumnIndex("id"));
+            res.moveToNext();
+        }
+        return a;
+    }
+
+
 }
 

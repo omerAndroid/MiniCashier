@@ -185,21 +185,31 @@ public class buy_restore_goods extends AppCompatActivity {
 
                 if (money_or_debt.getText().toString().equals("نقد")&&buy_or_restore.getText().toString().equals("بيع")){
                     if (check_impot_save_btn()){
-                        Toast.makeText(buy_restore_goods.this, "ok", Toast.LENGTH_SHORT).show();
-                        print ();
-
-                        insert_bills();
-                        insert_products_bills();
-                        quantity_stored9("بيع");
+//                        Toast.makeText(buy_restore_goods.this, "ok", Toast.LENGTH_SHORT).show();
+//                        print ();
+                        if (name_prod.size()>0){
+                            insert_bills("نقد",0,null,Double.parseDouble(total_price.getText().toString()));
+                            insert_products_bills();
+                            quantity_stored9("بيع");
+                        }
                     }
                 }else if (money_or_debt.getText().toString().equals("آجل")&&buy_or_restore.getText().toString().equals("بيع")){
                     if (check_impot_save_btn()&&!TextUtils.isEmpty(c_name.getText().toString())&&!
-                            TextUtils.isEmpty(name_sender.getText().toString())){
-
+                            TextUtils.isEmpty(name_sender.getText().toString())&&name_prod.size()>0){
+                        if (databases.check_agent(c_name.getText().toString())>0) {
+                            insert_bills("آجل",databases.check_agent(c_name.getText().toString()),name_sender.getText().toString(),0);
+                            insert_products_bills();
+                            quantity_stored9("بيع");
+                        }else {
+                            add_customer_data();
+                        }
                     }
+                    //Toast.makeText(buy_restore_goods.this, c_name.getText().toString()+name_sender.getText().toString(), Toast.LENGTH_SHORT).show();
                     //add_customer_data();
                 }else if (money_or_debt.getText().toString().equals("نقد")&&buy_or_restore.getText().toString().equals("استرجاع")){
-                    quantity_stored9("استرجاع");
+                    if (name_prod.size()>0) {
+                        quantity_stored9("استرجاع");
+                    }
                 }
             }
         });
@@ -227,14 +237,14 @@ public class buy_restore_goods extends AppCompatActivity {
         }
     }
 
-    private void insert_bills() {
+    private void insert_bills(String paid_type,int id_agent,String recipient,double paid) {
         Calendar calendar1=Calendar.getInstance(Locale.getDefault());
         calendar1.setTimeInMillis(Long.parseLong(""+System.currentTimeMillis()));
         String timeAdded=""+ DateFormat.format("dd/MM/yyyy",calendar1);
 
-        databases.insert_bills(timeAdded,"نقد",Double.parseDouble(total_price.getText().toString()),
-                Double.parseDouble(total_price.getText().toString()),Double.parseDouble(discount_bill_items.getText().toString()),
-                0,null);
+        databases.insert_bills(timeAdded,paid_type,Double.parseDouble(total_price.getText().toString()),
+                paid,Double.parseDouble(discount_bill_items.getText().toString()),
+                id_agent,recipient);
     }
 
     private void insert_products_bills() {
@@ -249,7 +259,6 @@ public class buy_restore_goods extends AppCompatActivity {
 
     private boolean check_impot_save_btn() {
 
-        if (money_or_debt.getText().toString().equals("نقد")){//TextUtils.isEmpty(Text_add_name_item.getText().toString().trim()) ||
 
             if ( TextUtils.isEmpty(discount_bill_items.getText().toString().trim())) {
 
@@ -261,7 +270,7 @@ public class buy_restore_goods extends AppCompatActivity {
             }else {
                 check_impot = true;
             }
-        }
+
 
         return check_impot;
     }
@@ -271,6 +280,8 @@ public class buy_restore_goods extends AppCompatActivity {
         String[] Allbaracod=databases.get_ALLbaracod();
 
         String[] Allname_g=databases.get_ALLname_g();
+
+        String[] ALLagent=databases.get_ALLagent();
 
         String[] All=new String[Allbaracod.length+Allname_g.length];
 
@@ -296,6 +307,24 @@ public class buy_restore_goods extends AppCompatActivity {
 
             tcack_camera(item);
             Text_add_name_item.setText("");
+        });
+
+        ///n    العميل
+        ArrayAdapter<String> adapter_agent = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, ALLagent);
+
+        c_name = findViewById(R.id.customer_name);
+        c_name.setAdapter(adapter_agent);
+        c_name.setThreshold(1);
+
+        c_name.setOnItemClickListener((parent, arg1, pos, id) -> {
+            String item = parent.getItemAtPosition(pos).toString();
+            // Toast.makeText(getApplication(),"Selected Item is: \t " + item, Toast.LENGTH_LONG).show();
+
+            //////b تعبئة المدخلات بعد اختيار الباركود الموجود من قاعدة البيانات
+
+            c_name.setText(item);
+
         });
     }
 
