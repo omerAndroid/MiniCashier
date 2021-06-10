@@ -186,11 +186,12 @@ public class buy_restore_goods extends AppCompatActivity {
                 if (money_or_debt.getText().toString().equals("نقد")&&buy_or_restore.getText().toString().equals("بيع")){
                     if (check_impot_save_btn()){
 //                        Toast.makeText(buy_restore_goods.this, "ok", Toast.LENGTH_SHORT).show();
-//                        print ();
+                        print ();
                         if (name_prod.size()>0){
                             insert_bills("نقد",0,null,Double.parseDouble(total_price.getText().toString()));
                             insert_products_bills();
-                            quantity_stored9("بيع");
+                            quantity_stored9("بيع",null);
+
                         }
                     }
                 }else if (money_or_debt.getText().toString().equals("آجل")&&buy_or_restore.getText().toString().equals("بيع")){
@@ -199,7 +200,7 @@ public class buy_restore_goods extends AppCompatActivity {
                         if (databases.check_agent(c_name.getText().toString())>0) {
                             insert_bills("آجل",databases.check_agent(c_name.getText().toString()),name_sender.getText().toString(),0);
                             insert_products_bills();
-                            quantity_stored9("بيع");
+                            quantity_stored9("بيع","آجل");
                         }else {
                             add_customer_data();
                         }
@@ -208,7 +209,7 @@ public class buy_restore_goods extends AppCompatActivity {
                     //add_customer_data();
                 }else if (money_or_debt.getText().toString().equals("نقد")&&buy_or_restore.getText().toString().equals("استرجاع")){
                     if (name_prod.size()>0) {
-                        quantity_stored9("استرجاع");
+                        quantity_stored9("استرجاع",null);
                     }
                 }
             }
@@ -216,7 +217,7 @@ public class buy_restore_goods extends AppCompatActivity {
 
     }
 
-    private void quantity_stored9(String text) {
+    private void quantity_stored9(String text,String s) {
         double money = databases.get_money_box();
         Object[] arr = new Object[name_prod.size()];
 
@@ -227,7 +228,10 @@ public class buy_restore_goods extends AppCompatActivity {
                 databases.get_update_quantity_stored(name_prod.get(i),databases.get_quantity_stored(name_prod.get(i))-1);
 
             }
-            databases.get_insert_money_box(money+Double.parseDouble(total_price.getText().toString()));
+            if (!text.equals("آجل")){
+                databases.get_insert_money_box(money+Double.parseDouble(total_price.getText().toString()));
+            }
+
         }else {
             for(int i=0; i<arr.length; i++) {
 
@@ -396,6 +400,10 @@ public class buy_restore_goods extends AppCompatActivity {
 
         for(int i=0; i<arr.length; i++) {
             System.out.println(" = [ 1 ]الاسم" +name_prod.get(i));
+            double[] ss=databases.get_quantity_q(databases.get_one_goods(name_prod.get(i)));
+            for(int s=0; s<databases.read_Thname_quantity_q(databases.get_one_goods(name_prod.get(i))); s++) {
+                System.out.println("quantity_q : "+ss[s]);
+            }
             System.out.println(" = [ 2 ] سعر البيع" +purchase_price.get(i));
             System.out.println(" = [ 3 ]سعر الشراء" +selling_price.get(i));
             System.out.println(" = [ 4 ]الكمية" +quantity.get(i));
@@ -405,6 +413,7 @@ public class buy_restore_goods extends AppCompatActivity {
             System.out.println( "quantity_stored : "+databases.get_quantity_stored(name_prod.get(i)));
             System.out.println("00000000000000000000000000000000000000000000000000000");
         }
+
 
     }
 

@@ -1610,6 +1610,38 @@ public class Databases extends SQLiteOpenHelper {
         return a;
     }
 
+    public double[] get_quantity_q(int id_g ){
+
+        SQLiteDatabase db=this.getReadableDatabase();
+        double[] sat=new double[read_Thname_quantity_q(id_g)];
+
+            @SuppressLint("Recycle") Cursor res  = db.rawQuery("select * from quantity where  id_g = "+id_g+" ",null);
+
+            int i=0;
+            res.moveToFirst();
+            while (!res.isAfterLast()) {
+                double c;
+                c = res.getDouble(res.getColumnIndex("quantity_q"));///////n     البيع
+                sat[i] = c;
+                i++;
+
+                res.moveToNext();
+            }
+
+        return sat;
+    }
+
+    public int read_Thname_quantity_q(int id_g){
+        SQLiteDatabase db=this.getReadableDatabase();
+        int a=0;
+        @SuppressLint("Recycle") Cursor res=db.rawQuery("select * from quantity where  id_g = "+id_g+" ",null);
+        res.moveToFirst();
+        while (!res.isAfterLast()){
+            a++;
+            res.moveToNext();
+        }
+        return a;
+    }
 
 }
 
