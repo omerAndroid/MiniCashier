@@ -1,28 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/add_extra_quantity_2"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="الكمية"
-        android:inputType="number" />
+        app:endIconMode="clear_text"
+        android:inputType="number">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/add_extra_quantity_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/add_quantity_2"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-
         android:hint="كمية إضافية"
-        android:inputType="number" />
+        app:endIconMode="clear_text"
+        android:inputType="number" >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/add_quantity_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/save_quantity_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="?attr/materialButtonOutlinedStyle"
         android:text="حفظ" />
 </LinearLayout>

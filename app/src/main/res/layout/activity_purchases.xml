@@ -88,7 +88,9 @@
             android:id="@+id/change_list_items"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="قائمة المشتريات" />
+            android:text="قائمة المشتريات"
+            style="?attr/materialButtonOutlinedStyle"
+            />
     </LinearLayout>
 
     <ListView
@@ -119,14 +121,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="إضافة مشتريات" />
+                android:text="إضافة مشتريات"
+                style="?attr/materialButtonOutlinedStyle"
+                />
 
             <Button
                 android:id="@+id/add_policy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="إضافة سند" />
+                android:text="إضافة سند"
+                style="?attr/materialButtonOutlinedStyle"
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -140,6 +146,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:scrollHorizontally="true"
                 android:text="المشتريات" />
 
             <TextView
@@ -148,6 +155,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:scrollHorizontally="true"
                 android:text="المدفوع" />
 
             <TextView
@@ -156,6 +164,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:scrollHorizontally="true"
                 android:text="الإجمالي" />
         </LinearLayout>
     </LinearLayout>

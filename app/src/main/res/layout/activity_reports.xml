@@ -82,6 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
+            android:scrollHorizontally="true"
             android:text="المشتريات" />
 
         <TextView
@@ -90,6 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
+            android:scrollHorizontally="true"
             android:text="المدفوع" />
 
         <TextView
@@ -98,6 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
+            android:scrollHorizontally="true"
             android:text="الإجمالي" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

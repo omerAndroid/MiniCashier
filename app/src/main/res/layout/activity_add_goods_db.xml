@@ -24,18 +24,18 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <com.jaredrummler.materialspinner.MaterialSpinner
-                    android:id="@+id/spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:ms_hint="الاقسام"
-                    app:ms_hide_arrow="false"
-                    app:ms_dropdown_height="130dp"
-                    tools:ignore="MissingConstraints" />
+                                <com.jaredrummler.materialspinner.MaterialSpinner
+                                    android:id="@+id/spinner"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintLeft_toLeftOf="parent"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:ms_hint="الاقسام"
+                                    app:ms_hide_arrow="false"
+                                    app:ms_dropdown_height="130dp"
+                                    tools:ignore="MissingConstraints" />
             </LinearLayout>
 
             <LinearLayout
@@ -45,10 +45,11 @@
 
                 <Button
                     android:id="@+id/add_barcode"
-                    android:onClick="red_qr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="red_qr"
                     android:background="@drawable/ic_camera_alt_black_24dp" />
+
 
                 <AutoCompleteTextView
                     android:id="@+id/add_barcode_txt"
@@ -58,57 +59,76 @@
                     android:ems="10"
                     android:hint="باركود"
                     android:inputType="textPersonName"
-                     />
+                    />
                 <Button
                     android:id="@+id/clear_all"
-                    android:onClick="red_qr"
                     android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="red_qr"
                     android:background="@android:drawable/ic_delete" />
+
+
             </LinearLayout>
 
-            <EditText
-                android:id="@+id/add_name_goods"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="اسم المنتج"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName" >
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/add_name_goods"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/add_extra_quantity"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:ems="10"
                     android:enabled="false"
-                    android:hint="كمية بالكرتون"
-                    android:inputType="number" />
-
-                <EditText
-                    android:id="@+id/add_quantity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:enabled="false"
-                    android:text="0"
                     android:hint="الكمية بالحبة"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:text="0">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/add_quantity"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:enabled="false"
+                    android:hint="0">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/add_extra_quantity"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
                     android:id="@+id/dileg_q"
-                    android:layout_width="match_parent"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:text="الكميات"
-                    />
+                    android:layout_weight="1"
+                    android:text="الكميات" />
+
+
             </LinearLayout>
 
             <LinearLayout
@@ -121,15 +141,21 @@
                     android:layout_height="50dp"
                     android:background="@drawable/ic_date_range_black_24dp" />
 
-                <EditText
-                    android:id="@+id/add_date_sale"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
                     android:enabled="false"
                     android:hint="تاريخ الشراء"
-                    android:inputType="date" />
+                    android:inputType="date">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/add_date_sale"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
 
@@ -143,15 +169,22 @@
                     android:layout_height="50dp"
                     android:background="@drawable/ic_date_range_black_24dp" />
 
-                <EditText
-                    android:id="@+id/add_date_ex"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
                     android:enabled="false"
                     android:hint="تاريخ الإنتهاء"
-                    android:inputType="date" />
+                    android:inputType="date" >
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/add_date_ex"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
 
             </LinearLayout>
 
@@ -197,6 +230,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="حفظ"
+                style="?attr/materialButtonOutlinedStyle"
                 tools:ignore="OnClick" />
             <Button
                 android:id="@+id/ubdate_btn"
@@ -204,6 +238,7 @@
                 android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                style="?attr/materialButtonOutlinedStyle"
                 android:text="تعديل"
                 />
             <Button
@@ -212,6 +247,7 @@
                 android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                style="?attr/materialButtonOutlinedStyle"
                 android:text="حفظ التعديل"
                 />
         </LinearLayout>

@@ -8,6 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:scrollHorizontally="true"
         android:text="المبلغ" />
 
     <TextView
@@ -15,6 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:scrollHorizontally="true"
         android:text="التاريخ" />
 
     <TextView
@@ -22,6 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:scrollHorizontally="true"
         android:text="ملاحظة" />
 
     <TextView
@@ -29,5 +32,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:scrollHorizontally="true"
         android:text="نوع السند" />
 </LinearLayout>

@@ -8,6 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:scrollHorizontally="true"
         android:text="باركود" />
 
     <TextView
@@ -15,6 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:scrollHorizontally="true"
         android:text="الاسم" />
 
     <TextView
@@ -22,6 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:scrollHorizontally="true"
         android:text="البيانات 1" />
 
     <TextView
@@ -29,6 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:scrollHorizontally="true"
         android:text="البيانات 2" />
 
     <TextView
@@ -36,6 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:scrollHorizontally="true"
         android:text="البيانات 3" />
 
     <TextView
@@ -43,5 +48,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:scrollHorizontally="true"
         android:text="البيانات 4" />
 </LinearLayout>

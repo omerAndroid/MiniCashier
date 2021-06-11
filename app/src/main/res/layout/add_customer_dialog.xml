@@ -2,59 +2,98 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/name_customer"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="اسم الزبون"
-        android:inputType="textPersonName" />
+        app:endIconMode="clear_text"
+        android:inputType="textPersonName" >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/name_customer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/address_customer"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="العنوان"
-        android:inputType="textPersonName" />
+        app:endIconMode="clear_text"
+        android:inputType="textPersonName" >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/address_customer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/Phone_customer_1"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="رقم الهاتف"
-        android:inputType="phone" />
+        app:endIconMode="clear_text"
+        android:inputType="phone" >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/Phone_customer_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/Phone_customer_2"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="رقم الجوال"
-        android:inputType="phone" />
+        app:endIconMode="clear_text"
+        android:inputType="phone" >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/Phone_customer_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/E_mail_customer"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="إيميل"
-        android:inputType="textEmailAddress" />
+        app:endIconMode="clear_text"
+        android:inputType="textEmailAddress" >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/E_mail_customer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/password_customer"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="كلمة المرور للفواتير"
-        android:inputType="numberPassword" />
+        app:endIconMode="clear_text"
+        android:inputType="numberPassword" >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/password_customer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/save_customer_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="حفظ" />
+        android:text="حفظ"
+        style="?attr/materialButtonOutlinedStyle"
+        />
 </LinearLayout>
