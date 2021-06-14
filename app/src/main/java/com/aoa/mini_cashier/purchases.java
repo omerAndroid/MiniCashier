@@ -323,6 +323,7 @@ public class purchases extends AppCompatActivity {
 
         dileg_q.setOnClickListener(v -> get_dileg_q());
 
+
         purchases.counter counter=new purchases.counter(3800,120);
         add_tg_btn.setOnClickListener(v -> {//cheack_1="1";
 
