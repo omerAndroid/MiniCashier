@@ -113,6 +113,7 @@ public class Reports extends AppCompatActivity {
                 i += 6;
             }
 
+
             ListView list = findViewById(R.id.report_list);
             ListAdupter ad = new ListAdupter(list_item);
             list.setAdapter(ad);
