@@ -1,16 +1,17 @@
 package com.aoa.mini_cashier;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -26,10 +27,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aoa.mini_cashier.DB.Databases;
+import com.aoa.mini_cashier.RED_QR.ScanCodeActivity;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import java.text.DecimalFormat;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
@@ -43,7 +44,7 @@ public class buy_restore_goods extends AppCompatActivity {
     public static boolean  check_impot;
     SwitchMaterial buy_or_restore,money_or_debt;
     ArrayList<list_buy_restore> list_item= new ArrayList<>();
-    ArrayList<String> item_Array= new ArrayList<String>();
+    ArrayList<String> item_Array= new ArrayList<>();
     TextView goods_quanitity;
     //
     ArrayList<String> name_prod= new ArrayList<>();
@@ -82,139 +83,127 @@ public class buy_restore_goods extends AppCompatActivity {
 
         ListView list = (ListView) findViewById(R.id.list_buy_restore);
         //////////////////////// Add goods in list //////////////////////////////////////////
-        ArrayList<list_buy_restore> q_list = new ArrayList<list_buy_restore>();
+        ArrayList<list_buy_restore> q_list = new ArrayList<>();
         ListAdupter ad =new ListAdupter(q_list);
         list.setAdapter(ad);
 
         ///////////////////////////////////////////////////////////////////////////////////////
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                TextView goods_name = (TextView)view.findViewById(R.id.goods_name);
-                TextView goods_q_type = (TextView)view.findViewById(R.id.goods_q_type);
-                 goods_quanitity = (TextView)view.findViewById(R.id.goods_quanitity);
-                TextView goods_buy = (TextView)view.findViewById(R.id.goods_buy);
-                TextView goods_sale = (TextView)view.findViewById(R.id.goods_sale);
+        list.setOnItemClickListener((AdapterView.OnItemClickListener) (adapterView, view, i, l) -> {
+            TextView goods_name = (TextView)view.findViewById(R.id.goods_name);
+            TextView goods_q_type = (TextView)view.findViewById(R.id.goods_q_type);
+             goods_quanitity = (TextView)view.findViewById(R.id.goods_quanitity);
+            TextView goods_buy = (TextView)view.findViewById(R.id.goods_buy);
+            TextView goods_sale = (TextView)view.findViewById(R.id.goods_sale);
 
-                item_Array.clear();
+            item_Array.clear();
 
-                Toast.makeText(buy_restore_goods.this, String.valueOf(i), Toast.LENGTH_SHORT).show();
+            Toast.makeText(buy_restore_goods.this, String.valueOf(i), Toast.LENGTH_SHORT).show();
 
-                item_Array.add(goods_name.getText().toString());
-                item_Array.add(goods_q_type.getText().toString());
-                item_Array.add(goods_quanitity.getText().toString());
-                item_Array.add(goods_buy.getText().toString());
-                item_Array.add(goods_sale.getText().toString());
+            item_Array.add(goods_name.getText().toString());
+            item_Array.add(goods_q_type.getText().toString());
+            item_Array.add(goods_quanitity.getText().toString());
+            item_Array.add(goods_buy.getText().toString());
+            item_Array.add(goods_sale.getText().toString());
 
-                edit_item_dialog();
-            }
+            edit_item_dialog();
         });
         ////////////////////////show list Options of bills/////////////////////////////////////
-        list_options.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //show menu options for bills
-                PopupMenu popupMenu = new PopupMenu(buy_restore_goods.this,v);
-                MenuInflater inflater = popupMenu.getMenuInflater();
-                inflater.inflate(R.menu.menu_bills_options,popupMenu.getMenu());
+        list_options.setOnClickListener(v -> {
+            //show menu options for bills
+            PopupMenu popupMenu = new PopupMenu(buy_restore_goods.this,v);
+            MenuInflater inflater = popupMenu.getMenuInflater();
+            inflater.inflate(R.menu.menu_bills_options,popupMenu.getMenu());
 
-                /*MenuPopupHelper popupHelper = new MenuPopupHelper(MainActivity.this, (MenuBuilder) popupMenu.getMenu(),v);
-                popupHelper.setForceShowIcon(true);*/
-                popupMenu.show();
+            /*MenuPopupHelper popupHelper = new MenuPopupHelper(MainActivity.this, (MenuBuilder) popupMenu.getMenu(),v);
+            popupHelper.setForceShowIcon(true);*/
+            popupMenu.show();
 
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        int id = item.getItemId();
+            popupMenu.setOnMenuItemClickListener(item -> {
+                int id = item.getItemId();
 
-                        //print bills
-                        if(id==R.id.print_bill_menu)
-                        {
-                            Toast.makeText(buy_restore_goods.this, "طباعة الفاتورة", Toast.LENGTH_SHORT).show();
-                        }
+                //print bills
+                if(id==R.id.print_bill_menu)
+                {
+                    Toast.makeText(buy_restore_goods.this, "طباعة الفاتورة", Toast.LENGTH_SHORT).show();
+                }
 
-                        //share bills
-                        if(id==R.id.share_bill_menu)
-                        {
-                            Toast.makeText(buy_restore_goods.this, "مشاركة الفاتورة", Toast.LENGTH_SHORT).show();
-                        }
+                //share bills
+                if(id==R.id.share_bill_menu)
+                {
+                    Toast.makeText(buy_restore_goods.this, "مشاركة الفاتورة", Toast.LENGTH_SHORT).show();
+                }
 
-                       //open PDF file
-                        if(id==R.id.open_pdf_menu)
-                        {
-                            Toast.makeText(buy_restore_goods.this, "فتح ملف PDF", Toast.LENGTH_SHORT).show();
-                        }
-                        return false;
-                    }
-                });
-            }
+               //open PDF file
+                if(id==R.id.open_pdf_menu)
+                {
+                    Toast.makeText(buy_restore_goods.this, "فتح ملف PDF", Toast.LENGTH_SHORT).show();
+                }
+                return false;
+            });
         });
         ///////////////////////////////////////////////////////////////////////////////////
 
-        buy_or_restore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(buy_or_restore.isChecked())
-                {
-                    buy_or_restore.setText("استرجاع");
-                }
-                else {
-                    buy_or_restore.setText("بيع");
-                }
+        buy_or_restore.setOnClickListener(v -> {
+            if(buy_or_restore.isChecked())
+            {
+                buy_or_restore.setText("استرجاع");
+            }
+            else {
+                buy_or_restore.setText("بيع");
+            }
 
+        });
+
+        money_or_debt.setOnClickListener(v -> {
+            if(money_or_debt.isChecked())
+            {
+                money_or_debt.setText("آجل");
+            }
+            else {
+                money_or_debt.setText("نقد");
             }
         });
 
-        money_or_debt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(money_or_debt.isChecked())
-                {
-                    money_or_debt.setText("آجل");
-                }
-                else {
-                    money_or_debt.setText("نقد");
-                }
-            }
-        });
-
-        save_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        save_btn.setOnClickListener(v -> {
 
 
-                if (money_or_debt.getText().toString().equals("نقد")&&buy_or_restore.getText().toString().equals("بيع")){
-                    if (check_impot_save_btn()){
+            if (money_or_debt.getText().toString().equals("نقد")&&buy_or_restore.getText().toString().equals("بيع")){
+                if (check_impot_save_btn()){
 //                        Toast.makeText(buy_restore_goods.this, "ok", Toast.LENGTH_SHORT).show();
-                        print ();
-                        if (name_prod.size()>0){
-                            insert_bills("نقد",0,null,Double.parseDouble(total_price.getText().toString()));
-                            insert_products_bills();
-                            quantity_stored9("بيع",null);
+                    print ();
+                    if (name_prod.size()>0){
+                        insert_bills("نقد",0,null,Double.parseDouble(total_price.getText().toString()));
+                        insert_products_bills();
+                        quantity_stored9("بيع","null");
 
-                        }
                     }
-                }else if (money_or_debt.getText().toString().equals("آجل")&&buy_or_restore.getText().toString().equals("بيع")){
-                    if (check_impot_save_btn()&&!TextUtils.isEmpty(c_name.getText().toString())&&!
-                            TextUtils.isEmpty(name_sender.getText().toString())&&name_prod.size()>0){
-                        if (databases.check_agent(c_name.getText().toString())>0) {
-                            insert_bills("آجل",databases.check_agent(c_name.getText().toString()),name_sender.getText().toString(),0);
-                            insert_products_bills();
-                            quantity_stored9("بيع","آجل");
-                        }else {
-                            add_customer_data();
-                        }
+                }
+            }else if (money_or_debt.getText().toString().equals("آجل")&&buy_or_restore.getText().toString().equals("بيع")){
+                if (check_impot_save_btn()&&!TextUtils.isEmpty(c_name.getText().toString())&&!
+                        TextUtils.isEmpty(name_sender.getText().toString())&&name_prod.size()>0){
+                    if (databases.check_agent(c_name.getText().toString())>0) {
+                        insert_bills("آجل",databases.check_agent(c_name.getText().toString()),name_sender.getText().toString(),0);
+                        insert_products_bills();
+                        quantity_stored9("بيع","آجل");
+                    }else {
+                        add_customer_data();
                     }
-                    //Toast.makeText(buy_restore_goods.this, c_name.getText().toString()+name_sender.getText().toString(), Toast.LENGTH_SHORT).show();
-                    //add_customer_data();
-                }else if (money_or_debt.getText().toString().equals("نقد")&&buy_or_restore.getText().toString().equals("استرجاع")){
-                    if (name_prod.size()>0) {
-                        quantity_stored9("استرجاع",null);
-                    }
+                }
+                //Toast.makeText(buy_restore_goods.this, c_name.getText().toString()+name_sender.getText().toString(), Toast.LENGTH_SHORT).show();
+                //add_customer_data();
+            }else if (money_or_debt.getText().toString().equals("نقد")&&buy_or_restore.getText().toString().equals("استرجاع")){
+                if (name_prod.size()>0) {
+                    quantity_stored9("استرجاع","null");
                 }
             }
         });
 
+        findViewById(R.id.bracode_reader).setOnClickListener(v -> {
+            Intent intent=new Intent(buy_restore_goods.this, ScanCodeActivity.class);
+            intent.putExtra("page","purchases");
+            //startActivity(intent);
+            startActivityForResult(intent,4);
+        });
     }
 
     private void quantity_stored9(String text,String s) {
@@ -225,17 +214,21 @@ public class buy_restore_goods extends AppCompatActivity {
 
             for(int i=0; i<arr.length; i++) {
 
-                databases.get_update_quantity_stored(name_prod.get(i),databases.get_quantity_stored(name_prod.get(i))-1);
+                databases.get_update_quantity_stored(name_prod.get(i),
+                 databases.get_quantity_stored(name_prod.get(i))-(1*get_quantity_q(quantity_type.get(i),name_prod.get(i))),///////n    العدد المحدد
+                        1*get_quantity_q(quantity_type.get(i),name_prod.get(i)));///////n    العدد المحدد
 
             }
-            if (!text.equals("آجل")){
+            if (!s.equals("آجل")){
                 databases.get_insert_money_box(money+Double.parseDouble(total_price.getText().toString()));
             }
 
         }else {
             for(int i=0; i<arr.length; i++) {
 
-                databases.get_update_quantity_stored(name_prod.get(i),databases.get_quantity_stored(name_prod.get(i))+1);
+                databases.get_update_quantity_stored(name_prod.get(i),
+                databases.get_quantity_stored(name_prod.get(i))+(1*get_quantity_q(quantity_type.get(i),name_prod.get(i))),///////n    العدد المحدد
+                        get_quantity_q(quantity_type.get(i),name_prod.get(i))-1);///////n    العدد المحدد
             }
             databases.get_insert_money_box(money-Double.parseDouble(total_price.getText().toString()));
         }
@@ -246,8 +239,10 @@ public class buy_restore_goods extends AppCompatActivity {
         calendar1.setTimeInMillis(Long.parseLong(""+System.currentTimeMillis()));
         String timeAdded=""+ DateFormat.format("dd/MM/yyyy",calendar1);
 
-        databases.insert_bills(timeAdded,paid_type,Double.parseDouble(total_price.getText().toString()),
-                paid,Double.parseDouble(discount_bill_items.getText().toString()),
+        databases.insert_bills(timeAdded,paid_type,
+                Double.parseDouble(total_price.getText().toString())-Double.parseDouble(discount_bill_items.getText().toString()),
+                paid-Double.parseDouble(discount_bill_items.getText().toString()),
+                Double.parseDouble(discount_bill_items.getText().toString()),
                 id_agent,recipient);
     }
 
@@ -257,7 +252,9 @@ public class buy_restore_goods extends AppCompatActivity {
         for(int i=0; i<arr.length; i++) {
 
             databases.insert_products_bills(name_prod.get(i),Double.parseDouble(purchase_price.get(i)),Double.parseDouble(selling_price.get(i)),
-                    Double.parseDouble(quantity.get(i)),a,quantity_type.get(i));
+                    Double.parseDouble(quantity.get(i)),
+                    a,quantity_type.get(i));
+
         }
     }
 
@@ -398,16 +395,34 @@ public class buy_restore_goods extends AppCompatActivity {
     public void print (){
         Object[] arr = new Object[name_prod.size()];
 
+        int x=0;
+        double y=1;
         for(int i=0; i<arr.length; i++) {
             System.out.println(" = [ 1 ]الاسم" +name_prod.get(i));
+
             double[] ss=databases.get_quantity_q(databases.get_one_goods(name_prod.get(i)));
+            String[] name_q_t=databases.get_ALLq_qnuatity(databases.get_one_goods(name_prod.get(i)));
             for(int s=0; s<databases.read_Thname_quantity_q(databases.get_one_goods(name_prod.get(i))); s++) {
+                if (x==1){
+                    y *=ss[s];
+                }
                 System.out.println("quantity_q : "+ss[s]);
+                System.out.println("name_q_t : "+name_q_t[s]);
+                if (name_q_t[s].equals(quantity_type.get(i))){
+                    x=1;
+                }
+
             }
+            System.out.println("00000000000000000000000000000000000000000000000000000");
+            System.out.println("omer  : "+y);
+            System.out.println("00000000000000000000000000000000000000000000000000000");
             System.out.println(" = [ 2 ] سعر البيع" +purchase_price.get(i));
             System.out.println(" = [ 3 ]سعر الشراء" +selling_price.get(i));
             System.out.println(" = [ 4 ]الكمية" +quantity.get(i));
             System.out.println(" = [ 5 ]نوع الكمية" +quantity_type.get(i));
+
+
+
             System.out.println("00000000000000000000000000000000000000000000000000000");
 
             System.out.println( "quantity_stored : "+databases.get_quantity_stored(name_prod.get(i)));
@@ -415,6 +430,45 @@ public class buy_restore_goods extends AppCompatActivity {
         }
 
 
+    }
+
+    public double get_quantity_q(String quantity_type ,String name){
+
+        double[] ss=databases.get_quantity_q(databases.get_one_goods(name));
+        String[] name_q_t=databases.get_ALLq_qnuatity(databases.get_one_goods(name));
+        int x=0;
+        double y=1;
+
+        for(int s=0; s<databases.read_Thname_quantity_q(databases.get_one_goods(name)); s++) {
+            if (x==1){
+                y *=ss[s];
+            }
+            if (name_q_t[s].equals(quantity_type)){
+                x=1;
+            }
+        }
+       return y;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        String retern,key;
+        int intent_key = 4;
+        if (requestCode== intent_key){
+            if (resultCode==RESULT_OK){
+
+                assert data != null;
+                key=data.getStringExtra("key");
+                retern=data.getStringExtra("valu");
+
+                if (key.equals("true")){
+
+                    tcack_camera(retern);
+
+                }
+            }
+        }
     }
 
     /////////////////n     خوارزمية تساعد لعملية عرض وادخال الارقام
@@ -532,16 +586,13 @@ public class buy_restore_goods extends AppCompatActivity {
 
         name.setText(c_name.getText());
 
-        data_save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //save Data of customer
+        data_save.setOnClickListener(v -> {
+            //save Data of customer
 
-                databases.insert_agent(name.getText().toString(),c_address.getText().toString(),c_phone1.getText().toString(),
-                        c_phone2.getText().toString(),c_email.getText().toString(),c_password.getText().toString());
+            databases.insert_agent(name.getText().toString(),c_address.getText().toString(),c_phone1.getText().toString(),
+                    c_phone2.getText().toString(),c_email.getText().toString(),c_password.getText().toString());
 
-                customer_data.dismiss();
-            }
+            customer_data.dismiss();
         });
         customer_data.show();
     }
@@ -552,7 +603,7 @@ public class buy_restore_goods extends AppCompatActivity {
         edit_item = new Dialog(this);
         edit_item.setContentView(R.layout.item_idet_dialog);
         edit_item.setTitle("بيانات المنتج");
-        final EditText barcode_item_buy=(EditText) edit_item.findViewById(R.id.barcode_item_buy);
+       // final EditText barcode_item_buy=(EditText) edit_item.findViewById(R.id.barcode_item_buy);
         final EditText name_item_buy=(EditText) edit_item.findViewById(R.id.name_item_buy);
         final EditText quantity_item_buy=(EditText) edit_item.findViewById(R.id.quantity_item_buy);
         final EditText buy_item_buy=(EditText) edit_item.findViewById(R.id.buy_item_buy);
@@ -560,7 +611,7 @@ public class buy_restore_goods extends AppCompatActivity {
 
         final Spinner quantitytype_item_buy=(Spinner) edit_item.findViewById(R.id.quantitytype_item_buy);
 
-        final Button delete_item_buy=(Button) edit_item.findViewById(R.id.delete_item_buy);
+       // final Button delete_item_buy=(Button) edit_item.findViewById(R.id.delete_item_buy);
         final Button save_item_buy = (Button) edit_item.findViewById(R.id.save_item_buy);
 
         ////////////////////////////////////////////////////////////////
@@ -577,13 +628,10 @@ public class buy_restore_goods extends AppCompatActivity {
         //quantitytype_item_buy.setText(item_Array.get(1));
 
 
-        save_item_buy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //save edit item buy
+        save_item_buy.setOnClickListener(v -> {
+            //save edit item buy
 
-                edit_item.dismiss();
-            }
+            edit_item.dismiss();
         });
         edit_item.show();
     }

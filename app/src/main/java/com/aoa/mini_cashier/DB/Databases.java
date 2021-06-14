@@ -1527,6 +1527,7 @@ public class Databases extends SQLiteOpenHelper {
         contentValues.put("quantity",quantity);
         contentValues.put("id_bills",id_bills);
         contentValues.put("quantity_type",quantity_type);
+
         db.insert("products_bills",null,contentValues);
     }
 
@@ -1555,15 +1556,16 @@ public class Databases extends SQLiteOpenHelper {
         return c;
     }
 
-    public boolean get_update_quantity_stored(String name_g ,double quantity_stored){
+    public void get_update_quantity_stored(String name_g ,double quantity_stored ,double quantity_sold){
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
 
         contentValues.put("quantity_stored",quantity_stored);
+        contentValues.put("quantity_sold",quantity_sold);
 
         long result=db.update("goods",contentValues,"name_g = ?",new String[]{name_g});
 
-        return result != -1;
+        //return result != -1;
     }
     public String[] get_ALLagent(){
         int lenght=read_Thname_agent();
@@ -1621,7 +1623,7 @@ public class Databases extends SQLiteOpenHelper {
             res.moveToFirst();
             while (!res.isAfterLast()) {
                 double c;
-                c = res.getDouble(res.getColumnIndex("quantity_q"));///////n     البيع
+                c = res.getDouble(res.getColumnIndex("quantity_q"));
                 sat[i] = c;
                 i++;
 
@@ -1643,5 +1645,91 @@ public class Databases extends SQLiteOpenHelper {
         return a;
     }
 
+    public String[] get_All_products_bills(String name){
+        SQLiteDatabase db=this.getReadableDatabase();
+        String[] sat;
+        Cursor res;
+        if (name.equals("null")) {
+            sat = new String[6 * get_number_products_bills("null")];
+            res  = db.rawQuery("select * from products_bills",null);
+        }else {
+            sat = new String[6 * get_number_products_bills(name)];
+            res  = db.rawQuery("select * from products_bills where name_prod like '"+name+"' ",null);
+        }
+
+        int i = 0;
+
+        res.moveToFirst();
+        while (res.isAfterLast() == false) {
+            String c;
+
+            c = res.getString(res.getColumnIndex("name_prod"));
+            sat[i] = c;
+            i++;
+
+            c = res.getString(res.getColumnIndex("purchase_price"));
+            sat[i] = c;
+            i++;
+
+            c = res.getString(res.getColumnIndex("selling_price"));
+            sat[i] = c;
+            i++;
+
+            c = res.getString(res.getColumnIndex("quantity"));
+            sat[i] = c;
+            i++;
+
+            c = res.getString(res.getColumnIndex("quantity_type"));
+            sat[i] = c;
+            i++;
+
+            c = get_date_bills(res.getInt(res.getColumnIndex("id_bills")));///////n   ^_^
+            sat[i] = c;
+            i++;
+            res.moveToNext();
+        }
+        return sat;
+    }
+
+
+
+
+    public int get_number_products_bills(String name) {
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor res;
+        int a=0;
+
+        if (name.equals("null")){
+            res=db.rawQuery("select * from products_bills",null);
+        }else {
+            res=db.rawQuery("select * from products_bills where name_prod like '"+name+"' ",null);
+        }
+
+        res.moveToFirst();
+        while (!res.isAfterLast()){
+            a++;
+            res.moveToNext();
+        }
+        return a;
+    }
+
+    public String get_date_bills(int id_bills ){
+
+        SQLiteDatabase db=this.getReadableDatabase();
+        String c = null;
+
+        @SuppressLint("Recycle") Cursor res  = db.rawQuery("select * from bills where  id = "+id_bills+" ",null);
+
+        res.moveToFirst();
+        while (!res.isAfterLast()) {
+
+            c = res.getString(res.getColumnIndex("date_bills"));
+
+
+            res.moveToNext();
+        }
+
+        return c;
+    }
 }
 

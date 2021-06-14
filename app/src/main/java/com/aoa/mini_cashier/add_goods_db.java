@@ -111,6 +111,7 @@ public class add_goods_db extends AppCompatActivity {
         get_ALL_department();
         Text_extra_quantity.setText("0");
         department_item="";
+        Text_quantity.setText("0");
         /////////////////////////Date Picker///////////////////////////////////
         calendar = Calendar.getInstance();
         date_format = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
@@ -569,9 +570,11 @@ public class add_goods_db extends AppCompatActivity {
     private boolean check_impot_googs() {
 
         if (TextUtils.isEmpty(Text_barcode.getText().toString().trim()) || TextUtils.isEmpty(Text_name_goods.getText().toString().trim())
-                || TextUtils.isEmpty(Text_quantity.getText().toString().trim())|| TextUtils.isEmpty(Text_extra_quantity.getText().toString().trim())
+                || TextUtils.isEmpty(Text_extra_quantity.getText().toString().trim())///|| TextUtils.isEmpty(Text_quantity.getText().toString().trim())
                 || TextUtils.isEmpty(Text_date_sale.getText().toString().trim())|| TextUtils.isEmpty(Text_date_ex.getText().toString().trim())||
                 TextUtils.isEmpty(department_item)|| department_item.equals("الاقسام")) {
+
+
 
             //mEmail.setError("Email is Required.");
 
