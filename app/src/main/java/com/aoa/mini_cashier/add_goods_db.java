@@ -37,7 +37,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.Objects;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
@@ -69,9 +68,7 @@ public class add_goods_db extends AppCompatActivity {
 
    public static ArrayList<list_item_qnuatitytype> q_list = new ArrayList<>();
 
-
    ///////n        له علاقة بكلاس الدايلق
-
 
    public static double quantity_stored=1.0,quantity_stored_2=1.0;
 
@@ -160,14 +157,7 @@ public class add_goods_db extends AppCompatActivity {
 //            }
 //        });
 
-        dileg_q.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                get_dileg_q();
-
-            }
-        });
+        dileg_q.setOnClickListener(v -> get_dileg_q());
 
 
         /////////////////////////////////n حفظ الكميات لاول مره فقط /////////////////////////////////////////////
@@ -218,7 +208,7 @@ public class add_goods_db extends AppCompatActivity {
         clear_all.setOnClickListener(v -> {
             Text_barcode.setText("");
             Text_name_goods.setText("");
-            Text_quantity.setText("");
+            Text_quantity.setText("0");
             Text_date_ex.setText("");
             Text_date_sale.setText("");
             spinner.setText("");
@@ -254,28 +244,24 @@ public class add_goods_db extends AppCompatActivity {
         add_extra_quantity_2.setText("0");
         final Button save_quantity_2 =customer_data.findViewById(R.id.save_quantity_2);
 
-        save_quantity_2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //save Data of customer
+        save_quantity_2.setOnClickListener(v -> {
+            //save Data of customer
 
-                if (add_extra_quantity_2.getText().toString().length()<1){
-                    add_extra_quantity_2.setText("0");
-                }
-                quantity_stored_2= Double.parseDouble(add_extra_quantity_2.getText().toString() +"d");
-
-                if (add_quantity_2.getText().toString().length()<1){
-                    add_quantity_2.setText("0");
-                }
-                quantity_stored_2+= Double.parseDouble(add_quantity_2.getText().toString() +"d");
-
-
-                customer_data.dismiss();
+            if (add_extra_quantity_2.getText().toString().length()<1){
+                add_extra_quantity_2.setText("0");
             }
+            quantity_stored_2= Double.parseDouble(add_extra_quantity_2.getText().toString() +"d");
+
+            if (add_quantity_2.getText().toString().length()<1){
+                add_quantity_2.setText("0");
+            }
+            quantity_stored_2+= Double.parseDouble(add_quantity_2.getText().toString() +"d");
+
+
+            customer_data.dismiss();
         });
         customer_data.show();
     }
-
 
     ///////////////n   يقوم بجلب كل الباركود ويقوم بتخزينها
     private void get_ALL_department() {
@@ -341,19 +327,7 @@ public class add_goods_db extends AppCompatActivity {
                 listShow_qnuatitytype();
         
     }
-    /////////////n      للتحويل الرقم من دبل الى انتجر
-    public String To_int(@NonNull String s){
-        String[] parts = s.split("\\.");
-        String part1 ,v  ;
-        if (s.contains(".")) {
 
-            part1 = parts[0];
-            v=part1;
-        }else {
-            v=s;
-        }
-        return v;
-    }
     /////////////////n     خوارزمية تساعد لعملية عرض وادخال الارقام
     public String theack_aggen(@NonNull String s){
         StringBuilder ss= new StringBuilder();
@@ -478,10 +452,8 @@ public class add_goods_db extends AppCompatActivity {
 
                         ceack_save=true;
 
-                    } else {
+                    }  //  Toast.makeText(this, "No", Toast.LENGTH_SHORT).show();
 
-                      //  Toast.makeText(this, "No", Toast.LENGTH_SHORT).show();
-                    }
 
                 }else {
                     Toast.makeText(this, "أدخل كمية للبضاعة", Toast.LENGTH_SHORT).show();
@@ -1082,90 +1054,7 @@ public class add_goods_db extends AppCompatActivity {
         }
 
 
-        /////////////////n     خوارزمية تساعد لعملية عرض وادخال الارقام
-        public String To_double(String s){
 
-            StringBuilder ss= new StringBuilder();
-            String nu=s;
-            for (int i=0;i<=nu.length()-1;i++){
-                if (String.valueOf(nu.charAt(i)).equals("٠")){
-                    ss.append("0");
-                }else if(String.valueOf(nu.charAt(i)).equals("٩")){
-                    ss.append("9");
-                }else if(String.valueOf(nu.charAt(i)).equals("١")){
-                    ss.append("1");
-                }else if(String.valueOf(nu.charAt(i)).equals("٢")){
-                    ss.append("2");
-                }else if(String.valueOf(nu.charAt(i)).equals("٣")){
-                    ss.append("3");
-                }else if(String.valueOf(nu.charAt(i)).equals("٤")){
-                    ss.append("4");
-                }else if(String.valueOf(nu.charAt(i)).equals("٥")){
-                    ss.append("5");
-                }else if(String.valueOf(nu.charAt(i)).equals("٦")){///١٢٣٤٥٦٧٨٩٫٠٠٠
-                    ss.append("6");
-                }else if(String.valueOf(nu.charAt(i)).equals("٧")){
-                    ss.append("7");
-                }else if(String.valueOf(nu.charAt(i)).equals("٨")){
-                    ss.append("8");
-                }else if(String.valueOf(nu.charAt(i)).equals("٫")){
-                    ss.append(".");
-                }
-            }
-            s= ss.toString();
-            String[] parts = s.split("\\.");
-            String part1 ,v  ;   //
-            String part2 ;   //
-            StringBuilder text_1= new StringBuilder();
-            StringBuilder text_2= new StringBuilder(".");///////////////////************************
-            double d1,d2;
-            DecimalFormat df ;
-            if (s.contains(".")) {
-
-                part1 = parts[0];
-                part2 = parts[1];
-
-                int size1=part1.length();
-                int size2=part2.length();
-
-                part2 ="0.";
-                part2 += parts[1];
-
-                for (int i=1;i<=size2;i++){
-                    text_2.append("0");
-                }
-
-                for (int i=1;i<=size1;i++){
-                    text_1.append("0");
-                }
-
-                String arr;
-                arr=parts[1];
-
-                if (String.valueOf(arr.charAt(0)).equals("0")&&String.valueOf(arr.charAt(1)).equals("0")){
-                    text_2= new StringBuilder(".");
-                    text_2.append("0");
-                }
-
-                d1=Double.parseDouble(part1);
-                d2=Double.parseDouble(part2);
-
-                d2=d1+d2;
-
-                String bb= text_1.toString() +text_2;
-
-                System.out.println("this is before formatting: "+d2);
-                df = new DecimalFormat(bb);
-
-                System.out.println("Value: " + df.format(d2));
-                v=df.format(d2);
-
-            }else {
-                String par=s+".0";
-                v= To_double(par);
-            }
-            return v ;
-        }
         public String theack_aggen(String s){
             StringBuilder ss= new StringBuilder();
 

@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.BaseAdapter;
@@ -53,6 +52,7 @@ public class buy_restore_goods extends AppCompatActivity {
     ArrayList<String> quantity= new ArrayList<>();
     ArrayList<String> quantity_type= new ArrayList<>();//c_name
 
+    boolean isCheck_number=true;
     AutoCompleteTextView c_name;
     double aDouble=0;
 
@@ -81,19 +81,19 @@ public class buy_restore_goods extends AppCompatActivity {
         get_ALL_baracode_name_g();
         discount_bill_items.setText("0");
 
-        ListView list = (ListView) findViewById(R.id.list_buy_restore);
+        ListView list =  findViewById(R.id.list_buy_restore);
         //////////////////////// Add goods in list //////////////////////////////////////////
         ArrayList<list_buy_restore> q_list = new ArrayList<>();
         ListAdupter ad =new ListAdupter(q_list);
         list.setAdapter(ad);
 
         ///////////////////////////////////////////////////////////////////////////////////////
-        list.setOnItemClickListener((AdapterView.OnItemClickListener) (adapterView, view, i, l) -> {
-            TextView goods_name = (TextView)view.findViewById(R.id.goods_name);
-            TextView goods_q_type = (TextView)view.findViewById(R.id.goods_q_type);
-             goods_quanitity = (TextView)view.findViewById(R.id.goods_quanitity);
-            TextView goods_buy = (TextView)view.findViewById(R.id.goods_buy);
-            TextView goods_sale = (TextView)view.findViewById(R.id.goods_sale);
+        list.setOnItemClickListener((adapterView, view, i, l) -> {
+            TextView goods_name = view.findViewById(R.id.goods_name);
+            TextView goods_q_type =view.findViewById(R.id.goods_q_type);
+             goods_quanitity = view.findViewById(R.id.goods_quanitity);
+            TextView goods_buy = view.findViewById(R.id.goods_buy);
+            TextView goods_sale = view.findViewById(R.id.goods_sale);
 
             item_Array.clear();
 
@@ -167,35 +167,38 @@ public class buy_restore_goods extends AppCompatActivity {
         save_btn.setOnClickListener(v -> {
 
 
-            if (money_or_debt.getText().toString().equals("نقد")&&buy_or_restore.getText().toString().equals("بيع")){
-                if (check_impot_save_btn()){
-//                        Toast.makeText(buy_restore_goods.this, "ok", Toast.LENGTH_SHORT).show();
-                    print ();
-                    if (name_prod.size()>0){
-                        insert_bills("نقد",0,null,Double.parseDouble(total_price.getText().toString()));
-                        insert_products_bills();
-                        quantity_stored9("بيع","null");
 
+                if (money_or_debt.getText().toString().equals("نقد") && buy_or_restore.getText().toString().equals("بيع")) {
+                    if (check_impot_save_btn()) {
+//                        Toast.makeText(buy_restore_goods.this, "ok", Toast.LENGTH_SHORT).show();
+                        print();
+                        if (name_prod.size() > 0) {
+                            insert_bills("نقد", 0, null, Double.parseDouble(total_price.getText().toString()));
+                            insert_products_bills();
+                            quantity_stored9("بيع", "null");
+
+                        }
+                    }
+                } else if (money_or_debt.getText().toString().equals("آجل") && buy_or_restore.getText().toString().equals("بيع")) {
+                    if (check_impot_save_btn() && !TextUtils.isEmpty(c_name.getText().toString()) && !
+                            TextUtils.isEmpty(name_sender.getText().toString()) && name_prod.size() > 0) {
+                        if (databases.check_agent(c_name.getText().toString()) > 0) {
+                            insert_bills("آجل", databases.check_agent(c_name.getText().toString()), name_sender.getText().toString(), 0);
+                            insert_products_bills();
+                            quantity_stored9("بيع", "آجل");
+                        } else {
+                            add_customer_data();
+                        }
+                    }
+                    //Toast.makeText(buy_restore_goods.this, c_name.getText().toString()+name_sender.getText().toString(), Toast.LENGTH_SHORT).show();
+                    //add_customer_data();
+                } else if (money_or_debt.getText().toString().equals("نقد") && buy_or_restore.getText().toString().equals("استرجاع")) {
+                    if (name_prod.size() > 0) {
+                        quantity_stored9("استرجاع", "null");
                     }
                 }
-            }else if (money_or_debt.getText().toString().equals("آجل")&&buy_or_restore.getText().toString().equals("بيع")){
-                if (check_impot_save_btn()&&!TextUtils.isEmpty(c_name.getText().toString())&&!
-                        TextUtils.isEmpty(name_sender.getText().toString())&&name_prod.size()>0){
-                    if (databases.check_agent(c_name.getText().toString())>0) {
-                        insert_bills("آجل",databases.check_agent(c_name.getText().toString()),name_sender.getText().toString(),0);
-                        insert_products_bills();
-                        quantity_stored9("بيع","آجل");
-                    }else {
-                        add_customer_data();
-                    }
-                }
-                //Toast.makeText(buy_restore_goods.this, c_name.getText().toString()+name_sender.getText().toString(), Toast.LENGTH_SHORT).show();
-                //add_customer_data();
-            }else if (money_or_debt.getText().toString().equals("نقد")&&buy_or_restore.getText().toString().equals("استرجاع")){
-                if (name_prod.size()>0) {
-                    quantity_stored9("استرجاع","null");
-                }
-            }
+
+
         });
 
         findViewById(R.id.bracode_reader).setOnClickListener(v -> {
@@ -261,7 +264,7 @@ public class buy_restore_goods extends AppCompatActivity {
     private boolean check_impot_save_btn() {
 
 
-            if ( TextUtils.isEmpty(discount_bill_items.getText().toString().trim())) {
+            if ( TextUtils.isEmpty(discount_bill_items.getText().toString().trim())&&name_prod.size() > 0) {
 
                 //mEmail.setError("Email is Required.");
 
@@ -380,6 +383,8 @@ public class buy_restore_goods extends AppCompatActivity {
         selling_price.add(theack_aggen(new DecimalFormat("#.00#").format( q_Double[0])));
         quantity.add("1");
         quantity_type.add(q[0]);
+
+
 
 
 
@@ -548,16 +553,16 @@ public class buy_restore_goods extends AppCompatActivity {
             LayoutInflater inflater = getLayoutInflater();
             @SuppressLint({"ViewHolder", "InflateParams"}) View view =inflater.inflate(R.layout.buy_restore_item,null);
 
-            TextView name = (TextView) view.findViewById(R.id.goods_name);
+            TextView name =  view.findViewById(R.id.goods_name);
 
-            TextView quantity_type = (TextView) view.findViewById(R.id.goods_q_type);
+            TextView quantity_type =  view.findViewById(R.id.goods_q_type);
 
 
-             goods_quanitity = (TextView) view.findViewById(R.id.goods_quanitity);
+             goods_quanitity =  view.findViewById(R.id.goods_quanitity);
 
-            TextView buy_price = (TextView) view.findViewById(R.id.goods_buy);
+            TextView buy_price =  view.findViewById(R.id.goods_buy);
 
-            TextView sale_price = (TextView) view.findViewById(R.id.goods_sale);///n   البيع
+            TextView sale_price =  view.findViewById(R.id.goods_sale);///n   البيع
 
 
             name.setText(list_item.get(i).name );
@@ -575,14 +580,14 @@ public class buy_restore_goods extends AppCompatActivity {
         customer_data = new Dialog(this);
         customer_data.setContentView(R.layout.add_customer_dialog);
         customer_data.setTitle("بيانات العميل");
-        final EditText name=(EditText) customer_data.findViewById(R.id.name_customer);
-        final EditText c_address=(EditText) customer_data.findViewById(R.id.address_customer);
-        final EditText c_phone1=(EditText) customer_data.findViewById(R.id.Phone_customer_1);
-        final EditText c_phone2=(EditText) customer_data.findViewById(R.id.Phone_customer_2);
-        final EditText c_email=(EditText) customer_data.findViewById(R.id.E_mail_customer);
-        final EditText c_password=(EditText) customer_data.findViewById(R.id.password_customer);
+        final EditText name= customer_data.findViewById(R.id.name_customer);
+        final EditText c_address= customer_data.findViewById(R.id.address_customer);
+        final EditText c_phone1= customer_data.findViewById(R.id.Phone_customer_1);
+        final EditText c_phone2= customer_data.findViewById(R.id.Phone_customer_2);
+        final EditText c_email= customer_data.findViewById(R.id.E_mail_customer);
+        final EditText c_password= customer_data.findViewById(R.id.password_customer);
 
-        final Button data_save = (Button) customer_data.findViewById(R.id.save_customer_data);
+        final Button data_save =  customer_data.findViewById(R.id.save_customer_data);
 
         name.setText(c_name.getText());
 
@@ -604,15 +609,15 @@ public class buy_restore_goods extends AppCompatActivity {
         edit_item.setContentView(R.layout.item_idet_dialog);
         edit_item.setTitle("بيانات المنتج");
        // final EditText barcode_item_buy=(EditText) edit_item.findViewById(R.id.barcode_item_buy);
-        final EditText name_item_buy=(EditText) edit_item.findViewById(R.id.name_item_buy);
-        final EditText quantity_item_buy=(EditText) edit_item.findViewById(R.id.quantity_item_buy);
-        final EditText buy_item_buy=(EditText) edit_item.findViewById(R.id.buy_item_buy);
-        final EditText sale_item_buy=(EditText) edit_item.findViewById(R.id.sale_item_buy);
+        final EditText name_item_buy= edit_item.findViewById(R.id.name_item_buy);
+        final EditText quantity_item_buy= edit_item.findViewById(R.id.quantity_item_buy);
+        final EditText buy_item_buy= edit_item.findViewById(R.id.buy_item_buy);
+        final EditText sale_item_buy= edit_item.findViewById(R.id.sale_item_buy);
 
-        final Spinner quantitytype_item_buy=(Spinner) edit_item.findViewById(R.id.quantitytype_item_buy);
+        final Spinner quantitytype_item_buy= edit_item.findViewById(R.id.quantitytype_item_buy);
 
        // final Button delete_item_buy=(Button) edit_item.findViewById(R.id.delete_item_buy);
-        final Button save_item_buy = (Button) edit_item.findViewById(R.id.save_item_buy);
+        final Button save_item_buy =  edit_item.findViewById(R.id.save_item_buy);
 
         ////////////////////////////////////////////////////////////////
         String[] x=new String[1];

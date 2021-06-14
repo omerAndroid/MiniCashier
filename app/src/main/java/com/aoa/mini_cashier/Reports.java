@@ -31,7 +31,7 @@ public class Reports extends AppCompatActivity {
         setContentView(R.layout.activity_reports);
         get_ALL_baracode_name_g();
 
-        //listShow_products_bills();
+        listShow_products_bills();
 
     }
 

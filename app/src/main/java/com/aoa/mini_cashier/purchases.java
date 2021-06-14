@@ -233,7 +233,7 @@ public class purchases extends AppCompatActivity {
         final EditText editText=(EditText) purchase.findViewById(R.id.editText);////n      -سعر الشراء-بأعلى قيمة
         final EditText editText2=(EditText) purchase.findViewById(R.id.editText2);
         final EditText editText3=(EditText) purchase.findViewById(R.id.editText3);
-        SwitchMaterial buy_or_restore= purchase.findViewById(R.id.buy_or_restore);
+
 
         final SwitchMaterial purchases_dept_cash = (SwitchMaterial) purchase.findViewById(R.id.purchases_dept_cash);
         get_ALL_baracode();
@@ -296,7 +296,7 @@ public class purchases extends AppCompatActivity {
                             Integer.parseInt(editText2.getText().toString()),
                             add_date_ex.getText().toString(),
                             add_date_sale.getText().toString(),
-                            id_resource,buy_or_restore.getText().toString());
+                            id_resource,purchases_dept_cash.getText().toString());
                     insert_Data_quantity(add_barcode_txt.getText().toString());
                     chaeck_seve=false;
                     chaeck_seve_2=false;
