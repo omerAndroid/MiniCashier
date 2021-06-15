@@ -80,6 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="رقم الفاتورة"
+                style="?attr/materialButtonOutlinedStyle"
                 tools:ignore="HardcodedText" />
 
             <Button
@@ -105,13 +106,13 @@
                 android:inputType="textPersonName"
                 tools:ignore="Autofill,HardcodedText,NestedWeights" />
 
-<!--            <Button-->
-<!--                android:id="@+id/add_item_list"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1"-->
-<!--                android:text="إضافة"-->
-<!--                tools:ignore="HardcodedText" />-->
+            <!--            <Button-->
+            <!--                android:id="@+id/add_item_list"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_weight="1"-->
+            <!--                android:text="إضافة"-->
+            <!--                tools:ignore="HardcodedText" />-->
 
             <Button
                 android:id="@+id/bracode_reader"
@@ -148,26 +149,41 @@
             android:orientation="horizontal"
             tools:ignore="InefficientWeight">
 
-            <EditText
-                android:id="@+id/discount_bill_items"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="خصم من الفاتورة"
                 android:inputType="numberDecimal"
-                tools:ignore="Autofill,HardcodedText,NestedWeights" />
+                app:endIconMode="clear_text"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/discount_bill_items"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
 
-            <EditText
-                android:id="@+id/total_price"
-                android:layout_width="match_parent"
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:ems="10"
                 android:enabled="false"
                 android:hint="الإجمالي"
                 android:inputType="textPersonName"
-                tools:ignore="Autofill,HardcodedText" />
+                tools:ignore="Autofill,HardcodedText"
+                app:endIconMode="clear_text"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/total_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 
@@ -183,6 +199,7 @@
                 android:layout_weight="1"
                 android:text="حفظ"
                 android:textSize="20sp"
+                style="?attr/materialButtonOutlinedStyle"
                 tools:ignore="HardcodedText" />
 
         </LinearLayout>

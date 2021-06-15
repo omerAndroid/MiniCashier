@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
@@ -15,6 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            style="?attr/materialButtonOutlinedStyle"
             android:text="حفظ" />
 
 
@@ -31,80 +33,76 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
+                android:orientation="horizontal">
+
                 <RadioGroup
                     android:id="@+id/radioGroup"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="0"
-                    android:orientation="vertical"
-                    >
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/primary_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="1" />
 
                     <Button
                         android:id="@+id/clear_1"
                         android:layout_width="30dp"
                         android:layout_height="10dp"
-                        android:visibility="gone"
                         android:layout_weight="1"
                         android:background="@android:drawable/ic_delete"
-                        />
+                        android:visibility="gone" />
 
                     <RadioButton
-                        android:id="@+id/primary_type"
+                        android:id="@+id/primary_type_2"
                         android:layout_width="wrap_content"
-                        android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="1" />
+                        android:layout_weight="1"
+                        android:text="2" />
 
                     <Button
                         android:id="@+id/clear_2"
                         android:layout_width="30dp"
                         android:layout_height="10dp"
-                        android:visibility="gone"
                         android:layout_weight="1"
                         android:background="@android:drawable/ic_delete"
-                        />
+                        android:visibility="gone" />
 
                     <RadioButton
-                        android:id="@+id/primary_type_2"
+                        android:id="@+id/primary_type_3"
                         android:layout_width="wrap_content"
-                        android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="2" />
+                        android:layout_weight="1"
+                        android:text="3" />
 
                     <Button
                         android:id="@+id/clear_3"
                         android:layout_width="30dp"
                         android:layout_height="10dp"
-                        android:visibility="gone"
                         android:layout_weight="1"
                         android:background="@android:drawable/ic_delete"
-                        />
+                        android:visibility="gone" />
 
                     <RadioButton
-                        android:id="@+id/primary_type_3"
+                        android:id="@+id/primary_type_4"
                         android:layout_width="wrap_content"
-                        android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="3" />
+                        android:layout_weight="1"
+                        android:text="4" />
 
                     <Button
                         android:id="@+id/clear_4"
                         android:layout_width="23dp"
                         android:layout_height="10dp"
                         android:layout_weight="1"
-                        android:visibility="gone"
-                        android:background="@android:drawable/ic_delete" />
-
-                    <RadioButton
-                        android:id="@+id/primary_type_4"
-                        android:layout_width="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="4" />
+                        android:background="@android:drawable/ic_delete"
+                        android:visibility="gone" />
                 </RadioGroup>
 
                 <LinearLayout
@@ -125,13 +123,22 @@
                             android:orientation="horizontal">
 
 
-                            <EditText
-                                android:id="@+id/q_type"
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:ems="10"
                                 android:hint="نوع الكمية الأولى"
-                                android:inputType="textPersonName" />
+                                android:inputType="textPersonName"
+                                app:endIconMode="clear_text">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/q_type"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
                         </LinearLayout>
 
                         <LinearLayout
@@ -139,23 +146,39 @@
                             android:layout_height="match_parent"
                             android:orientation="horizontal">
 
-                            <EditText
-                                android:id="@+id/q_buy_price"
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:ems="10"
                                 android:hint="سعر الشراء"
-                                android:inputType="number|numberDecimal" />
+                                android:inputType="number|numberDecimal"
+                                app:endIconMode="clear_text">
 
-                            <EditText
-                                android:id="@+id/q_sale_price"
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/q_buy_price"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:ems="10"
                                 android:hint="سعر البيع"
-                                android:inputType="number|numberDecimal" />
+                                android:inputType="number|numberDecimal"
+                                app:endIconMode="clear_text">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/q_sale_price"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
                     </LinearLayout>
 
@@ -170,46 +193,78 @@
                             android:orientation="horizontal">
 
 
-                            <EditText
-                                android:id="@+id/q_type_2"
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:ems="10"
                                 android:hint="نوع الكمية الثانية"
-                                android:inputType="textPersonName" />
-                        </LinearLayout>
+                                android:inputType="textPersonName"
+                                app:endIconMode="clear_text">
 
-                        <EditText
-                            android:id="@+id/q_quantity_2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:hint="الكمية في هذا النوع"
-                            android:inputType="number" />
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/q_type_2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="horizontal">
 
-                            <EditText
-                                android:id="@+id/q_buy_price_2"
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:ems="10"
                                 android:hint="سعر الشراء"
-                                android:inputType="number|numberDecimal" />
+                                android:inputType="number|numberDecimal"
+                                app:endIconMode="clear_text">
 
-                            <EditText
-                                android:id="@+id/q_sale_price_2"
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/q_buy_price_2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:ems="10"
                                 android:hint="سعر البيع"
-                                android:inputType="number|numberDecimal" />
+                                android:inputType="number|numberDecimal"
+                                app:endIconMode="clear_text">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/q_sale_price_2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:hint="الكمية في هذا النوع"
+                            android:inputType="number"
+                            app:endIconMode="clear_text">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/q_quantity_2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
                     <LinearLayout
@@ -224,46 +279,78 @@
                             android:orientation="horizontal">
 
 
-                            <EditText
-                                android:id="@+id/q_type_3"
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:ems="10"
                                 android:hint="نوع الكمية الثالثة"
-                                android:inputType="textPersonName" />
-                        </LinearLayout>
+                                android:inputType="textPersonName"
+                                app:endIconMode="clear_text">
 
-                        <EditText
-                            android:id="@+id/q_quantity_3"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:hint="الكمية في هذا النوع"
-                            android:inputType="number" />
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/q_type_3"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="horizontal">
 
-                            <EditText
-                                android:id="@+id/q_buy_price_3"
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:ems="10"
                                 android:hint="سعر الشراء"
-                                android:inputType="number|numberDecimal" />
+                                android:inputType="number|numberDecimal"
+                                app:endIconMode="clear_text">
 
-                            <EditText
-                                android:id="@+id/q_sale_price_3"
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/q_buy_price_3"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:ems="10"
                                 android:hint="سعر البيع"
-                                android:inputType="number|numberDecimal" />
+                                android:inputType="number|numberDecimal"
+                                app:endIconMode="clear_text">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/q_sale_price_3"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:hint="الكمية في هذا النوع"
+                            android:inputType="number"
+                            app:endIconMode="clear_text">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/q_quantity_3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
                     <LinearLayout
@@ -277,46 +364,78 @@
                             android:orientation="horizontal">
 
 
-                            <EditText
-                                android:id="@+id/q_type_4"
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:ems="10"
                                 android:hint="نوع الكمية الرابعة"
-                                android:inputType="textPersonName" />
-                        </LinearLayout>
+                                android:inputType="textPersonName"
+                                app:endIconMode="clear_text">
 
-                        <EditText
-                            android:id="@+id/q_quantity_4"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:hint="الكمية في هذا النوع"
-                            android:inputType="number" />
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/q_type_4"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="horizontal">
 
-                            <EditText
-                                android:id="@+id/q_buy_price_4"
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:ems="10"
                                 android:hint="سعر الشراء"
-                                android:inputType="number|numberDecimal" />
+                                android:inputType="number|numberDecimal"
+                                app:endIconMode="clear_text">
 
-                            <EditText
-                                android:id="@+id/q_sale_price_4"
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/q_buy_price_4"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:ems="10"
                                 android:hint="سعر البيع"
-                                android:inputType="number|numberDecimal" />
+                                android:inputType="number|numberDecimal"
+                                app:endIconMode="clear_text">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/q_sale_price_4"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:hint="الكمية في هذا النوع"
+                            android:inputType="number"
+                            app:endIconMode="clear_text">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/q_quantity_4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
                 </LinearLayout>
