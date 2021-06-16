@@ -131,9 +131,9 @@ public class Settings extends AppCompatActivity {
             Show_info();
         }
 
-        sharedPreferences= this.getPreferences(Context.MODE_PRIVATE);
-        String tecack_1=sharedPreferences.getString("key_1"," ");
-        String tecack_2=sharedPreferences.getString("key_2"," ");
+        sharedPreferences= getSharedPreferences("key",0);
+        String tecack_1=sharedPreferences.getString("key_1","0");
+        String tecack_2=sharedPreferences.getString("key_2","0");
         quintity_max.setText(tecack_1);
         debts_max.setText(tecack_2);
     }
@@ -141,27 +141,29 @@ public class Settings extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        sharedPreferences= getSharedPreferences("key",0);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("key_1",quintity_max.getText().toString());
-        editor.putString("key_2",debts_max.getText().toString());
+        editor.putString("key_1",quintity_max.getText().toString().trim());
+        editor.putString("key_2",debts_max.getText().toString().trim());
         editor.apply();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        sharedPreferences= getSharedPreferences("key",0);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("key_1",quintity_max.getText().toString());
-        editor.putString("key_2",debts_max.getText().toString());
+        editor.putString("key_1",quintity_max.getText().toString().trim());
+        editor.putString("key_2",debts_max.getText().toString().trim());
         editor.apply();
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        sharedPreferences= this.getPreferences(Context.MODE_PRIVATE);
-        String tecack_1=sharedPreferences.getString("key_1"," ");
-        String tecack_2=sharedPreferences.getString("key_2"," ");
+        sharedPreferences= getSharedPreferences("key",0);
+        String tecack_1=sharedPreferences.getString("key_1","0");
+        String tecack_2=sharedPreferences.getString("key_2","0");
         quintity_max.setText(tecack_1);
         debts_max.setText(tecack_2);
     }

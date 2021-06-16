@@ -90,8 +90,8 @@ public class MainActivity extends AppCompatActivity {
 
                     if(id==R.id.update_goods_menu)
                     {
-                        Intent intent = new Intent(MainActivity.this ,update_goods_db.class);
-                        startActivity(intent);
+                        startActivity(new Intent(MainActivity.this,update_goods_db.class).
+                                putExtra("key","update_goods_menu"));
                     }
                     return false;
 
@@ -103,7 +103,8 @@ public class MainActivity extends AppCompatActivity {
         max_account_btn.setOnClickListener(view -> startActivity(new Intent(this,resources.class).
                 putExtra("key","max_account_btn")));////n
 
-        max_quintity_btn.setOnClickListener(view -> startActivity(new Intent(this,update_goods_db.class)));
+        max_quintity_btn.setOnClickListener(view -> startActivity(new Intent(this,update_goods_db.class).
+                putExtra("key","max_quintity_btn")));
 
         reports_btn.setOnClickListener(view -> startActivity(new Intent(this,Reports.class)));
 

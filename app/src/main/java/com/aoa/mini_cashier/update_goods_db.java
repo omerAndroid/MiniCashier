@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,7 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aoa.mini_cashier.DB.Databases;
 import com.aoa.mini_cashier.RED_QR.ScanCodeActivity;
@@ -28,6 +31,8 @@ import java.util.ArrayList;
 public class update_goods_db extends AppCompatActivity {
 
     public Databases databases = new Databases(this);
+    public String hasOnClick;
+    SharedPreferences sharedPreferences;
 
     @SuppressLint("StaticFieldLeak")
     public static Button searsh_goods_btn;
@@ -74,10 +79,41 @@ public class update_goods_db extends AppCompatActivity {
             return false;
         });
         //////////////////////////////////////////////////////////////////////////////////
-        get_ALL_baracode_name_g();
 
-        get_goods();
+        Intent data =getIntent();
+        hasOnClick = data.getExtras().getString("key");
 
+
+
+        if ("max_quintity_btn".equals(hasOnClick)) {
+            findViewById(R.id.searsh_goods_btn).setVisibility(View.GONE);
+            findViewById(R.id.searsh_goods_txt).setVisibility(View.GONE);
+
+            sharedPreferences= getSharedPreferences("key",0);
+            String tecack_1=sharedPreferences.getString("key_1","0");
+
+
+
+            int a=databases.read_Tname3(Integer.parseInt(tecack_1));
+
+            String[] arrayList = databases.get_All_goods(Integer.parseInt(tecack_1));
+            int i=0;
+            for (int j = 0; j < a; j++) {
+                list_item.add(new list_item_update(arrayList[i], arrayList[i + 1],arrayList[i + 2],
+                        arrayList[i + 3], arrayList[i + 4]));
+                i+=5;
+
+            }
+            ListAdapter adapter = new ListAdupter(list_item);
+            listView.setAdapter(adapter);
+
+        }else {
+
+
+            get_ALL_baracode_name_g();
+
+            get_goods();
+        }
         searsh_goods_btn.setOnClickListener(v -> {
             Intent intent=new Intent(this,ScanCodeActivity.class);
             intent.putExtra("page","update_goods_db");

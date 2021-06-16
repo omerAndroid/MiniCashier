@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -26,7 +27,9 @@ import java.util.ArrayList;
 public class resources extends AppCompatActivity {
     Dialog customer_data;
     Button add_resource;
-   @SuppressLint("StaticFieldLeak")
+    SharedPreferences sharedPreferences;
+
+    @SuppressLint("StaticFieldLeak")
    public static ListView list_resource;
     public Databases databases = new Databases(this);
     public String hasOnClick;
@@ -61,14 +64,27 @@ public class resources extends AppCompatActivity {
 
                 break;
             case "max_account_btn":
+                findViewById(R.id.linearLayout10).setVisibility(View.GONE);
+                findViewById(R.id.add_resource).setVisibility(View.GONE);
+                sharedPreferences= getSharedPreferences("key",0);
+                String tecack_1=sharedPreferences.getString("key_2","0");
 
+                String[] resource=databases.get_All_bills(Integer.parseInt(tecack_1));
+                q_list.clear();
+                int i=0;
+                for (int j=0;j<databases.read_The_bills(Integer.parseInt(tecack_1));j++){
+
+                    q_list.add(new list_item_resource(resource[i],resource[i+1],"",""));
+                    i+=2;
+                }
+
+                ListAdupter ad = new ListAdupter(q_list);
+                list_resource.setAdapter(ad);
                 break;
         }
 
 
-
         add_resource.setOnClickListener(v -> add_customer_data ());
-
 
 //
 //        list_resource.setOnItemClickListener((parent, view, position, id) -> {
@@ -211,11 +227,12 @@ public class resources extends AppCompatActivity {
             TextView  accunt_bill= (TextView) view.findViewById(R.id.accunt_bill);
 
 
-
-
-            name_resouce.setText(list_item.get(i).name );
-            accunt_bill.setText("0");
-
+            if ("max_account_btn".equals(hasOnClick)) {
+                name_resouce.setText(list_item.get(i).name );
+                accunt_bill.setText(list_item.get(i).phone);
+            }else {
+                name_resouce.setText(list_item.get(i).name );
+                accunt_bill.setText("0");
 
 
             name_resouce.setOnClickListener(v -> {
@@ -234,8 +251,7 @@ public class resources extends AppCompatActivity {
 
             });
 
-
-
+            }
 
             return view;
         }

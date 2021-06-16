@@ -87,6 +87,12 @@ public class ExampleUnitTest {
 
         int gg=6000;
         System.out.println(To_int("6000.00"));
+        String tecack_1=" 5";
+        int number= Integer.parseInt(tecack_1);
+        System.out.println(" int : " +number);
+
+
+
     }
 
 
