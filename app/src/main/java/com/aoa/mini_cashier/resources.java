@@ -116,12 +116,17 @@ public class resources extends AppCompatActivity {
         total_paid.setText(MessageFormat.format("{0}",vvv+vv));
 
         total_pruchase.setText(MessageFormat.format("{0}",(vvv+vv)-v));
+
+
+
+
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
         show();
+        listShow_qnuatitytype();
     }
     public void add_customer_data () {
 
@@ -232,7 +237,13 @@ public class resources extends AppCompatActivity {
                 accunt_bill.setText(list_item.get(i).phone);
             }else {
                 name_resouce.setText(list_item.get(i).name );
-                accunt_bill.setText("0");
+                accunt_bill.setText(MessageFormat.format("{0}",//databases.get_id_resource(list_item.get(i).name)
+                        (
+                                (databases.get_purchases_total(databases.get_id_resource(list_item.get(i).name))+
+                                databases.get_policy_amount(databases.get_id_resource(list_item.get(i).name),"قبض")
+                                )
+                        )-databases.get_policy_amount(databases.get_id_resource(list_item.get(i).name),"صرف")
+                        ));
 
 
             name_resouce.setOnClickListener(v -> {

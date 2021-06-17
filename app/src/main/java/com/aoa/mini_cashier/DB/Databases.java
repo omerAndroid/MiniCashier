@@ -1824,5 +1824,32 @@ public class Databases extends SQLiteOpenHelper {
         }
         return a;
     }
+
+    public double get_purchases_total(int id_resource){
+        SQLiteDatabase db=this.getReadableDatabase();
+        double a=0;
+        Cursor res = db.rawQuery("select * from purchases WHERE   id_resource = "+id_resource+" " , null);
+        res.moveToFirst();
+        while (!res.isAfterLast()){
+            a+= res.getDouble(res.getColumnIndex("total"));
+            res.moveToNext();
+        }
+        return a;
+    }
+
+    public double get_policy_amount(int id_resource,String type_policy){
+        SQLiteDatabase db=this.getReadableDatabase();
+        double a=0;
+        Cursor res = db.rawQuery("select * from policy WHERE  id_resource = "+id_resource+" and type_policy like '"+type_policy+"' ", null);
+        res.moveToFirst();
+        while (!res.isAfterLast()){
+            a+= res.getDouble(res.getColumnIndex("amount"));
+            res.moveToNext();
+        }
+        return a;
+    }
+
+
+
 }
 
