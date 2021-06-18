@@ -140,7 +140,7 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="الكمية المجانية"
-                    android:inputType="numberSigned"
+                    android:inputType="number"
                     app:endIconMode="clear_text"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     >

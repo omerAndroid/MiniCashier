@@ -61,7 +61,7 @@
             android:layout_weight="1"
             android:ems="10"
             android:hint="الكمية"
-            android:inputType="textPersonName"
+            android:inputType="number"
             app:endIconMode="clear_text"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" >
             <com.google.android.material.textfield.TextInputEditText
@@ -86,7 +86,7 @@
             android:ems="10"
             android:enabled="false"
             android:hint="سعر البيع"
-            android:inputType="textPersonName"
+            android:inputType="numberDecimal"
             app:endIconMode="clear_text"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" >
             <com.google.android.material.textfield.TextInputEditText
@@ -105,7 +105,7 @@
             android:ems="10"
             android:enabled="false"
             android:hint="سعر الشراء"
-            android:inputType="textPersonName"
+            android:inputType="numberDecimal"
             app:endIconMode="clear_text"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" >
             <com.google.android.material.textfield.TextInputEditText

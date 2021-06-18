@@ -279,7 +279,7 @@
                         android:layout_weight="1"
                         android:ems="10"
                         android:hint="الديون"
-                        android:inputType="numberDecimal"
+                        android:inputType="number"
                         app:endIconMode="clear_text">
 
                         <com.google.android.material.textfield.TextInputEditText

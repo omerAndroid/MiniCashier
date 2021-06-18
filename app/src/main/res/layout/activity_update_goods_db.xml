@@ -20,8 +20,7 @@
             android:layout_weight="1"
             android:ems="10"
             android:hint="بحث"
-            android:inputType="textPersonName"
-            />
+            android:inputType="textPersonName" />
 
         <Button
             android:id="@+id/searsh_goods_btn"
@@ -30,8 +29,73 @@
             android:background="@android:drawable/ic_menu_camera" />
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/list_goods_db"
+    <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/barcode_view"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:scrollHorizontally="true"
+                    android:text="باراكود" />
+
+                <TextView
+                    android:id="@+id/goods_view"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:scrollHorizontally="true"
+                    android:text="اسم المنتج" />
+
+                <TextView
+                    android:id="@+id/date_ex_veiw"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:scrollHorizontally="true"
+                    android:text="تاريخ الانتهاء" />
+
+                <TextView
+                    android:id="@+id/buy_date_veiw"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:scrollHorizontally="true"
+                    android:text="تاريخ الشراء" />
+
+                <TextView
+                    android:id="@+id/quantity_veiw"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:scrollHorizontally="true"
+                    android:text="الكمية" />
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/list_goods_db"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
 </LinearLayout>

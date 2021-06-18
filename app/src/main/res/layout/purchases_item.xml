@@ -5,7 +5,7 @@
 
     <TextView
         android:id="@+id/purchases_item_barcode"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:scrollHorizontally="true"
@@ -13,7 +13,7 @@
 
     <TextView
         android:id="@+id/purchases_item_name"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:scrollHorizontally="true"
@@ -21,7 +21,7 @@
 
     <TextView
         android:id="@+id/purchases_item_sale"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:scrollHorizontally="true"
@@ -29,7 +29,7 @@
 
     <TextView
         android:id="@+id/purchases_item_quintity"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:scrollHorizontally="true"
@@ -37,7 +37,7 @@
 
     <TextView
         android:id="@+id/purchases_item_total"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:scrollHorizontally="true"
@@ -45,7 +45,7 @@
 
     <TextView
         android:id="@+id/purchases_item_free_guintity"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:scrollHorizontally="true"
@@ -53,7 +53,7 @@
 
     <TextView
         android:id="@+id/purchases_item_date_purchase"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:scrollHorizontally="true"
@@ -61,7 +61,7 @@
 
     <TextView
         android:id="@+id/purchases_item_date_expare"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:scrollHorizontally="true"
