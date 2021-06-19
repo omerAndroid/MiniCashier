@@ -73,7 +73,7 @@ public class resources extends AppCompatActivity {
 
                 ArrayList<String> name_prod= new ArrayList<>();
                 int z=0;
-                for (int i=0;i<6;i++){
+                for (int i=0;i<databases.read_Tname_bills();i++){
                     if (!name_prod.contains(resource[i])){
 
                         int id_agent=databases.check_agent(resource[i]);////n   id_agent

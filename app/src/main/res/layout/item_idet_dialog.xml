@@ -61,12 +61,13 @@
             android:layout_weight="1"
             android:ems="10"
             android:hint="الكمية"
-            android:inputType="number"
+
             app:endIconMode="clear_text"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" >
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/quantity_item_buy"
                 android:layout_width="match_parent"
+                android:inputType="number"
                 android:layout_height="wrap_content"
                 />
 

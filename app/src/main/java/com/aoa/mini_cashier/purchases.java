@@ -109,6 +109,10 @@ public class purchases extends AppCompatActivity {
             string_1=data.getExtras().getString("id_bills");
             s=data.getExtras().getString("name_agent");
 
+            findViewById(R.id.purchases_item_free_guintity2).setVisibility(View.GONE);
+
+            findViewById(R.id.purchases_item_date_expare2).setVisibility(View.GONE);
+
             listShow_bills_1(string_1);
             findViewById(R.id.change_list_items).setOnClickListener(v -> {
                 if (change_list_items.getText().toString().equals("قائمة المشتريات")){
@@ -682,13 +686,13 @@ public class purchases extends AppCompatActivity {
         purchase.setTitle("إضافة سند ");
          TextView resource_name=(TextView) purchase.findViewById(R.id.resource_name);
          EditText amount_policy=(EditText) purchase.findViewById(R.id.amount_policy);/////n  المبلغ
-         Button date_paid=(Button) purchase.findViewById(R.id.date_paid);
-         MultiAutoCompleteTextView note_txt=(MultiAutoCompleteTextView) purchase.findViewById(R.id.note_txt);/////n     ملاحظة
+         Button date_paid= purchase.findViewById(R.id.date_paid);
+        EditText note_txt=purchase.findViewById(R.id.note_txt);/////n     ملاحظة
 
 
         resource_name.setText(name_resource_txt.getText().toString());
-        final Button catch_btn=(Button) purchase.findViewById(R.id.catch_btn);
-        final Button pure_btn = (Button) purchase.findViewById(R.id.pure_btn);
+        final Button catch_btn= purchase.findViewById(R.id.catch_btn);
+        final Button pure_btn =  purchase.findViewById(R.id.pure_btn);
 
         Date date =new Date();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy ");
@@ -901,6 +905,7 @@ public class purchases extends AppCompatActivity {
             TextView purchases_item_free_guintity = (TextView) view.findViewById(R.id.purchases_item_free_guintity);
             TextView purchases_item_date_purchase = (TextView) view.findViewById(R.id.purchases_item_date_purchase);
             TextView purchases_item_date_expare = (TextView) view.findViewById(R.id.purchases_item_date_expare);
+
 
 
 

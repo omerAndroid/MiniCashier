@@ -49,7 +49,7 @@ public class bills extends AppCompatActivity {
         add_resource.setOnClickListener(v -> add_customer_data_2 ());
         list_resource.setOnItemClickListener((parent, view, position, id) -> {
 
-            Toast.makeText(bills.this, q_list_2.get(position).getDate_expare(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(bills.this, q_list_2.get(position).getDate_expare(), Toast.LENGTH_SHORT).show();
 
             Intent intent=new Intent(bills.this, purchases.class);
             intent.putExtra("id_bills",q_list_2.get(position).getDate_expare());

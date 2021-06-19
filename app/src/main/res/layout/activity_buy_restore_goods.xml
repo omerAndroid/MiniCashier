@@ -190,9 +190,17 @@
                     android:gravity="center"
                     android:textSize="20sp"
                     android:layout_height="wrap_content"
-
                     android:scrollHorizontally="true"
                     android:text="سعر البيع" />
+
+                <TextView
+                    android:id="@+id/goods_total"
+                    android:layout_width="150dp"
+                    android:gravity="center"
+                    android:textSize="20sp"
+                    android:layout_height="wrap_content"
+                    android:scrollHorizontally="true"
+                    android:text="الاجمالي" />
 
             </LinearLayout>
 
@@ -226,13 +234,14 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="خصم من الفاتورة"
-                android:inputType="numberDecimal"
+
                 app:endIconMode="clear_text"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/discount_bill_items"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>

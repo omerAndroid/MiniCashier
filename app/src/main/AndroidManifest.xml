@@ -15,11 +15,11 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
         tools:ignore="AllowBackup">
-        <activity android:name=".bills"></activity>
+        <activity android:name=".bills" />
         <activity android:name=".Reports" />
         <activity android:name=".resources" />
         <activity android:name=".purchases" />

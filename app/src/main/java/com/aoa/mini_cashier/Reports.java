@@ -109,7 +109,8 @@ public class Reports extends AppCompatActivity {
             for (int j = 0; j < databases.get_number_products_bills(g[1]); j++) {
 
                 list_item.add(new report_item_class(products_bills[i], products_bills[i + 1], products_bills[i + 2],
-                        products_bills[i + 3], products_bills[i + 4], products_bills[i + 5]));
+                        products_bills[i + 3], products_bills[i + 4], products_bills[i + 5],
+                        ""+Double.parseDouble(products_bills[i + 2])*Double.parseDouble(products_bills[i + 3])+""));
                 i += 6;
             }
 
@@ -121,14 +122,15 @@ public class Reports extends AppCompatActivity {
     }
 
     public void listShow_products_bills(){
-
+System.out.println("hh"+5+"");
         String[] products_bills=databases.get_All_products_bills("null");
         if (databases.get_number_products_bills("null")>0) {
             int i = 0;
             for (int j = 0; j < databases.get_number_products_bills("null"); j++) {
 
                 list_item.add(new report_item_class(products_bills[i], products_bills[i + 1], products_bills[i + 2],
-                        products_bills[i + 3], products_bills[i + 4], products_bills[i + 5]));
+                        products_bills[i + 3], products_bills[i + 4], products_bills[i + 5],
+                        ""+Double.parseDouble(products_bills[i + 2])*Double.parseDouble(products_bills[i + 3])+""));
                 i += 6;
             }
 
@@ -177,6 +179,8 @@ public class Reports extends AppCompatActivity {
 
             TextView data_4 =  view.findViewById(R.id.report_data_4);
 
+            TextView data_5 =  view.findViewById(R.id.report_data_5);
+
 
             barcode.setText(list_item.get(i).barcode );
             name.setText(list_item.get(i).name );
@@ -184,6 +188,7 @@ public class Reports extends AppCompatActivity {
             data_2.setText(list_item.get(i).data_2);
             data_3.setText(list_item.get(i).data_3);
             data_4.setText(list_item.get(i).data_4);
+            data_5.setText(list_item.get(i).data_5);
 
 
             return view;
