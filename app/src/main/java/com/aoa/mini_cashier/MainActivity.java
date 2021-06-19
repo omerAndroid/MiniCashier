@@ -64,8 +64,7 @@ public class MainActivity extends AppCompatActivity {
         purchases_btn.setOnClickListener(v -> startActivity(new Intent(this,resources.class).
                 putExtra("key","purchases_btn")));////m مشتريات
 
-        bills.setOnClickListener(v -> startActivity(new Intent(this,resources.class).
-                putExtra("key","bills")));///////n  فواتير
+        bills.setOnClickListener(v ->startActivity(new Intent(this,bills.class)));///////n  فواتير
 
         au_menu.setOnClickListener(v -> {
 
@@ -81,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     int id = item.getItemId();
+
 
                     if(id==R.id.add_goods_menu)
                     {

@@ -239,11 +239,13 @@ public class add_goods_db extends AppCompatActivity {
         customer_data.setContentView(R.layout.agent_dialog);
         customer_data.setTitle("بيانات الكمية");
         final EditText add_extra_quantity_2 =customer_data.findViewById(R.id.add_extra_quantity_2);
+
         final EditText add_quantity_2 =customer_data.findViewById(R.id.add_quantity_2);
         add_quantity_2.setText("0");
         add_extra_quantity_2.setText("0");
         final Button save_quantity_2 =customer_data.findViewById(R.id.save_quantity_2);
-
+        add_extra_quantity_2.setInputType(4);
+        add_quantity_2.setInputType(4);
         save_quantity_2.setOnClickListener(v -> {
             //save Data of customer
 

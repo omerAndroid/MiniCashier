@@ -1773,30 +1773,33 @@ public class Databases extends SQLiteOpenHelper {
         }
         return a;
     }
-
-    public String[] get_All_bills(int number){
-        int lenght=read_The_bills(number);
+    public int read_Tname_bills(){
         SQLiteDatabase db=this.getReadableDatabase();
-        String[] sat=new String[2*read_The_bills(number)];
+        int a=0;
+        Cursor res = db.rawQuery("select * from bills WHERE paid_type like 'آجل' " , null);
+        res.moveToFirst();
+        while (!res.isAfterLast()){
+            a++;
+            res.moveToNext();
+        }
+        return a;
+    }
+    public String[] get_All_bills(){
 
-        if (lenght>0) {
-            int i = 0;
-            Cursor res = db.rawQuery("select * from bills WHERE paid_type like 'آجل' and  total >= "+number+"" , null);
+        SQLiteDatabase db=this.getReadableDatabase();
+        String[] sat=new String[read_Tname_bills()];
+        String c="";
+        int i = 0;
+            Cursor res = db.rawQuery("select * from bills WHERE paid_type like 'آجل' " , null);
             res.moveToFirst();
             while (res.isAfterLast() == false) {
-                String c;
+
                 c = get_name_agent(res.getInt(res.getColumnIndex("id_agent")));
                 sat[i] = c;
                 i++;
-                c = res.getString(res.getColumnIndex("total"));
-                sat[i] = c;
-                i++;
-
                 res.moveToNext();
             }
-        }else{
-            sat=new String[1];
-            sat[0]=" ";}
+
 
         return sat;
     }
@@ -1813,13 +1816,13 @@ public class Databases extends SQLiteOpenHelper {
         return a;
     }
 
-    public int read_The_bills(int number){
+    public double read_The_bills_total(int id_agent){
         SQLiteDatabase db=this.getReadableDatabase();
-        int a=0;
-        Cursor res = db.rawQuery("select * from bills WHERE paid_type like 'آجل' and total >= "+number+"" , null);
+        double a=0;
+        Cursor res = db.rawQuery("select * from bills WHERE id_agent = "+id_agent+"" , null);
         res.moveToFirst();
         while (!res.isAfterLast()){
-            a++;
+            a+= res.getDouble(res.getColumnIndex("total"));
             res.moveToNext();
         }
         return a;
@@ -1849,7 +1852,218 @@ public class Databases extends SQLiteOpenHelper {
         return a;
     }
 
+    public String[] get_All_bills(String name){
+        SQLiteDatabase db=this.getReadableDatabase();
+
+        int a;
+        String[] sat;
+        Cursor res;
+        if (name.equals("null")) {
+            sat = new String[8 * read_The_bills()];
+            res  = db.rawQuery("select * from bills",null);
+        }else if (name.equals("not_null")){
+            sat = new String[8 * read_The_bills_2(0)];
+            res = db.rawQuery("select * from bills WHERE  id_agent > "+0+"" , null);
+        }else {
+            a=Integer.parseInt(name);
+            sat = new String[8 * read_The_bills_2(a)];
+            res = db.rawQuery("select * from bills WHERE  id_agent = "+a+" " , null);
+        }
+
+        int i = 0;
+
+        res.moveToFirst();
+        while (res.isAfterLast() == false) {
+            String c;
+
+            c = res.getString(res.getColumnIndex("date_bills"));
+            sat[i] = c;
+            i++;
+
+            c = res.getString(res.getColumnIndex("paid_type"));
+            sat[i] = c;
+            i++;
+
+            c = res.getString(res.getColumnIndex("total"));
+            sat[i] = c;
+            i++;
+
+            c = res.getString(res.getColumnIndex("paid"));
+            sat[i] = c;
+            i++;
+
+            c = res.getString(res.getColumnIndex("discount"));
+            sat[i] = c;
+            i++;
+
+            c = get_name_agent(res.getInt(res.getColumnIndex("id_agent")));
+            sat[i] = c;
+            i++;
+
+            c = res.getString(res.getColumnIndex("recipient"));
+            sat[i] = c;
+            i++;
+
+            c = res.getString(res.getColumnIndex("id"));
+            sat[i] = c;
+            i++;
+            res.moveToNext();
+        }
+        return sat;
+    }
+    public int read_The_bills(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        int a=0;
+        Cursor res = db.rawQuery("select * from bills " , null);
+        res.moveToFirst();
+        while (!res.isAfterLast()){
+            a++;
+            res.moveToNext();
+        }
+        return a;
+    }
+    public int read_The_bills_2(int b){
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor res;
+        int a=0;
+         if (b==0){
+             res = db.rawQuery("select * from bills WHERE  id_agent > "+0+"" , null);
+         }else {
+             res = db.rawQuery("select id_agent from bills WHERE  id_agent = "+b+" " , null);
+         }
+
+        res.moveToFirst();
+        while (!res.isAfterLast()){
+            a++;
+            res.moveToNext();
+        }
+        return a;
+    }
+
+    public int get_id_agent(String name_agent){
+        SQLiteDatabase db=this.getReadableDatabase();
+        int a=0;
+        Cursor res = db.rawQuery("select * from agent WHERE   name_agent like '"+name_agent+"' " , null);
+        res.moveToFirst();
+        while (!res.isAfterLast()){
+            a= res.getInt(res.getColumnIndex("id"));
+            res.moveToNext();
+        }
+        return a;
+    }
+
+    public String[] get_one_products_bills(int id_bills){
+        SQLiteDatabase db=this.getReadableDatabase();
+
+        String[] sat = new String[6 * get_one_products_bills_num(id_bills)];
+        Cursor res  = db.rawQuery("select * from products_bills where  id_bills = "+id_bills+" ",null);
 
 
+        int i = 0;
+
+        res.moveToFirst();
+        while (res.isAfterLast() == false) {
+            String c;
+
+            c = res.getString(res.getColumnIndex("name_prod"));
+            sat[i] = c;
+            i++;
+
+            c = res.getString(res.getColumnIndex("purchase_price"));
+            sat[i] = c;
+            i++;
+
+            c = res.getString(res.getColumnIndex("selling_price"));
+            sat[i] = c;
+            i++;
+
+            c = res.getString(res.getColumnIndex("quantity"));
+            sat[i] = c;
+            i++;
+
+            c = res.getString(res.getColumnIndex("quantity_type"));
+            sat[i] = c;
+            i++;
+
+            c = get_date_bills(res.getInt(res.getColumnIndex("id_bills")));///////n   ^_^
+            sat[i] = c;
+            i++;
+
+
+            res.moveToNext();
+        }
+        return sat;
+    }
+
+    public int get_one_products_bills_num(int id_bills) {
+        SQLiteDatabase db=this.getReadableDatabase();
+
+        Cursor res=db.rawQuery("select * from products_bills where  id_bills = "+id_bills+" ",null);
+        int a=0;
+
+        res.moveToFirst();
+        while (!res.isAfterLast()){
+            a++;
+            res.moveToNext();
+        }
+        return a;
+    }
+
+    public int get_number_policy_agent(int id_agent){
+        SQLiteDatabase db=this.getReadableDatabase();
+        int a=0;
+        @SuppressLint("Recycle") Cursor res=db.rawQuery("select * from policy where  id_agent = "+id_agent+"",null);
+        res.moveToFirst();
+        while (!res.isAfterLast()){
+            a++;
+            res.moveToNext();
+        }
+        return a;
+    }
+
+    public String[] get_All_policy_agent(int id_agent){////dri
+
+        SQLiteDatabase db=this.getReadableDatabase();
+        String[] sat=new String[4*get_number_policy_agent(id_agent)];
+
+        int i = 0;
+        Cursor res  = db.rawQuery("select * from policy where  id_agent = "+id_agent+"",null);
+        res.moveToFirst();
+        while (res.isAfterLast() == false) {
+            String c;
+
+            c = res.getString(res.getColumnIndex("date_policy"));
+            sat[i] = c;
+            i++;
+
+            c = res.getString(res.getColumnIndex("note_policy"));
+            sat[i] = c;
+            i++;
+
+            c = res.getString(res.getColumnIndex("type_policy"));///////n
+            sat[i] = c;
+            i++;
+
+            c = res.getString(res.getColumnIndex("amount"));
+            sat[i] = c;
+            i++;
+
+            res.moveToNext();
+        }
+        return sat;
+    }
+
+
+    public double get_policy_amount_agent(int id_agent,String type_policy){
+        SQLiteDatabase db=this.getReadableDatabase();
+        double a=0;
+        Cursor res = db.rawQuery("select * from policy WHERE  id_agent = "+id_agent+" and type_policy like '"+type_policy+"' ", null);
+        res.moveToFirst();
+        while (!res.isAfterLast()){
+            a+= res.getDouble(res.getColumnIndex("amount"));
+            res.moveToNext();
+        }
+        return a;
+    }
 }
 

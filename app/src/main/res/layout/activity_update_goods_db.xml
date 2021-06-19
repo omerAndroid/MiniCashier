@@ -46,46 +46,49 @@
 
                 <TextView
                     android:id="@+id/barcode_view"
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_width="150dp"
                     android:gravity="center"
+                    android:textSize="20sp"
+                    android:layout_height="wrap_content"
+
                     android:scrollHorizontally="true"
                     android:text="باراكود" />
 
                 <TextView
                     android:id="@+id/goods_view"
                     android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:gravity="center"
+                    android:textSize="20sp"
+                    android:layout_height="wrap_content"
+
                     android:scrollHorizontally="true"
                     android:text="اسم المنتج" />
 
                 <TextView
                     android:id="@+id/date_ex_veiw"
-                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_width="150dp"
                     android:gravity="center"
+                    android:textSize="20sp"
                     android:scrollHorizontally="true"
                     android:text="تاريخ الانتهاء" />
 
                 <TextView
                     android:id="@+id/buy_date_veiw"
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_width="150dp"
                     android:gravity="center"
+                    android:textSize="20sp"
+                    android:layout_height="wrap_content"
+
                     android:scrollHorizontally="true"
                     android:text="تاريخ الشراء" />
 
                 <TextView
                     android:id="@+id/quantity_veiw"
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_width="150dp"
                     android:gravity="center"
+                    android:textSize="20sp"
+                    android:layout_height="wrap_content"
                     android:scrollHorizontally="true"
                     android:text="الكمية" />
             </LinearLayout>

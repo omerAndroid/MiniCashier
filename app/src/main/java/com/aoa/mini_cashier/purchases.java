@@ -60,7 +60,8 @@ public class purchases extends AppCompatActivity {
     //String date_viewe= "asdf";
     TextView phone_resource_txt,mobile_resource_txt,address_resource,name_resource_txt,
             purchases_total,paid_total,pu_pa_total;
-   public static String data_type,Text_date="0",Text_date_2="0",set_mony="",string_1,string_2;
+   public static String data_type,Text_date="0",Text_date_2="0",set_mony="",string_1="null",string_2;
+   String s=" ";
     int date_place = 0 ;
     public static ArrayList<purchases_item_class> q_list = new ArrayList<>();
 
@@ -89,6 +90,44 @@ public class purchases extends AppCompatActivity {
         pu_pa_total = findViewById(R.id.pu_pa_total);
 
         /////////////////////////Date Picker///////////////////////////////////
+        Intent data =getIntent();
+        s=data.getExtras().getString("class");
+        change_list_items=findViewById(R.id.change_list_items);
+
+        if (s == null){s=" ";}
+        if (s.equals("bills")){
+            findViewById(R.id.add_purchases).setVisibility(View.GONE);
+            findViewById(R.id.phone_resource_txt).setVisibility(View.GONE);
+            findViewById(R.id.mobile_resource_txt).setVisibility(View.GONE);
+            findViewById(R.id.address_resource).setVisibility(View.GONE);
+            findViewById(R.id.name_resource_txt).setVisibility(View.GONE);
+            findViewById(R.id.purchases_total).setVisibility(View.GONE);
+            findViewById(R.id.paid_total).setVisibility(View.GONE);
+            findViewById(R.id.pu_pa_total).setVisibility(View.GONE);
+            findViewById(R.id.phone_number).setVisibility(View.GONE);
+            findViewById(R.id.mobile_number).setVisibility(View.GONE);
+            string_1=data.getExtras().getString("id_bills");
+            s=data.getExtras().getString("name_agent");
+
+            listShow_bills_1(string_1);
+            findViewById(R.id.change_list_items).setOnClickListener(v -> {
+                if (change_list_items.getText().toString().equals("قائمة المشتريات")){
+                    change_list_items.setText("قائمة السندات");
+                    q_list = new ArrayList<>();
+                    ListAdupter ad = new ListAdupter(q_list);
+                    list_purchases.setAdapter(ad);
+                    listShow_bills_2();
+                }else {
+                    change_list_items.setText("قائمة المشتريات");
+                    policy_list = new ArrayList<>();
+                    ListAdupter2 ad = new ListAdupter2(policy_list);
+                    list_purchases.setAdapter(ad);
+                    listShow_bills_1(string_1);
+                }
+            });
+            add_policy.setOnClickListener(v -> add_policy_data_2());
+        }else {
+
         calendar = Calendar.getInstance();
         date_format = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
 
@@ -97,13 +136,13 @@ public class purchases extends AppCompatActivity {
         add_purchases.setOnClickListener(v -> add_purchases_data());
 
         /////Intent
-        Intent data =getIntent();///phone_resource_txt,mobile_resource_txt,address_resource,name_resource_txt;data.getExtras().getString("page");
+
         //phone_resource_txt.setText(data.getExtras().getString("phone_resource"));
         //mobile_resource_txt.setText(data.getExtras().getString("mobile_resource"));
         address_resource.setText(data.getExtras().getString("address"));
         name_resource_txt.setText(data.getExtras().getString("name"));
 
-        change_list_items=findViewById(R.id.change_list_items);
+
 
         listShow_policy_2();
 
@@ -124,6 +163,48 @@ public class purchases extends AppCompatActivity {
         });
 
         show();
+        }
+    }
+
+    private void listShow_bills_1(String string_1) {
+        int a=Integer.parseInt(string_1);
+
+        String[] purchases=databases.get_one_products_bills(a);
+
+        if (databases.get_one_products_bills_num(a)>=1) {
+            q_list.clear();
+            int i = 0;
+            for (int j = 0; j < databases.get_one_products_bills_num(a); j++) {
+
+                q_list.add(new purchases_item_class(purchases[i], purchases[i+1],purchases[i+2],purchases[i+3],purchases[i+4],purchases[i+5],
+                        "",""));
+                i += 6;
+
+            }
+            //////////////////////////////Add List Item//////////////////////////////////////
+            purchases.ListAdupter ad = new purchases.ListAdupter(q_list);
+            list_purchases.setAdapter(ad);
+        }
+    }
+
+    private void listShow_bills_2() {
+
+        int id_agent=databases.get_id_agent(s);
+        String[] policy=databases.get_All_policy_agent(id_agent);
+        findViewById(R.id.purchases_visbility).setVisibility(View.GONE);
+        findViewById(R.id.policy_visbility).setVisibility(View.VISIBLE);
+        if (databases.get_number_policy_agent(id_agent)>=1) {
+            policy_list.clear();
+            int i = 0;
+            for (int j = 0; j < databases.get_number_policy_agent(id_agent); j++) {
+
+                policy_list.add(new policy_item_class( policy[i + 3], policy[i], policy[i + 1], policy[i + 2]));
+                i += 4;
+            }
+            //////////////////////////////Add List Item//////////////////////////////////////
+            purchases.ListAdupter2 ad = new purchases.ListAdupter2(policy_list);
+            list_purchases.setAdapter(ad);
+        }
     }
 
     private void show() {
@@ -661,9 +742,80 @@ public class purchases extends AppCompatActivity {
         purchase.show();
     }
 
+    public void add_policy_data_2 () {
+
+        //Dialog Customer Data viewer
+        purchase = new Dialog(this);
+        purchase.setContentView(R.layout.dialog_policy);
+        purchase.setTitle("إضافة سند ");
+        TextView resource_name=(TextView) purchase.findViewById(R.id.resource_name);
+        EditText amount_policy=(EditText) purchase.findViewById(R.id.amount_policy);/////n  المبلغ
+        Button date_paid=(Button) purchase.findViewById(R.id.date_paid);
+        MultiAutoCompleteTextView note_txt=(MultiAutoCompleteTextView) purchase.findViewById(R.id.note_txt);/////n     ملاحظة
+
+
+        resource_name.setText(name_resource_txt.getText().toString());
+        final Button catch_btn=(Button) purchase.findViewById(R.id.catch_btn);
+        final Button pure_btn = (Button) purchase.findViewById(R.id.pure_btn);
+
+        Date date =new Date();
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy ");
+        date_paid.setText(sdf.format(date));
+
+        date_paid.setOnClickListener(v -> date_picker());
+
+        catch_btn.setOnClickListener(v -> {
+            //قبض
+            if (!TextUtils.isEmpty(resource_name.getText().toString())&&!TextUtils.isEmpty(amount_policy.getText().toString())&&
+                    !TextUtils.isEmpty(note_txt.getText().toString())){
+
+                int id_agent=databases.get_id_agent(s);
+                double money = databases.get_money_box();
+                boolean result = databases.insert_policy(
+                        Double.parseDouble(amount_policy.getText().toString()),
+                        date_paid.getText().toString(),
+                        note_txt.getText().toString(),
+                        "قبض",0,id_agent);
+                databases.get_insert_money_box(money+Double.parseDouble(amount_policy.getText().toString()));
+
+                if (result) {
+                    Toast.makeText(purchases.this, "ok", Toast.LENGTH_SHORT).show();
+                    show();
+                    purchase.dismiss();
+                }else Toast.makeText(purchases.this, "no no no ", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+
+        pure_btn.setOnClickListener(v -> {
+            //صرف
+            if (!TextUtils.isEmpty(resource_name.getText().toString())&&!TextUtils.isEmpty(amount_policy.getText().toString())&&
+                    !TextUtils.isEmpty(note_txt.getText().toString())){
+                double money = databases.get_money_box();
+                int id_agent=databases.get_id_agent(s);
+                boolean result = databases.insert_policy(
+                        Double.parseDouble(amount_policy.getText().toString()),
+                        date_paid.getText().toString(),
+                        note_txt.getText().toString(),
+                        "صرف",0,id_agent);
+                databases.get_insert_money_box(money-Double.parseDouble(amount_policy.getText().toString()));
+                if (result) {
+                    Toast.makeText(purchases.this, "ok", Toast.LENGTH_SHORT).show();
+                    show();
+                    purchase.dismiss();
+                }else Toast.makeText(purchases.this, "no no no ", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        purchase.show();
+    }
+
     public void listShow_policy(){
         int id_resource=databases.get_id_resource(name_resource_txt.getText().toString());
         String[] policy=databases.get_All_policy(id_resource);
+
+        findViewById(R.id.purchases_visbility).setVisibility(View.GONE);
+        findViewById(R.id.policy_visbility).setVisibility(View.VISIBLE);
 
         double[] policy_double =databases.get_All_policy_double(id_resource);
         if (databases.get_number_policy(id_resource)>=1) {
@@ -767,6 +919,7 @@ public class purchases extends AppCompatActivity {
 
     class ListAdupter2 extends BaseAdapter {
         ArrayList<policy_item_class> list_item;
+
         ListAdupter2(ArrayList<policy_item_class> list_item){
             this.list_item = list_item ;
         }
@@ -1111,4 +1264,5 @@ public class purchases extends AppCompatActivity {
             purchases.add_tg_btn.setEnabled(true);
         }
     }
+
 }

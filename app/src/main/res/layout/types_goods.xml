@@ -159,7 +159,8 @@
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/q_buy_price"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content" />
+                                    android:layout_height="wrap_content"
+                                    android:inputType="number|numberDecimal"/>
 
                             </com.google.android.material.textfield.TextInputLayout>
 
@@ -176,7 +177,8 @@
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/q_sale_price"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content" />
+                                    android:layout_height="wrap_content"
+                                    android:inputType="number|numberDecimal"/>
 
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
@@ -228,7 +230,8 @@
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/q_buy_price_2"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content" />
+                                    android:layout_height="wrap_content"
+                                    android:inputType="number|numberDecimal"/>
 
                             </com.google.android.material.textfield.TextInputLayout>
 
@@ -245,7 +248,8 @@
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/q_sale_price_2"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content" />
+                                    android:layout_height="wrap_content"
+                                    android:inputType="number|numberDecimal"/>
 
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
@@ -262,7 +266,8 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/q_quantity_2"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:inputType="number|numberDecimal"/>
 
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
@@ -314,7 +319,8 @@
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/q_buy_price_3"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content" />
+                                    android:layout_height="wrap_content"
+                                    android:inputType="number|numberDecimal"/>
 
                             </com.google.android.material.textfield.TextInputLayout>
 
@@ -331,7 +337,8 @@
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/q_sale_price_3"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content" />
+                                    android:layout_height="wrap_content"
+                                    android:inputType="number|numberDecimal"/>
 
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
@@ -348,7 +355,8 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/q_quantity_3"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:inputType="number|numberDecimal"/>
 
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
@@ -399,7 +407,8 @@
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/q_buy_price_4"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content" />
+                                    android:layout_height="wrap_content"
+                                    android:inputType="number|numberDecimal"/>
 
                             </com.google.android.material.textfield.TextInputLayout>
 
@@ -416,7 +425,8 @@
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/q_sale_price_4"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content" />
+                                    android:layout_height="wrap_content"
+                                    android:inputType="number|numberDecimal"/>
 
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
@@ -433,7 +443,8 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/q_quantity_4"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:inputType="number|numberDecimal"/>
 
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>

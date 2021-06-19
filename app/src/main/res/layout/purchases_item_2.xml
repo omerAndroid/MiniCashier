@@ -1,45 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:layoutDirection="rtl"
+    android:gravity="center_horizontal"
+    >
 
     <TextView
         android:id="@+id/purchases_item_barcode"
-        android:layout_width="150dp"
+        android:layout_width="200dp"
         android:gravity="center"
-        android:textSize="15sp"
         android:layout_height="wrap_content"
 
+        android:textSize="20sp"
         android:scrollHorizontally="true"
-        android:text="باركود" />
+        android:text="dfdf" />
 
     <TextView
         android:id="@+id/purchases_item_name"
-        android:layout_width="150dp"
+        android:layout_width="200dp"
         android:gravity="center"
-        android:textSize="15sp"
         android:layout_height="wrap_content"
 
+        android:textSize="20sp"
         android:scrollHorizontally="true"
-        android:text="الاسم" />
+        android:text="jjjjjjjjjjjjj" />
 
     <TextView
         android:id="@+id/purchases_item_sale"
         android:layout_width="150dp"
         android:gravity="center"
-        android:textSize="15sp"
         android:layout_height="wrap_content"
 
+        android:textSize="20sp"
         android:scrollHorizontally="true"
+
         android:text="سعر الشراء" />
 
     <TextView
         android:id="@+id/purchases_item_quintity"
         android:layout_width="150dp"
         android:gravity="center"
-        android:textSize="15sp"
         android:layout_height="wrap_content"
 
+        android:textSize="20sp"
         android:scrollHorizontally="true"
         android:text="الكمية" />
 
@@ -47,9 +53,9 @@
         android:id="@+id/purchases_item_total"
         android:layout_width="150dp"
         android:gravity="center"
-        android:textSize="15sp"
         android:layout_height="wrap_content"
 
+        android:textSize="20sp"
         android:scrollHorizontally="true"
         android:text="الإجمالي" />
 
@@ -57,9 +63,9 @@
         android:id="@+id/purchases_item_free_guintity"
         android:layout_width="150dp"
         android:gravity="center"
-        android:textSize="15sp"
         android:layout_height="wrap_content"
 
+        android:textSize="20sp"
         android:scrollHorizontally="true"
         android:text="الكمية المجانية" />
 
@@ -67,9 +73,9 @@
         android:id="@+id/purchases_item_date_purchase"
         android:layout_width="150dp"
         android:gravity="center"
-        android:textSize="15sp"
         android:layout_height="wrap_content"
 
+        android:textSize="20sp"
         android:scrollHorizontally="true"
         android:text="تاريخ الشراء" />
 
@@ -77,10 +83,10 @@
         android:id="@+id/purchases_item_date_expare"
         android:layout_width="150dp"
         android:gravity="center"
-        android:textSize="15sp"
         android:layout_height="wrap_content"
 
+        android:textSize="20sp"
         android:scrollHorizontally="true"
-        android:text="تاريخ الإنتهاء" />
+         />
 
 </LinearLayout>

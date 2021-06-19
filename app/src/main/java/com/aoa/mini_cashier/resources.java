@@ -1,10 +1,10 @@
 package com.aoa.mini_cashier;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aoa.mini_cashier.DB.Databases;
+import com.aoa.mini_cashier.item_classes.purchases_item_class;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -30,21 +32,19 @@ public class resources extends AppCompatActivity {
     SharedPreferences sharedPreferences;
 
     @SuppressLint("StaticFieldLeak")
-   public static ListView list_resource;
+   public  ListView list_resource;
     public Databases databases = new Databases(this);
     public String hasOnClick;
     public static ArrayList<list_item_resource> q_list = new ArrayList<>();
     TextView  paid_pruchase,total_paid,total_pruchase;
     public static String address="";
-
     TextView name_resouce;
-    ArrayList<list_item_resource> list_item;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resources);
-        add_resource =(Button) findViewById(R.id.add_resource);
+        add_resource = findViewById(R.id.add_resource);
 
         list_resource = findViewById(R.id.list_resource);
 
@@ -59,22 +59,40 @@ public class resources extends AppCompatActivity {
             case "purchases_btn":
                 listShow_qnuatitytype();
                 show();
+                add_resource.setOnClickListener(v -> add_customer_data ());
                 break;
-            case "bills":
 
-                break;
             case "max_account_btn":
                 findViewById(R.id.linearLayout10).setVisibility(View.GONE);
                 findViewById(R.id.add_resource).setVisibility(View.GONE);
+                findViewById(R.id.linearLayout7).setVisibility(View.GONE);
                 sharedPreferences= getSharedPreferences("key",0);
-                String tecack_1=sharedPreferences.getString("key_2","0");
+                String tecack_1=sharedPreferences.getString("key_2","0");///check_agent
 
-                String[] resource=databases.get_All_bills(Integer.parseInt(tecack_1));
+                  String[] resource=databases.get_All_bills();////n    اسم العميل
+
+                ArrayList<String> name_prod= new ArrayList<>();
+                int z=0;
+                for (int i=0;i<6;i++){
+                    if (!name_prod.contains(resource[i])){
+
+                        int id_agent=databases.check_agent(resource[i]);////n   id_agent
+                        double id_agent_total=databases.read_The_bills_total(id_agent);////n   id_agent_total
+                        double a1=databases.get_policy_amount_agent(id_agent,"صرف");
+                        double a2=databases.get_policy_amount_agent(id_agent,"قبض");
+
+                    name_prod.add(resource[i]);
+                    name_prod.add(theack_aggen(MessageFormat.format("{0}", ((id_agent_total+a1)-a2))));
+                    z++;
+                    }
+                }
+
                 q_list.clear();
                 int i=0;
-                for (int j=0;j<databases.read_The_bills(Integer.parseInt(tecack_1));j++){
-
-                    q_list.add(new list_item_resource(resource[i],resource[i+1],"",""));
+                for (int j=0;j<z;j++){
+                    if(Integer.parseInt(name_prod.get(i + 1))>=Integer.parseInt(tecack_1)){
+                    q_list.add(new list_item_resource(name_prod.get(i), name_prod.get(i + 1),"",""));
+                    }
                     i+=2;
                 }
 
@@ -84,7 +102,7 @@ public class resources extends AppCompatActivity {
         }
 
 
-        add_resource.setOnClickListener(v -> add_customer_data ());
+        //add_resource.setOnClickListener(v -> add_customer_data ());
 
 //
 //        list_resource.setOnItemClickListener((parent, view, position, id) -> {
@@ -117,9 +135,6 @@ public class resources extends AppCompatActivity {
 
         total_pruchase.setText(MessageFormat.format("{0}",(vvv+vv)-v));
 
-
-
-
     }
 
     @Override
@@ -128,22 +143,23 @@ public class resources extends AppCompatActivity {
         show();
         listShow_qnuatitytype();
     }
+
     public void add_customer_data () {
 
         //Dialog Customer Data viewer
         customer_data = new Dialog(this);
         customer_data.setContentView(R.layout.add_customer_dialog);
         customer_data.setTitle("بيانات المورد");
-        final EditText name=(EditText) customer_data.findViewById(R.id.name_customer);
-        final EditText c_address=(EditText) customer_data.findViewById(R.id.address_customer);
-        final EditText c_phone1=(EditText) customer_data.findViewById(R.id.Phone_customer_1);
-        final EditText c_phone2=(EditText) customer_data.findViewById(R.id.Phone_customer_2);
-        final EditText c_email=(EditText) customer_data.findViewById(R.id.E_mail_customer);
-        final EditText c_password=(EditText) customer_data.findViewById(R.id.password_customer);
+        final EditText name= customer_data.findViewById(R.id.name_customer);
+        final EditText c_address= customer_data.findViewById(R.id.address_customer);
+        final EditText c_phone1= customer_data.findViewById(R.id.Phone_customer_1);
+        final EditText c_phone2= customer_data.findViewById(R.id.Phone_customer_2);
+        final EditText c_email= customer_data.findViewById(R.id.E_mail_customer);
+        final EditText c_password= customer_data.findViewById(R.id.password_customer);
 
         c_email.setVisibility(View.GONE);
         c_password.setVisibility(View.GONE);
-        final Button data_save = (Button) customer_data.findViewById(R.id.save_customer_data);
+        final Button data_save =  customer_data.findViewById(R.id.save_customer_data);
 
 
         data_save.setOnClickListener(v -> {
@@ -227,9 +243,9 @@ public class resources extends AppCompatActivity {
             LayoutInflater inflater = getLayoutInflater();
             @SuppressLint({"ViewHolder", "InflateParams"}) View view =inflater.inflate(R.layout.resource_list_item,null);
 
-             name_resouce = (TextView) view.findViewById(R.id.name_resouce);
+             name_resouce =  view.findViewById(R.id.name_resouce);
 
-            TextView  accunt_bill= (TextView) view.findViewById(R.id.accunt_bill);
+            TextView  accunt_bill=  view.findViewById(R.id.accunt_bill);
 
 
             if ("max_account_btn".equals(hasOnClick)) {
@@ -237,7 +253,7 @@ public class resources extends AppCompatActivity {
                 accunt_bill.setText(list_item.get(i).phone);
             }else {
                 name_resouce.setText(list_item.get(i).name );
-                accunt_bill.setText(MessageFormat.format("{0}",//databases.get_id_resource(list_item.get(i).name)
+                accunt_bill.setText(MessageFormat.format("{0}",
                         (
                                 (databases.get_purchases_total(databases.get_id_resource(list_item.get(i).name))+
                                 databases.get_policy_amount(databases.get_id_resource(list_item.get(i).name),"قبض")
@@ -266,6 +282,55 @@ public class resources extends AppCompatActivity {
 
             return view;
         }
+    }
+
+    public String theack_aggen(@NonNull String s){
+        StringBuilder ss= new StringBuilder();
+
+        boolean b=false;
+        for (int i = 0; i<= s.length()-1; i++){
+            if (String.valueOf(s.charAt(i)).equals("٠")){
+                ss.append("0");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٩")){
+                ss.append("9");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("١")){
+                ss.append("1");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٢")){
+                ss.append("2");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٣")){
+                ss.append("3");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٤")){
+                ss.append("4");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٥")){
+                ss.append("5");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٦")){///١٢٣٤٥٦٧٨٩٫٠٠٠
+                ss.append("6");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٧")){
+                ss.append("7");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٨")){
+                ss.append("8");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٫")){
+                ss.append(".");
+                b=true;
+            }
+        }
+
+        if (b){
+            return ss.toString();
+        }else {
+            return s;
+        }
+
     }
 }
 

@@ -97,8 +97,11 @@ public class Settings extends AppCompatActivity {
 
         add_market_Phone.setOnClickListener(v -> {
             dialog_name=add_market_Phone.getText().toString();
+
             add_updaate_dailog();
             listShow_policy("رقم المحل");
+            EditText text_edit= (EditText) Date_Dialog.findViewById(R.id.text_depart_quantity);
+            text_edit.setInputType(4);
         });
 
         findViewById(R.id.save_Market_data).setOnClickListener(v -> {

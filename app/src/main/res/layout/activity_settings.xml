@@ -279,13 +279,14 @@
                         android:layout_weight="1"
                         android:ems="10"
                         android:hint="الديون"
-                        android:inputType="number"
+
                         app:endIconMode="clear_text">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/debts_max"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:inputType="number"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -296,13 +297,14 @@
                         android:layout_weight="1"
                         android:ems="10"
                         android:hint="الكمية"
-                        android:inputType="number"
+
                         app:endIconMode="clear_text">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/quintity_max"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:inputType="number"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 
