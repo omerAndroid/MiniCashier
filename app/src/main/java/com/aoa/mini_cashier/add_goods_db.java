@@ -902,7 +902,7 @@ public class add_goods_db extends AppCompatActivity {
             quantity_stored =1.0;
             if (!TextUtils.isEmpty(Text_q_type.getEditableText().toString())){
                 number_type=1;
-                id_q=databases.get_id_quantity_type(Text_q_type.getEditableText().toString());
+                id_q=databases.get_id_quantity_type(Text_q_type.getEditableText().toString().trim());
 
                 check_insert_Data= databases.insert_quantity(number_type,1,isChecked_1,Double.parseDouble(Text_q_buy_price.getText().toString()  ),
                         Double.parseDouble(Text_q_sale_price.getText().toString()  ),id_q,id_g);
@@ -911,7 +911,7 @@ public class add_goods_db extends AppCompatActivity {
             }
             if (!TextUtils.isEmpty(Text_q_type_2.getEditableText().toString())){
                 number_type=2;
-                id_q=databases.get_id_quantity_type(Text_q_type_2.getEditableText().toString());
+                id_q=databases.get_id_quantity_type(Text_q_type_2.getEditableText().toString().trim());
 
                 check_insert_Data=databases.insert_quantity(number_type,Integer.parseInt(To_int(Text_q_quantity_2.getText().toString())),isChecked_2,
                         Double.parseDouble(Text_q_buy_price_2.getText().toString()), Double.parseDouble(Text_q_sale_price_2.getText().toString() ),id_q,id_g);
@@ -920,7 +920,7 @@ public class add_goods_db extends AppCompatActivity {
             }
             if (!TextUtils.isEmpty(Text_q_type_3.getEditableText().toString())){
                 number_type=3;
-                id_q=databases.get_id_quantity_type(Text_q_type_3.getEditableText().toString());
+                id_q=databases.get_id_quantity_type(Text_q_type_3.getEditableText().toString().trim());
                 check_insert_Data= databases.insert_quantity(number_type,Integer.parseInt(To_int(Text_q_quantity_3.getText().toString())),isChecked_3,
                         Double.parseDouble(Text_q_buy_price_3.getText().toString()  ), Double.parseDouble(Text_q_sale_price_3.getText().toString()),id_q,id_g);
 
@@ -928,7 +928,7 @@ public class add_goods_db extends AppCompatActivity {
             }
             if (!TextUtils.isEmpty(Text_q_type_4.getEditableText().toString())){
                 number_type=4;
-                id_q=databases.get_id_quantity_type(Text_q_type_4.getEditableText().toString());
+                id_q=databases.get_id_quantity_type(Text_q_type_4.getEditableText().toString().trim());
                 check_insert_Data= databases.insert_quantity(number_type,Integer.parseInt(To_int(Text_q_quantity_4.getText().toString())),isChecked_4,
                         Double.parseDouble(Text_q_buy_price_4.getText().toString()  ), Double.parseDouble(Text_q_sale_price_4.getText().toString()),id_q,id_g);
 
@@ -951,7 +951,7 @@ public class add_goods_db extends AppCompatActivity {
 
                     sum_q+=1;
                     if (!checked_quantity_type(Text_q_type.getText().toString().trim())){
-                        check_impot = AlertDialog_show(Text_q_type.getEditableText().toString());
+                        check_impot = AlertDialog_show(Text_q_type.getEditableText().toString().trim());
                     }else {check_impot = true;}
                 }
             }
@@ -965,7 +965,7 @@ public class add_goods_db extends AppCompatActivity {
 
                     sum_q+=1;
                     if (!checked_quantity_type(Text_q_type_2.getText().toString().trim())){
-                        check_impot = AlertDialog_show(Text_q_type_2.getEditableText().toString());
+                        check_impot = AlertDialog_show(Text_q_type_2.getEditableText().toString().trim());
                     }else {check_impot = true;}
                 }
             }
@@ -979,7 +979,7 @@ public class add_goods_db extends AppCompatActivity {
 
                     sum_q+=1;
                     if (!checked_quantity_type(Text_q_type_3.getText().toString().trim())){
-                        check_impot = AlertDialog_show(Text_q_type_3.getEditableText().toString());
+                        check_impot = AlertDialog_show(Text_q_type_3.getEditableText().toString().trim());
                     }else {check_impot = true;}
                 }
             }
@@ -993,7 +993,7 @@ public class add_goods_db extends AppCompatActivity {
 
                     sum_q+=1;
                     if (!checked_quantity_type(Text_q_type_4.getText().toString().trim())){
-                        check_impot = AlertDialog_show(Text_q_type_4.getEditableText().toString());
+                        check_impot = AlertDialog_show(Text_q_type_4.getEditableText().toString().trim());
                     }else {check_impot = true;}
                 }
             }
