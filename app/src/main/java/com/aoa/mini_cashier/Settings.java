@@ -71,6 +71,9 @@ public class Settings extends AppCompatActivity {
         signInButton.setSize(SignInButton.SIZE_STANDARD);
 
         signInButton.setOnClickListener(v -> signIn());
+
+        ///findViewById(R.id.sign_in_button).setOnClickListener(this);
+
         add_up_guantity = findViewById(R.id.add_up_guantity);
         add_up_debart = findViewById(R.id.add_up_debart);
         add_market_Phone = findViewById(R.id.market_phone);
@@ -387,8 +390,8 @@ public class Settings extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             // The Task returned from this call is always completed, no need to attach
@@ -398,7 +401,7 @@ public class Settings extends AppCompatActivity {
         }
 
         try {
-            super.onActivityResult(requestCode, resultCode, data);
+
             if (requestCode==PICK_IMAGE_REQUEST && resultCode==RESULT_OK&&data!=null&&data.getData()!=null){
 
                 imageFilePath=data.getData();
