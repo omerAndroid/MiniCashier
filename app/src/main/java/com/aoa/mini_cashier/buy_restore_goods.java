@@ -232,6 +232,10 @@ public class buy_restore_goods extends AppCompatActivity {
             discount_bill_items.setText("0");
             c_name.setText("");
             name_sender.setText("");
+            ListView list =  findViewById(R.id.list_buy_restore);
+           ListAdupter ad =new ListAdupter(list_item);
+            list.setAdapter(ad);
+
         });
         builder.setNegativeButton("لا", (dialog, which) -> {}).show();
     }
@@ -366,16 +370,18 @@ public class buy_restore_goods extends AppCompatActivity {
         String[] Allname_g=databases.get_ALLname_g();
         String who="";
         for(String val :Allbaracod){
-            if (val.equals(item)){
-                Toast.makeText(this, val, Toast.LENGTH_SHORT).show();
-                who="Allbaracod";
+            if (val.equals(item)) {
+                //Toast.makeText(this, val, Toast.LENGTH_SHORT).show();
+                who = "Allbaracod";
+                break;
             }
         }
 
         for(String val :Allname_g){
-            if (val.equals(item)){
-                Toast.makeText(this, val, Toast.LENGTH_SHORT).show();
-                who="Allname_g";
+            if (val.equals(item)) {
+                //Toast.makeText(this, val, Toast.LENGTH_SHORT).show();
+                who = "Allname_g";
+                break;
             }
         }
 
