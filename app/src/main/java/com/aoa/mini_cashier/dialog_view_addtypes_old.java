@@ -52,6 +52,8 @@ public class dialog_view_addtypes_old extends AppCompatDialogFragment {
 //    int size_impout;
 //
 //
+
+
 //
 //    float quantity_stored=1;
 //
