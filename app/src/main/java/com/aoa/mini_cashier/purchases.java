@@ -120,7 +120,9 @@ public class purchases extends AppCompatActivity {
                     q_list = new ArrayList<>();
                     ListAdupter ad = new ListAdupter(q_list);
                     list_purchases.setAdapter(ad);
+                    if (!s.equals("لايوجد")){
                     listShow_bills_2();
+                    }
                 }else {
                     change_list_items.setText("قائمة المشتريات");
                     policy_list = new ArrayList<>();
@@ -129,7 +131,9 @@ public class purchases extends AppCompatActivity {
                     listShow_bills_1(string_1);
                 }
             });
+            if (!s.equals("لايوجد")){
             add_policy.setOnClickListener(v -> add_policy_data_2());
+            }
         }else {
 
         calendar = Calendar.getInstance();
