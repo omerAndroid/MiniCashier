@@ -509,7 +509,7 @@ public class createpdf {
     public void share(){
             File file = new File(PATH);
             if (!file.exists()){
-                Toast.makeText(mContext, "File doesn't exists", Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, "File doesn't exists ", Toast.LENGTH_LONG).show();
                 return;
             }
             Intent intentShare = new Intent(Intent.ACTION_SEND);
