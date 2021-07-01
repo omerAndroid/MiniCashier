@@ -135,11 +135,9 @@ public class buy_restore_goods extends AppCompatActivity {
                 {
 
                     if (Double.parseDouble(total_price.getText().toString().trim())>0){
-                        Toast.makeText(buy_restore_goods.this, "مشاركة الفاتورة", Toast.LENGTH_SHORT).show();
                         createpdf createpdf = new createpdf();
                         createpdf.onbdf(name_prod,total_price.getText().toString().trim(),selling_price,quantity,quantity_type,total_price_ofOne,money_or_debt.getText().toString(),
                                 c_name.getText().toString(),databases,this,"1");
-
                     }
                 }
 
@@ -147,7 +145,6 @@ public class buy_restore_goods extends AppCompatActivity {
                 if(id==R.id.open_pdf_menu)
                 {
                     if (Double.parseDouble(total_price.getText().toString().trim())>0){
-                    Toast.makeText(buy_restore_goods.this, "فتح ملف PDF", Toast.LENGTH_SHORT).show();
                         createpdf createpdf = new createpdf();
                         createpdf.onbdf(name_prod,total_price.getText().toString().trim(),selling_price,quantity,quantity_type,total_price_ofOne,money_or_debt.getText().toString(),
                                 c_name.getText().toString(),databases,this,"2");
@@ -230,10 +227,10 @@ public class buy_restore_goods extends AppCompatActivity {
 
 
         AlertDialog.Builder builder =new AlertDialog.Builder(this);
-        builder.setMessage("إنشاء عملية بيع جديدة." +
-                "ملاحظة عند الضغط على نعم لايمكنك " +
-                "1- طباعة الفاتورة" +
-                "2- مشاركة الفاتورة" +
+        builder.setMessage("إنشاء عملية بيع جديدة.\n" +
+                "ملاحظة عند الضغط على نعم لايمكنك \n" +
+                "1- طباعة الفاتورة\n" +
+                "2- مشاركة الفاتورة\n" +
                 "3- فتح pdf");
         //builder.setTitle("إضافة المنتج جديد");
         builder.setPositiveButton("نعم", (dialog, which) -> {

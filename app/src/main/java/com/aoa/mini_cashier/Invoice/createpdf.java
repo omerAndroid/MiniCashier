@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ShareCompat;
 
 import com.aoa.mini_cashier.DB.Databases;
 import com.aoa.mini_cashier.MainActivity;
@@ -47,7 +48,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class createpdf{
+public class createpdf extends AppCompatActivity {
 
     //private static final String PATH = Environment.getExternalStorageDirectory() + "/Mini Cashier Invoice/itexdemo.pdf";
 
@@ -506,13 +507,16 @@ public class createpdf{
     }
 
     public void share(){
-        Intent intent=new Intent(Intent.ACTION_SEND);
+            File file = new File(PATH);
+            if (!file.exists()){
+                Toast.makeText(this, "File doesn't exists", Toast.LENGTH_LONG).show();
+                return;
+            }
+            Intent intentShare = new Intent(Intent.ACTION_SEND);
+            intentShare.setType("application/pdf");
+            intentShare.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+file));
+        mContext.startActivity(Intent.createChooser(intentShare, "Share the file ..."));
 
-        Uri uri = Uri.parse(PATH);
-        intent.setType("application/pdf");
-
-        intent.putExtra(intent.EXTRA_STREAM,uri);
-        mContext.startActivity(intent);
     }
 
     public void open(){
