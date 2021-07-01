@@ -108,7 +108,7 @@ public class Reports extends AppCompatActivity {
             int i = 0;
             for (int j = 0; j < databases.get_number_products_bills(g[1]); j++) {
 
-                list_item.add(new report_item_class(products_bills[i], products_bills[i + 1], products_bills[i + 2],
+                list_item.add(new report_item_class(products_bills[i], products_bills[i + 1], ""+Double.parseDouble(products_bills[i + 2])+"",
                         products_bills[i + 3], products_bills[i + 4], products_bills[i + 5],
                         ""+Double.parseDouble(products_bills[i + 2])*Double.parseDouble(products_bills[i + 3])+""));
                 i += 6;
@@ -128,7 +128,7 @@ System.out.println("hh"+5+"");
             int i = 0;
             for (int j = 0; j < databases.get_number_products_bills("null"); j++) {
 
-                list_item.add(new report_item_class(products_bills[i], products_bills[i + 1], products_bills[i + 2],
+                list_item.add(new report_item_class(products_bills[i], products_bills[i + 1], ""+Double.parseDouble(products_bills[i + 2])+"",
                         products_bills[i + 3], products_bills[i + 4], products_bills[i + 5],
                         ""+Double.parseDouble(products_bills[i + 2])*Double.parseDouble(products_bills[i + 3])+""));
                 i += 6;

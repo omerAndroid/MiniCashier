@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import android.widget.Toast;
 
 
 import com.aoa.mini_cashier.DB.Databases;
+import com.aoa.mini_cashier.DB.LocalBackup;
 import com.aoa.mini_cashier.item_classes.Settings_item;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -38,6 +40,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 
+import java.io.File;
 import java.util.ArrayList;
 
 
@@ -142,6 +145,20 @@ public class Settings extends AppCompatActivity {
         String tecack_2=sharedPreferences.getString("key_2","0");
         quintity_max.setText(tecack_1);
         debts_max.setText(tecack_2);
+
+        LocalBackup localBackup = new LocalBackup(this);
+        Databases databases=new Databases(this);
+        String outFileName = Environment.getExternalStorageDirectory() + File.separator + getResources().getString(R.string.app_name) + File.separator;
+
+        findViewById(R.id.backup).setOnClickListener(v -> localBackup.performBackup(databases, outFileName));
+        findViewById(R.id.reserve).setOnClickListener(v ->{
+
+            androidx.appcompat.app.AlertDialog.Builder bu = new androidx.appcompat.app.AlertDialog.Builder(this);
+            bu.setMessage("هل تريد إستعادة نسخة احتياطية")
+                    .setTitle(R.string.eree)
+                    .setPositiveButton("نعم", (dialog, id) -> localBackup.performRestore(databases))
+                    .setNegativeButton("لا", (dialog, id) ->{}).show();
+        });
     }
 
     @Override

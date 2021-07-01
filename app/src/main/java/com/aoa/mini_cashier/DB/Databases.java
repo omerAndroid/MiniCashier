@@ -185,6 +185,39 @@ public class Databases extends SQLiteOpenHelper {
             e.printStackTrace();
         }
     }
+    //////b استعادة نسخة احتاياطية
+    public void importDB(String inFileName) {
+
+        final String outFileName = mContext.getDatabasePath(DBNAME).toString();
+
+        try {
+
+            File dbFile = new File(inFileName);
+            FileInputStream fis = new FileInputStream(dbFile);
+
+            // Open the empty db as the output stream
+            OutputStream output = new FileOutputStream(outFileName);
+
+            // Transfer bytes from the input file to the output file
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = fis.read(buffer)) > 0) {
+                output.write(buffer, 0, length);
+            }
+
+            // Close the streams
+            output.flush();
+            output.close();
+            fis.close();
+
+            Toast.makeText(mContext, "Import Completed", Toast.LENGTH_SHORT).show();
+
+        } catch (Exception e) {
+            Toast.makeText(mContext, "Unable to import database. Retry", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+    }
+
     ///  E عملية التاكد من الباركود اذا كان موجود من قبل او لا
     public int check_baracod(String bracode){
         SQLiteDatabase db=this.getReadableDatabase();

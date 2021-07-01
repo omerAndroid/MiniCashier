@@ -34,10 +34,11 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        LocalBackup localBackup = new LocalBackup(this);
-        Databases databases=new Databases(this);
+//        LocalBackup localBackup = new LocalBackup(this);
+//        Databases databases=new Databases(this);
         String outFileName = Environment.getExternalStorageDirectory() + File.separator + getResources().getString(R.string.app_name) + File.separator;
-        localBackup.performBackup(databases, outFileName);
+//        //localBackup.performBackup(databases, outFileName);
+//        localBackup.performRestore(databases);
 
 
         //////////////////////n        حفظ لمرة واحده

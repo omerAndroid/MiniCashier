@@ -19,6 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
         tools:ignore="AllowBackup">
+        <activity android:name=".Invoice.Openpdf"></activity>
         <activity android:name=".bills" />
         <activity android:name=".Reports" />
         <activity android:name=".resources" />

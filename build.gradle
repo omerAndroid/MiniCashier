@@ -3,8 +3,9 @@
 buildscript {
     repositories {
         google()
-        //jcenter()
-        mavenCentral()
+        jcenter()
+        //mavenCentral()
+
 
     }
     dependencies {
@@ -16,12 +17,11 @@ buildscript {
 }
 
 allprojects {
-    repositories {
+    repositories{
         google()
-        // jcenter()
-          mavenCentral()
-        
-    }
+        jcenter()
+        //mavenCentral()
+     }
 }
 
 task clean(type: Delete) {

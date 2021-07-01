@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aoa.mini_cashier.DB.Databases;
+import com.aoa.mini_cashier.Invoice.createpdf;
 import com.aoa.mini_cashier.RED_QR.ScanCodeActivity;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
@@ -52,6 +53,7 @@ public class buy_restore_goods extends AppCompatActivity {
     ArrayList<String> selling_price= new ArrayList<>();
     ArrayList<String> quantity= new ArrayList<>();
     ArrayList<String> quantity_type= new ArrayList<>();//c_name
+    ArrayList<String> total_price_ofOne= new ArrayList<>();//c_name
 
     boolean isCheck_number=true;
     AutoCompleteTextView c_name;
@@ -131,13 +133,25 @@ public class buy_restore_goods extends AppCompatActivity {
                 //share bills
                 if(id==R.id.share_bill_menu)
                 {
-                    Toast.makeText(buy_restore_goods.this, "مشاركة الفاتورة", Toast.LENGTH_SHORT).show();
+
+                    if (Double.parseDouble(total_price.getText().toString().trim())>0){
+                        Toast.makeText(buy_restore_goods.this, "مشاركة الفاتورة", Toast.LENGTH_SHORT).show();
+                        createpdf createpdf = new createpdf();
+                        createpdf.onbdf(name_prod,total_price.getText().toString().trim(),selling_price,quantity,quantity_type,total_price_ofOne,money_or_debt.getText().toString(),
+                                c_name.getText().toString(),databases,this,"1");
+
+                    }
                 }
 
                //open PDF file
                 if(id==R.id.open_pdf_menu)
                 {
+                    if (Double.parseDouble(total_price.getText().toString().trim())>0){
                     Toast.makeText(buy_restore_goods.this, "فتح ملف PDF", Toast.LENGTH_SHORT).show();
+                        createpdf createpdf = new createpdf();
+                        createpdf.onbdf(name_prod,total_price.getText().toString().trim(),selling_price,quantity,quantity_type,total_price_ofOne,money_or_debt.getText().toString(),
+                                c_name.getText().toString(),databases,this,"2");
+                    }
                 }
                 return false;
             });
@@ -208,13 +222,19 @@ public class buy_restore_goods extends AppCompatActivity {
             //startActivity(intent);
             startActivityForResult(intent,4);
         });
+
+
     }
 
     public void alter(){
 
 
         AlertDialog.Builder builder =new AlertDialog.Builder(this);
-        builder.setMessage("إنشاء عملية بيع جديدة.");
+        builder.setMessage("إنشاء عملية بيع جديدة." +
+                "ملاحظة عند الضغط على نعم لايمكنك " +
+                "1- طباعة الفاتورة" +
+                "2- مشاركة الفاتورة" +
+                "3- فتح pdf");
         //builder.setTitle("إضافة المنتج جديد");
         builder.setPositiveButton("نعم", (dialog, which) -> {
             list_item.clear();
@@ -417,7 +437,7 @@ public class buy_restore_goods extends AppCompatActivity {
         selling_price.add(theack_aggen(new DecimalFormat("#.00#").format( q_Double[0])));
         quantity.add("1");
         quantity_type.add(q[0]);
-
+        total_price_ofOne.add(theack_aggen(new DecimalFormat("#.00#").format(q_Double[0]*1)));
 
 
 
