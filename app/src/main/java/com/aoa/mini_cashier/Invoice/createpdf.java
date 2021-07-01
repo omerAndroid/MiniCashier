@@ -48,7 +48,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class createpdf extends AppCompatActivity {
+public class createpdf {
 
     //private static final String PATH = Environment.getExternalStorageDirectory() + "/Mini Cashier Invoice/itexdemo.pdf";
 
@@ -509,7 +509,7 @@ public class createpdf extends AppCompatActivity {
     public void share(){
             File file = new File(PATH);
             if (!file.exists()){
-                Toast.makeText(this, "File doesn't exists", Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, "File doesn't exists", Toast.LENGTH_LONG).show();
                 return;
             }
             Intent intentShare = new Intent(Intent.ACTION_SEND);
