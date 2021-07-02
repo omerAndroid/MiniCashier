@@ -90,7 +90,7 @@ public class resources extends AppCompatActivity {
                 q_list.clear();
                 int i=0;
                 for (int j=0;j<z;j++){
-                    if(Integer.parseInt(name_prod.get(i + 1))>=Integer.parseInt(tecack_1)){
+                    if(Double.parseDouble(name_prod.get(i + 1))>=Double.parseDouble(tecack_1)){
                     q_list.add(new list_item_resource(name_prod.get(i), name_prod.get(i + 1),"",""));
                     }
                     i+=2;

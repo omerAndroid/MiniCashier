@@ -1975,7 +1975,30 @@ public class Databases extends SQLiteOpenHelper {
         }
         return sat;
     }
+    public String[] get_All_bills_agent(){
+        SQLiteDatabase db=this.getReadableDatabase();
 
+        int a;
+        String[] sat;
+        Cursor res;
+
+            sat = new String[read_The_bills_2(0)];
+            res = db.rawQuery("select * from bills WHERE  id_agent > "+0+"" , null);
+
+        int i = 0;
+
+        res.moveToFirst();
+        while (res.isAfterLast() == false) {
+            String c;
+
+            c = get_name_agent(res.getInt(res.getColumnIndex("id_agent")));
+            sat[i] = c;
+            i++;
+
+            res.moveToNext();
+        }
+        return sat;
+    }
     public double[] get_All_bills_double(String name){
         SQLiteDatabase db=this.getReadableDatabase();
 

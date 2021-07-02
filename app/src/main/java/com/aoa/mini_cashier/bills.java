@@ -66,6 +66,8 @@ public class bills extends AppCompatActivity {
         String[] resource=databases.get_All_bills("null");
         double[] All_bills_Double=databases.get_All_bills_double("null");
         q_list.clear();
+        q_list = new ArrayList<>();
+        q_list_2 = new ArrayList<>();
         String s;
         int i=0,g=0;
         for (int j=0;j<databases.read_The_bills();j++){
@@ -121,7 +123,7 @@ public class bills extends AppCompatActivity {
 
     public void get_ALL_baracode_name_g() {
 
-        String[] Allbaracod=databases.get_All_bills("not_null");
+        String[] Allbaracod=databases.get_All_bills_agent();
 
 
         ArrayAdapter<String> adapter1 = new ArrayAdapter<>(this,
@@ -143,7 +145,8 @@ public class bills extends AppCompatActivity {
             String[] All_bills=databases.get_All_bills(String.valueOf(id_agent));
             double[] All_bills_Double=databases.get_All_bills_double(String.valueOf(id_agent));
             q_list.clear();
-
+             q_list = new ArrayList<>();
+             q_list_2 = new ArrayList<>();
             int i=0,g=0;
             for (int j=0;j<databases.read_The_bills_2(id_agent);j++){
 
