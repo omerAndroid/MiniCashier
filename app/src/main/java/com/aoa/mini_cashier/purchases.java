@@ -192,7 +192,7 @@ public class purchases extends AppCompatActivity {
         if (databases.get_one_products_bills_num(a)>=1) {
             q_list.clear();
             int i = 0,g=0;
-            for (int j = 0; j < databases.get_one_products_bills_num(a); j++) {
+            for (int j = 0; j <databases.get_one_products_bills_num(a); j++) {
 
                 q_list.add(new purchases_item_class(purchases[i],theack_aggen(new DecimalFormat("#.00#").format(purchases_double[g])),
                         purchases[i+3],purchases[i+2],

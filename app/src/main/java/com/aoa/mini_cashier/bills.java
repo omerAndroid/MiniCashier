@@ -23,7 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aoa.mini_cashier.DB.Databases;
-import com.aoa.mini_cashier.Invoice.createpdf;
+import com.aoa.mini_cashier.Invoice.createpdf_2;
 import com.aoa.mini_cashier.item_classes.purchases_item_class;
 
 import java.text.DecimalFormat;
@@ -40,7 +40,8 @@ public class bills extends AppCompatActivity {
     public static ArrayList<list_item_resource> q_list = new ArrayList<>();
     ArrayList<purchases_item_class> q_list_2 = new ArrayList<>();
     AutoCompleteTextView c_name;
-
+    String agent;
+    ArrayList<String> id_bills= new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,13 +88,15 @@ public class bills extends AppCompatActivity {
                 //share bills
                 if(id==R.id.share_bill_menu)
                 {
-
+                    createpdf_2 createpdf = new createpdf_2();
+                    createpdf.create("آجل", agent,databases,this,"1",id_bills);
                 }
 
                 //open PDF file
                 if(id==R.id.open_pdf_menu)
                 {
-
+                    createpdf_2 createpdf = new createpdf_2();
+                    createpdf.create("آجل", agent,databases,this,"2",id_bills);
                 }
                 return false;
             });
@@ -185,7 +188,7 @@ public class bills extends AppCompatActivity {
             findViewById(R.id.add_bills).setVisibility(View.VISIBLE);
 
             String item = parent.getItemAtPosition(pos).toString();
-            int id_agent=databases.get_id_agent(item);
+             int id_agent=databases.get_id_agent(item);
 
             String[] All_bills=databases.get_All_bills(String.valueOf(id_agent));
             double[] All_bills_Double=databases.get_All_bills_double(String.valueOf(id_agent));
@@ -198,6 +201,9 @@ public class bills extends AppCompatActivity {
                 q_list_2.add(new purchases_item_class(All_bills[i+3],All_bills[i+4],theack_aggen(new DecimalFormat("#.00#").format(All_bills_Double[g])),
                         theack_aggen(new DecimalFormat("#.00#").format(All_bills_Double[g+1])) ,All_bills[i+2],All_bills[i],All_bills[i+1],
                         All_bills[i+5]));
+
+                id_bills.add(All_bills[i+5]);
+                agent= All_bills[i+3];
                 i+=6;
                 g+=2;
             }

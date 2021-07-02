@@ -53,18 +53,18 @@ public class createpdf {
     //private static final String PATH = Environment.getExternalStorageDirectory() + "/Mini Cashier Invoice/itexdemo.pdf";
 
     //private  String PATH = Environment.getExternalStorageDirectory()  + "Mini Cashier Invoice" + File.separator + "/itexdemo.pdf";
-     Context mContext;
-   public String PATH;
+    Context mContext;
+    public String PATH;
     public Databases databases ;
 
     Font font = FontFactory.getFont("assets/Aljazeera.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
     Font f = FontFactory.getFont("assets/Aljazeera.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-   public static String[] k;
+    public static String[] k;
     String oooo;
 
     public void onbdf(ArrayList<String>name_prod,String total_price,ArrayList<String>selling_price,ArrayList<String>quantity,
-                      ArrayList<String>quantity_type,ArrayList<String>total_price_ofOne,String money_or_debt,String c_name,Databases db,
-                      Context context,String what) {
+                      ArrayList<String>quantity_type,ArrayList<String>total_price_ofOne,
+                      String money_or_debt,String c_name,Databases db,Context context,String what) {
         mContext=context;
         databases=db;
         String ahent_name;
@@ -347,7 +347,7 @@ public class createpdf {
 //                }
 //            }
 
-///C/////////////////////////////////////////////////////////////////////////ءءءءXXXXXK
+
             int row=0,quantity_sum=0;
             for (int i=0;i<size_data;i++) {
                 for (int q=0;q<1;q++){
