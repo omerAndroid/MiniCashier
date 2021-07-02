@@ -1,5 +1,6 @@
 package com.aoa.mini_cashier;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.aoa.mini_cashier.DB.Databases;
 import com.aoa.mini_cashier.item_classes.report_item_class;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class Reports extends AppCompatActivity {
@@ -104,16 +106,19 @@ public class Reports extends AppCompatActivity {
 
 
         String[] products_bills=databases.get_All_products_bills(g[1]);
+        double[] products_bills_Double=databases.get_All_products_bills_double(g[1]);
         if (databases.get_number_products_bills(g[1])>0) {
-            int i = 0;
+            int i = 0,f=0;
             for (int j = 0; j < databases.get_number_products_bills(g[1]); j++) {
 
-                list_item.add(new report_item_class(products_bills[i], products_bills[i + 1], ""+Double.parseDouble(products_bills[i + 2])+"",
-                        products_bills[i + 3], products_bills[i + 4], products_bills[i + 5],
-                        ""+Double.parseDouble(products_bills[i + 2])*Double.parseDouble(products_bills[i + 3])+""));
-                i += 6;
+                list_item.add(new report_item_class(products_bills[i],
+                        theack_aggen(new DecimalFormat("#.00#").format(products_bills_Double[f])),
+                        theack_aggen(new DecimalFormat("#.00#").format(products_bills_Double[f+1])),
+                        products_bills[i + 1], products_bills[i + 2], products_bills[i + 3],
+                        theack_aggen(new DecimalFormat("#.00#").format(products_bills_Double[f+1]*Double.parseDouble(products_bills[i + 1])))));
+                i += 4;
+                f+= 2;
             }
-
 
             ListView list = findViewById(R.id.report_list);
             ListAdupter ad = new ListAdupter(list_item);
@@ -122,18 +127,26 @@ public class Reports extends AppCompatActivity {
     }
 
     public void listShow_products_bills(){
-System.out.println("hh"+5+"");
+
         String[] products_bills=databases.get_All_products_bills("null");
+        double[] products_bills_Double=databases.get_All_products_bills_double("null");
+
+        System.out.println("hh"+products_bills_Double.length+"");
+
+
         if (databases.get_number_products_bills("null")>0) {
-            int i = 0;
+            int i = 0,g=0;
             for (int j = 0; j < databases.get_number_products_bills("null"); j++) {
 
-                list_item.add(new report_item_class(products_bills[i], products_bills[i + 1], ""+Double.parseDouble(products_bills[i + 2])+"",
-                        products_bills[i + 3], products_bills[i + 4], products_bills[i + 5],
-                        ""+Double.parseDouble(products_bills[i + 2])*Double.parseDouble(products_bills[i + 3])+""));
-                i += 6;
-            }
+                list_item.add(new report_item_class(products_bills[i],
+                        theack_aggen(new DecimalFormat("#.00#").format(products_bills_Double[g])),
+                        theack_aggen(new DecimalFormat("#.00#").format(products_bills_Double[g+1])),
+                        products_bills[i + 1], products_bills[i + 2], products_bills[i + 3],
+                        theack_aggen(new DecimalFormat("#.00#").format(products_bills_Double[g+1]*Double.parseDouble(products_bills[i + 1])))));
+                i += 4;
+                g+= 2;
 
+            }
 
             ListView list = findViewById(R.id.report_list);
             ListAdupter ad = new ListAdupter(list_item);
@@ -193,5 +206,55 @@ System.out.println("hh"+5+"");
 
             return view;
         }
+    }
+
+    /////////////////n     خوارزمية تساعد لعملية عرض وادخال الارقام
+    public String theack_aggen(@NonNull String s){
+        StringBuilder ss= new StringBuilder();
+
+        boolean b=false;
+        for (int i = 0; i<= s.length()-1; i++){
+            if (String.valueOf(s.charAt(i)).equals("٠")){
+                ss.append("0");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٩")){
+                ss.append("9");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("١")){
+                ss.append("1");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٢")){
+                ss.append("2");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٣")){
+                ss.append("3");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٤")){
+                ss.append("4");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٥")){
+                ss.append("5");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٦")){///١٢٣٤٥٦٧٨٩٫٠٠٠
+                ss.append("6");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٧")){
+                ss.append("7");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٨")){
+                ss.append("8");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٫")){
+                ss.append(".");
+                b=true;
+            }
+        }
+
+        if (b){
+            return ss.toString();
+        }else {
+            return s;
+        }
+
     }
 }

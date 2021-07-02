@@ -1683,10 +1683,10 @@ public class Databases extends SQLiteOpenHelper {
         String[] sat;
         Cursor res;
         if (name.equals("null")) {
-            sat = new String[6 * get_number_products_bills("null")];
+            sat = new String[4 * get_number_products_bills("null")];
             res  = db.rawQuery("select * from products_bills",null);
         }else {
-            sat = new String[6 * get_number_products_bills(name)];
+            sat = new String[4 * get_number_products_bills(name)];
             res  = db.rawQuery("select * from products_bills where name_prod like '"+name+"' ",null);
         }
 
@@ -1700,13 +1700,13 @@ public class Databases extends SQLiteOpenHelper {
             sat[i] = c;
             i++;
 
-            c = res.getString(res.getColumnIndex("purchase_price"));
-            sat[i] = c;
-            i++;
-
-            c = res.getString(res.getColumnIndex("selling_price"));
-            sat[i] = c;
-            i++;
+//            c = res.getString(res.getColumnIndex("purchase_price"));
+//            sat[i] = c;
+//            i++;
+//
+//            c = res.getString(res.getColumnIndex("selling_price"));
+//            sat[i] = c;
+//            i++;
 
             c = res.getString(res.getColumnIndex("quantity"));
             sat[i] = c;
@@ -1724,8 +1724,37 @@ public class Databases extends SQLiteOpenHelper {
         return sat;
     }
 
+    public double[] get_All_products_bills_double(String name){
+        SQLiteDatabase db=this.getReadableDatabase();
+        double[] sat;
+        Cursor res;
+        if (name.equals("null")) {
+            sat = new double[2 * get_number_products_bills("null")];
+            res  = db.rawQuery("select * from products_bills",null);
+        }else {
+            sat = new double[2 * get_number_products_bills(name)];
+            res  = db.rawQuery("select * from products_bills where name_prod like '"+name+"' ",null);
+        }
+
+        int i = 0;
+
+        res.moveToFirst();
+        while (res.isAfterLast() == false) {
+            double c;
+
+            c = res.getDouble(res.getColumnIndex("purchase_price"));
+            sat[i] = c;
+            i++;
+
+            c = res.getDouble(res.getColumnIndex("selling_price"));
+            sat[i] = c;
+            i++;
 
 
+            res.moveToNext();
+        }
+        return sat;
+    }
 
     public int get_number_products_bills(String name) {
         SQLiteDatabase db=this.getReadableDatabase();
@@ -1806,6 +1835,7 @@ public class Databases extends SQLiteOpenHelper {
         }
         return a;
     }
+
     public int read_Tname_bills(){
         SQLiteDatabase db=this.getReadableDatabase();
         int a=0;
@@ -1817,6 +1847,7 @@ public class Databases extends SQLiteOpenHelper {
         }
         return a;
     }
+
     public String[] get_All_bills(){
 
         SQLiteDatabase db=this.getReadableDatabase();
@@ -1892,14 +1923,14 @@ public class Databases extends SQLiteOpenHelper {
         String[] sat;
         Cursor res;
         if (name.equals("null")) {
-            sat = new String[8 * read_The_bills()];
+            sat = new String[6 * read_The_bills()];
             res  = db.rawQuery("select * from bills",null);
         }else if (name.equals("not_null")){
-            sat = new String[8 * read_The_bills_2(0)];
+            sat = new String[6 * read_The_bills_2(0)];
             res = db.rawQuery("select * from bills WHERE  id_agent > "+0+"" , null);
         }else {
             a=Integer.parseInt(name);
-            sat = new String[8 * read_The_bills_2(a)];
+            sat = new String[6 * read_The_bills_2(a)];
             res = db.rawQuery("select * from bills WHERE  id_agent = "+a+" " , null);
         }
 
@@ -1917,13 +1948,13 @@ public class Databases extends SQLiteOpenHelper {
             sat[i] = c;
             i++;
 
-            c = res.getString(res.getColumnIndex("total"));
-            sat[i] = c;
-            i++;
-
-            c = res.getString(res.getColumnIndex("paid"));
-            sat[i] = c;
-            i++;
+//            c = res.getString(res.getColumnIndex("total"));//2
+//            sat[i] = c;
+//            i++;
+//
+//            c = res.getString(res.getColumnIndex("paid"));//3
+//            sat[i] = c;
+//            i++;
 
             c = res.getString(res.getColumnIndex("discount"));
             sat[i] = c;
@@ -1944,6 +1975,45 @@ public class Databases extends SQLiteOpenHelper {
         }
         return sat;
     }
+
+    public double[] get_All_bills_double(String name){
+        SQLiteDatabase db=this.getReadableDatabase();
+
+        int a;
+        double[] sat;
+        Cursor res;
+        if (name.equals("null")) {
+            sat = new double[2 * read_The_bills()];
+            res  = db.rawQuery("select * from bills",null);
+        }else if (name.equals("not_null")){
+            sat = new double[2 * read_The_bills_2(0)];
+            res = db.rawQuery("select * from bills WHERE  id_agent > "+0+"" , null);
+        }else {
+            a=Integer.parseInt(name);
+            sat = new double[2 * read_The_bills_2(a)];
+            res = db.rawQuery("select * from bills WHERE  id_agent = "+a+" " , null);
+        }
+
+        int i = 0;
+
+        res.moveToFirst();
+        while (res.isAfterLast() == false) {
+            double c;
+
+            c = res.getDouble(res.getColumnIndex("total"));//2
+            sat[i] = c;
+            i++;
+
+            c = res.getDouble(res.getColumnIndex("paid"));//3
+            sat[i] = c;
+            i++;
+
+
+            res.moveToNext();
+        }
+        return sat;
+    }
+
     public int read_The_bills(){
         SQLiteDatabase db=this.getReadableDatabase();
         int a=0;
@@ -1955,6 +2025,7 @@ public class Databases extends SQLiteOpenHelper {
         }
         return a;
     }
+
     public int read_The_bills_2(int b){
         SQLiteDatabase db=this.getReadableDatabase();
         Cursor res;
@@ -1988,7 +2059,7 @@ public class Databases extends SQLiteOpenHelper {
     public String[] get_one_products_bills(int id_bills){
         SQLiteDatabase db=this.getReadableDatabase();
 
-        String[] sat = new String[6 * get_one_products_bills_num(id_bills)];
+        String[] sat = new String[5 * get_one_products_bills_num(id_bills)];
         Cursor res  = db.rawQuery("select * from products_bills where  id_bills = "+id_bills+" ",null);
 
 
@@ -2006,9 +2077,9 @@ public class Databases extends SQLiteOpenHelper {
             sat[i] = c;
             i++;
 
-            c = res.getString(res.getColumnIndex("selling_price"));
-            sat[i] = c;
-            i++;
+//            c = res.getString(res.getColumnIndex("selling_price"));
+//            sat[i] = c;
+//            i++;
 
             c = res.getString(res.getColumnIndex("quantity"));
             sat[i] = c;
@@ -2022,6 +2093,27 @@ public class Databases extends SQLiteOpenHelper {
             sat[i] = c;
             i++;
 
+
+            res.moveToNext();
+        }
+        return sat;
+    }
+
+    public double[] get_one_products_bills_double(int id_bills){
+        SQLiteDatabase db=this.getReadableDatabase();
+
+        double[] sat = new double[ get_one_products_bills_num(id_bills)];
+        Cursor res  = db.rawQuery("select * from products_bills where  id_bills = "+id_bills+" ",null);
+
+        int i = 0;
+
+        res.moveToFirst();
+        while (res.isAfterLast() == false) {
+            double c;
+
+            c = res.getDouble(res.getColumnIndex("selling_price"));
+            sat[i] = c;
+            i++;
 
             res.moveToNext();
         }
@@ -2085,7 +2177,6 @@ public class Databases extends SQLiteOpenHelper {
         }
         return sat;
     }
-
 
     public double get_policy_amount_agent(int id_agent,String type_policy){
         SQLiteDatabase db=this.getReadableDatabase();

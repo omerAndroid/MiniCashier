@@ -192,6 +192,7 @@ public class buy_restore_goods extends AppCompatActivity {
                 } else if (money_or_debt.getText().toString().equals("آجل") && buy_or_restore.getText().toString().equals("بيع")) {
                     if (check_impot_save_btn() && !TextUtils.isEmpty(c_name.getText().toString()) && !
                             TextUtils.isEmpty(name_sender.getText().toString()) && name_prod.size() > 0) {
+                       // Toast.makeText(this, String.valueOf(databases.check_agent(c_name.getText().toString()) > 0), Toast.LENGTH_SHORT).show();
                         if (databases.check_agent(c_name.getText().toString()) > 0) {
                             insert_bills("آجل", databases.check_agent(c_name.getText().toString()), name_sender.getText().toString(), 0);
                             insert_products_bills();
@@ -425,7 +426,7 @@ public class buy_restore_goods extends AppCompatActivity {
 
             list_item.add(new list_buy_restore(g[1],q[0],"1",theack_aggen(new DecimalFormat("#.00#").format( q_Double[1])),
                     theack_aggen(new DecimalFormat("#.00#").format( q_Double[0])),
-                    ""+q_Double[0]*1+""));
+                    theack_aggen(new DecimalFormat("#.00#").format(q_Double[0]*1))));
         }
 
         ///n      عملية اضافة المنتجات في المصفوفات

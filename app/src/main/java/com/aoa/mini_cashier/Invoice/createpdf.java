@@ -153,6 +153,27 @@ public class createpdf {
 
                 ImageEvent imgEvent = new ImageEvent(image);
                 cell.setCellEvent(imgEvent);
+            }else {
+                 @SuppressLint("UseCompatLoadingForDrawables") Drawable d = mContext.getResources().getDrawable(R.drawable.img);
+                BitmapDrawable bitDw = ((BitmapDrawable) d);
+                Bitmap bmp = bitDw.getBitmap();
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                Image image = null;
+                try {
+                    image = Image.getInstance(stream.toByteArray());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                //document.add(image);
+                //PdfPCell cell7 = new PdfPCell(image,true);
+
+                cell.setFixedHeight(100);
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+                ImageEvent imgEvent = new ImageEvent(image);
+                cell.setCellEvent(imgEvent);
             }
 
 

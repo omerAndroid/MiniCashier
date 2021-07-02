@@ -34,6 +34,7 @@ import com.aoa.mini_cashier.RED_QR.ScanCodeActivity;
 import com.aoa.mini_cashier.item_classes.policy_item_class;
 import com.aoa.mini_cashier.item_classes.purchases_item_class;
 import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.android.material.textfield.TextInputEditText;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -57,7 +58,7 @@ public class purchases extends AppCompatActivity {
     Button add_purchases,add_policy,change_list_items;
     private SimpleDateFormat date_format;
     private Calendar calendar;
-    //String date_viewe= "asdf";
+    //String chaeck_date_viewe=" ";
     TextView phone_resource_txt,mobile_resource_txt,address_resource,name_resource_txt,
             purchases_total,paid_total,pu_pa_total;
    public static String data_type,Text_date="0",Text_date_2="0",set_mony="",string_1="null",string_2;
@@ -176,18 +177,30 @@ public class purchases extends AppCompatActivity {
 
     private void listShow_bills_1(String string_1) {
         int a=Integer.parseInt(string_1);
-
+        TextView phone_resource_txt;
+        phone_resource_txt= findViewById(R.id.purchases_item_barcode2);
+        phone_resource_txt.setText("الاسم");
+        phone_resource_txt= findViewById(R.id.purchases_item_name2);
+        phone_resource_txt.setText("سعر الشراء");
+        phone_resource_txt= findViewById(R.id.purchases_item_sale2);
+        phone_resource_txt.setText("الوحدة");
+        findViewById(R.id.purchases_visbility).setVisibility(View.VISIBLE);
+        findViewById(R.id.policy_visbility).setVisibility(View.GONE);
         String[] purchases=databases.get_one_products_bills(a);
+        double[] purchases_double=databases.get_one_products_bills_double(a);
 
         if (databases.get_one_products_bills_num(a)>=1) {
             q_list.clear();
-            int i = 0;
+            int i = 0,g=0;
             for (int j = 0; j < databases.get_one_products_bills_num(a); j++) {
 
-                q_list.add(new purchases_item_class(purchases[i], purchases[i+1],purchases[i+2],purchases[i+3],purchases[i+4],purchases[i+5],
+                q_list.add(new purchases_item_class(purchases[i],theack_aggen(new DecimalFormat("#.00#").format(purchases_double[g])),
+                        purchases[i+3],purchases[i+2],
+                        theack_aggen(new DecimalFormat("#.00#").format(purchases_double[g]*Double.parseDouble(purchases[i+2]))),
+                        purchases[i+4],
                         "",""));
-                i += 6;
-
+                i += 5;
+                g+=1;
             }
             //////////////////////////////Add List Item//////////////////////////////////////
             purchases.ListAdupter ad = new purchases.ListAdupter(q_list);
@@ -759,7 +772,7 @@ public class purchases extends AppCompatActivity {
         TextView resource_name=(TextView) purchase.findViewById(R.id.resource_name);
         EditText amount_policy=(EditText) purchase.findViewById(R.id.amount_policy);/////n  المبلغ
         Button date_paid=(Button) purchase.findViewById(R.id.date_paid);
-        MultiAutoCompleteTextView note_txt=(MultiAutoCompleteTextView) purchase.findViewById(R.id.note_txt);/////n     ملاحظة
+        TextInputEditText note_txt=purchase.findViewById(R.id.note_txt);/////n     ملاحظة
 
 
         resource_name.setText(name_resource_txt.getText().toString());
@@ -909,8 +922,6 @@ public class purchases extends AppCompatActivity {
             TextView purchases_item_free_guintity = (TextView) view.findViewById(R.id.purchases_item_free_guintity);
             TextView purchases_item_date_purchase = (TextView) view.findViewById(R.id.purchases_item_date_purchase);
             TextView purchases_item_date_expare = (TextView) view.findViewById(R.id.purchases_item_date_expare);
-
-
 
 
             purchases_item_barcode.setText(list_item.get(i).barcode );

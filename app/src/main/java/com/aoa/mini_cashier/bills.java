@@ -1,5 +1,6 @@
 package com.aoa.mini_cashier;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -17,11 +18,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.aoa.mini_cashier.DB.Databases;
 import com.aoa.mini_cashier.item_classes.purchases_item_class;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class bills extends AppCompatActivity {
@@ -63,19 +64,22 @@ public class bills extends AppCompatActivity {
 
     public void listShow_bills(){
         String[] resource=databases.get_All_bills("null");
+        double[] All_bills_Double=databases.get_All_bills_double("null");
         q_list.clear();
         String s;
-        int i=0;
+        int i=0,g=0;
         for (int j=0;j<databases.read_The_bills();j++){
-
-            if (resource[i+5].equals("")){
+            //Toast.makeText(this, resource[i+5], Toast.LENGTH_SHORT).show();
+            if (resource[i+3].equals("")){
                 s="لايوجد";
             }else {
-                s=resource[i+5];
+                s=resource[i+3];
             }
 
-            q_list_2.add(new purchases_item_class(s,resource[i+6],resource[i+2],resource[i+3],resource[i+4],resource[i],resource[i+1],resource[i+7]));
-            i+=8;
+            q_list_2.add(new purchases_item_class(s,resource[i+4],theack_aggen(new DecimalFormat("#.00#").format(All_bills_Double[g])),
+                    theack_aggen(new DecimalFormat("#.00#").format(All_bills_Double[g+1])),resource[i+2],resource[i],resource[i+1],resource[i+5]));
+            i+=6;
+            g+=2;
         }
         //////////////////////////////Add List Item//////////////////////////////////////
         ListAdupter_2 ad = new ListAdupter_2(q_list_2);
@@ -137,15 +141,19 @@ public class bills extends AppCompatActivity {
 
 
             String[] All_bills=databases.get_All_bills(String.valueOf(id_agent));
+            double[] All_bills_Double=databases.get_All_bills_double(String.valueOf(id_agent));
             q_list.clear();
 
-            int i=0;
+            int i=0,g=0;
             for (int j=0;j<databases.read_The_bills_2(id_agent);j++){
 
 
 
-                q_list_2.add(new purchases_item_class(All_bills[i+5],All_bills[i+6],All_bills[i+2],All_bills[i+3],All_bills[i+4],All_bills[i],All_bills[i+1],All_bills[i+7]));
-                i+=8;
+                q_list_2.add(new purchases_item_class(All_bills[i+3],All_bills[i+4],theack_aggen(new DecimalFormat("#.00#").format(All_bills_Double[g])),
+                        theack_aggen(new DecimalFormat("#.00#").format(All_bills_Double[g+1])) ,All_bills[i+2],All_bills[i],All_bills[i+1],
+                        All_bills[i+5]));
+                i+=6;
+                g+=2;
             }
             //////////////////////////////Add List Item//////////////////////////////////////
             ListAdupter_2 ad = new ListAdupter_2(q_list_2);
@@ -156,7 +164,55 @@ public class bills extends AppCompatActivity {
 
 
     }
+    /////////////////n     خوارزمية تساعد لعملية عرض وادخال الارقام
+    public String theack_aggen(@NonNull String s){
+        StringBuilder ss= new StringBuilder();
 
+        boolean b=false;
+        for (int i = 0; i<= s.length()-1; i++){
+            if (String.valueOf(s.charAt(i)).equals("٠")){
+                ss.append("0");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٩")){
+                ss.append("9");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("١")){
+                ss.append("1");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٢")){
+                ss.append("2");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٣")){
+                ss.append("3");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٤")){
+                ss.append("4");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٥")){
+                ss.append("5");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٦")){///١٢٣٤٥٦٧٨٩٫٠٠٠
+                ss.append("6");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٧")){
+                ss.append("7");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٨")){
+                ss.append("8");
+                b=true;
+            }else if(String.valueOf(s.charAt(i)).equals("٫")){
+                ss.append(".");
+                b=true;
+            }
+        }
+
+        if (b){
+            return ss.toString();
+        }else {
+            return s;
+        }
+
+    }
     class ListAdupter_2 extends BaseAdapter {
         ArrayList<purchases_item_class> list_item_2;
         ListAdupter_2(ArrayList<purchases_item_class> list_item){
