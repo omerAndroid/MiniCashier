@@ -495,6 +495,10 @@ public class createpdf {
 
             document.add(table2);
 
+
+//            document.newPage();
+//            document.add(table);
+
             ///#####################################(3)######################################
             document.close();
 

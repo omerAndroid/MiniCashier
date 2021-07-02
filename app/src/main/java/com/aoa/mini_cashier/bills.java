@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -17,9 +18,12 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aoa.mini_cashier.DB.Databases;
+import com.aoa.mini_cashier.Invoice.createpdf;
 import com.aoa.mini_cashier.item_classes.purchases_item_class;
 
 import java.text.DecimalFormat;
@@ -59,6 +63,40 @@ public class bills extends AppCompatActivity {
 
             startActivity(intent);
 
+        });
+
+        findViewById(R.id.add_bills).setOnClickListener(v -> {
+            //show menu options for bills
+            PopupMenu popupMenu = new PopupMenu(bills.this,v);
+            MenuInflater inflater = popupMenu.getMenuInflater();
+            inflater.inflate(R.menu.menu_bills_options,popupMenu.getMenu());
+
+            /*MenuPopupHelper popupHelper = new MenuPopupHelper(MainActivity.this, (MenuBuilder) popupMenu.getMenu(),v);
+            popupHelper.setForceShowIcon(true);*/
+            popupMenu.show();
+
+            popupMenu.setOnMenuItemClickListener(item -> {
+                int id = item.getItemId();
+
+                //print bills
+                if(id==R.id.print_bill_menu)
+                {
+                    Toast.makeText(bills.this, "طباعة الفاتورة", Toast.LENGTH_SHORT).show();
+                }
+
+                //share bills
+                if(id==R.id.share_bill_menu)
+                {
+
+                }
+
+                //open PDF file
+                if(id==R.id.open_pdf_menu)
+                {
+
+                }
+                return false;
+            });
         });
     }
 
@@ -124,10 +162,16 @@ public class bills extends AppCompatActivity {
     public void get_ALL_baracode_name_g() {
 
         String[] Allbaracod=databases.get_All_bills_agent();
+        ArrayList<String> name= new ArrayList<>();
 
+        for (String s : Allbaracod) {
+            if (!name.contains(s)) {
+                name.add(s);
+            }
+        }
 
         ArrayAdapter<String> adapter1 = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, Allbaracod);
+                android.R.layout.simple_list_item_1, name);
 
         c_name =
                 findViewById(R.id.searsh_resource);
@@ -137,10 +181,11 @@ public class bills extends AppCompatActivity {
         c_name.setThreshold(1);//will start working from first
 
         c_name.setOnItemClickListener((parent, arg1, pos, id) -> {
+            findViewById(R.id.add_resource).setVisibility(View.GONE);
+            findViewById(R.id.add_bills).setVisibility(View.VISIBLE);
+
             String item = parent.getItemAtPosition(pos).toString();
             int id_agent=databases.get_id_agent(item);
-
-
 
             String[] All_bills=databases.get_All_bills(String.valueOf(id_agent));
             double[] All_bills_Double=databases.get_All_bills_double(String.valueOf(id_agent));
@@ -149,8 +194,6 @@ public class bills extends AppCompatActivity {
              q_list_2 = new ArrayList<>();
             int i=0,g=0;
             for (int j=0;j<databases.read_The_bills_2(id_agent);j++){
-
-
 
                 q_list_2.add(new purchases_item_class(All_bills[i+3],All_bills[i+4],theack_aggen(new DecimalFormat("#.00#").format(All_bills_Double[g])),
                         theack_aggen(new DecimalFormat("#.00#").format(All_bills_Double[g+1])) ,All_bills[i+2],All_bills[i],All_bills[i+1],
@@ -164,7 +207,6 @@ public class bills extends AppCompatActivity {
 
             c_name.setText("");
         });
-
 
     }
     /////////////////n     خوارزمية تساعد لعملية عرض وادخال الارقام
@@ -216,6 +258,7 @@ public class bills extends AppCompatActivity {
         }
 
     }
+
     class ListAdupter_2 extends BaseAdapter {
         ArrayList<purchases_item_class> list_item_2;
         ListAdupter_2(ArrayList<purchases_item_class> list_item){
