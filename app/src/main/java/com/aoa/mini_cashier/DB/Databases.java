@@ -19,6 +19,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
+@SuppressLint("Range")
 public class Databases extends SQLiteOpenHelper {
 
     static final String DBNAME="DB 0,1.db";///NOT NULL
@@ -29,6 +30,8 @@ public class Databases extends SQLiteOpenHelper {
         this.mContext=context;
     }
 
+
+    @SuppressLint("Range")
     @Override
     public void onCreate(SQLiteDatabase db) {////REAL  = DOUBLE + FLOAT    /////  NUMERIC = Boolean
 
@@ -1454,6 +1457,7 @@ public class Databases extends SQLiteOpenHelper {
         return sat;
     }
 
+    @SuppressLint("Range")
     public double[] get_ALL_paid_purchases(){
         SQLiteDatabase db=this.getReadableDatabase();
         double[] sat=new double[get_number_purchases()];

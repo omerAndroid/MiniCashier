@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".add_goods_db" >
+    tools:context=".add_goods_db">
 
 
     <ScrollView
@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            tools:context=".add_goods_db" >
+            tools:context=".add_goods_db">
 
 
             <LinearLayout
@@ -25,18 +25,18 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                                <com.jaredrummler.materialspinner.MaterialSpinner
-                                    android:id="@+id/spinner"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintLeft_toLeftOf="parent"
-                                    app:layout_constraintRight_toRightOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent"
-                                    app:ms_hint="الاقسام"
-                                    app:ms_hide_arrow="false"
-                                    app:ms_dropdown_height="130dp"
-                                    tools:ignore="MissingConstraints" />
+                <com.jaredrummler.materialspinner.MaterialSpinner
+                    android:id="@+id/spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:ms_dropdown_height="130dp"
+                    app:ms_hide_arrow="false"
+                    app:ms_hint="الاقسام"
+                    tools:ignore="MissingConstraints" />
             </LinearLayout>
 
             <LinearLayout
@@ -48,8 +48,8 @@
                     android:id="@+id/add_barcode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="red_qr"
-                    android:background="@drawable/ic_camera_alt_black_24dp" />
+                    android:background="@drawable/ic_camera_alt_black_24dp"
+                    android:onClick="red_qr" />
 
 
                 <AutoCompleteTextView
@@ -59,15 +59,15 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="باركود"
-                    android:inputType="textPersonName"
-                    />
+                    android:inputType="textPersonName" />
+
                 <Button
                     android:id="@+id/clear_all"
-                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@android:drawable/ic_delete"
                     android:onClick="red_qr"
-                    android:background="@android:drawable/ic_delete" />
+                    android:visibility="gone" />
 
 
             </LinearLayout>
@@ -77,12 +77,12 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="اسم المنتج"
-                android:inputType="textPersonName" >
+                android:inputType="textPersonName">
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/add_name_goods"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
+                    android:layout_height="wrap_content" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -177,12 +177,12 @@
                     android:ems="10"
                     android:enabled="false"
                     android:hint="تاريخ الإنتهاء"
-                    android:inputType="date" >
+                    android:inputType="date">
+
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/add_date_ex"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        />
+                        android:layout_height="match_parent" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -191,6 +191,7 @@
 
         </LinearLayout>
     </ScrollView>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -214,64 +215,58 @@
                     android:id="@+id/linearLayout13"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    >
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/q_sale_item2"
                         android:layout_width="150dp"
-                        android:gravity="center"
-                        android:textSize="20sp"
                         android:layout_height="wrap_content"
-
+                        android:gravity="center"
                         android:scrollHorizontally="true"
-                        android:text="سعر البيع" />
+
+                        android:text="سعر البيع"
+                        android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/q_buy_item2"
                         android:layout_width="150dp"
-                        android:gravity="center"
-                        android:textSize="20sp"
                         android:layout_height="wrap_content"
-
+                        android:gravity="center"
                         android:scrollHorizontally="true"
-                        android:text="سعر الشراء" />
+
+                        android:text="سعر الشراء"
+                        android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/q_quantity_item2"
                         android:layout_width="150dp"
-                        android:gravity="center"
-                        android:textSize="20sp"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
                         android:scrollHorizontally="true"
-                        android:text="الكمية" />
+                        android:text="الكمية"
+                        android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/q_name_item2"
                         android:layout_width="150dp"
-                        android:gravity="center"
-                        android:textSize="20sp"
                         android:layout_height="wrap_content"
-
+                        android:gravity="center"
                         android:scrollHorizontally="true"
-                        android:text="اسم الكمية" />
+
+                        android:text="اسم الكمية"
+                        android:textSize="20sp" />
                 </LinearLayout>
 
                 <ListView
                     android:id="@+id/list_quantity"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="8dp"
-                   >
+                    android:layout_marginBottom="8dp">
 
                 </ListView>
 
 
-
-
             </LinearLayout>
-
-
 
 
         </HorizontalScrollView>
@@ -294,31 +289,31 @@
 
             <Button
                 android:id="@+id/save_add_goods"
+                style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="0dp"
-                android:onClick="seve_goods"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="seve_goods"
                 android:text="حفظ"
-                style="?attr/materialButtonOutlinedStyle"
                 tools:ignore="OnClick" />
+
             <Button
                 android:id="@+id/ubdate_btn"
+                style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="0dp"
-                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                style="?attr/materialButtonOutlinedStyle"
                 android:text="تعديل"
-                />
+                android:visibility="gone" />
+
             <Button
                 android:id="@+id/seve_ubdat_goods_btn"
+                style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="0dp"
-                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                style="?attr/materialButtonOutlinedStyle"
                 android:text="حفظ التعديل"
-                />
+                android:visibility="gone" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
