@@ -19,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
         tools:ignore="AllowBackup">
-        <activity android:name=".Invoice.Openpdf"></activity>
+        <activity android:name=".Invoice.Openpdf" />
         <activity android:name=".bills" />
         <activity android:name=".Reports" />
         <activity android:name=".resources" />
@@ -29,7 +29,8 @@
         <activity android:name=".RED_QR.ScanCodeActivity" />
         <activity android:name=".update_goods_db" />
         <activity android:name=".add_goods_db" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
